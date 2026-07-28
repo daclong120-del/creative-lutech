@@ -63,3 +63,5 @@ desktop-app/release/
 output/
 scratch/
 .vercel
+
+notes/
