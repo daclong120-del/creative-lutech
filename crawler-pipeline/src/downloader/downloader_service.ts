@@ -1,7 +1,7 @@
 import { DownloadTask, DownloadResult, DownloaderOptions, ProgressCallback } from "./types.js";
 import { ConcurrencyPool } from "./concurrency_pool.js";
 import { LocalDestination } from "./destinations/local_destination.js";
-import { R2Destination } from "./destinations/r2_destination.js";
+
 
 /**
  * # Video Downloader Service
@@ -10,13 +10,13 @@ import { R2Destination } from "./destinations/r2_destination.js";
 export class DownloaderService {
   private readonly pool: ConcurrencyPool;
   private readonly localDest: LocalDestination;
-  private readonly r2Dest: R2Destination;
+
 
   constructor(options: DownloaderOptions = {}) {
     const maxConcurrent = options.maxConcurrent || 4;
     this.pool = new ConcurrencyPool(maxConcurrent);
     this.localDest = new LocalDestination(options.downloadDir);
-    this.r2Dest = new R2Destination(this.localDest);
+
   }
 
   /**
@@ -35,11 +35,7 @@ export class DownloaderService {
             await new Promise(r => setTimeout(r, backoffMs));
           }
 
-          if (t.destination === "r2") {
-            return await this.r2Dest.save(t, cb);
-          } else {
-            return await this.localDest.save(t, cb);
-          }
+          return await this.localDest.save(t, cb);
         } catch (err: any) {
           lastError = err;
           console.warn(`[DownloaderService] Lỗi tải task ${t.id} (Lần ${attempt}): ${err.message || err}`);

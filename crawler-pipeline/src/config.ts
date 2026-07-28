@@ -23,8 +23,6 @@ function loadEnv(path: string): void {
   } catch {}
 }
 
-loadEnv(join(process.cwd(), "..", ".env"));
-loadEnv(join(process.cwd(), "..", "supabase", ".env.local"));
 loadEnv(join(process.cwd(), ".env"));
 loadEnv(join(process.cwd(), ".env.local"));
 

@@ -2,7 +2,7 @@
  * # Interfaces & Types cho Video Downloader Subsystem
  */
 
-export type DownloadDestinationType = "local" | "r2" | "both";
+export type DownloadDestinationType = "local";
 
 export interface DownloadTask {
   id: string;
@@ -10,7 +10,7 @@ export interface DownloadTask {
   platform: string;
   destination: DownloadDestinationType;
   outputPath?: string;
-  r2Key?: string;
+
   headers?: Record<string, string>;
   maxRetries?: number;
   timeoutMs?: number;
@@ -31,7 +31,7 @@ export interface DownloadResult {
   success: boolean;
   taskId: string;
   filePath?: string;
-  r2Key?: string;
+
   fileSize: number;
   mimeType?: string;
   checksum?: string;

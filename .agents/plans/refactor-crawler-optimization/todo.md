@@ -1,3 +1,0 @@
-- [x] Fix mục 3: page.route chặn tài nguyên thừa trong `client.ts`
-- [x] Fix mục 6: Check file trên R2 bằng `HeadObjectCommand` trước khi download/upload trong `r2_uploader.ts` và `douyin.ts`
-- [x] Fix mục 7: Viết hàm validation dữ liệu đầu vào cho `DouyinAweme` và `DouyinUser` trong `douyin.ts`

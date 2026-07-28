@@ -1,0 +1,2015 @@
+/*! For license information please see 2535.76ce4f73.js.LICENSE.txt */
+!function(e,n){"object"==typeof module&&"object"==typeof module.exports?n():"function"==typeof define&&define.amd?define([],n):(e="undefined"!=typeof globalThis?globalThis:e||self)&&n()}(this,function(){"use strict";"object"==typeof window&&(window.openRedirect={version:"1.2.20",webpackPluginVersion:"3.4.22",reportOnly:!1})}),!function(e,n){"object"==typeof exports&&"undefined"!=typeof module?n(exports):"function"==typeof define&&define.amd?define(["exports"],n):n((e="undefined"!=typeof globalThis?globalThis:e||self).xss={})}(this,function(e){"use strict";var n=function(){return(n=Object.assign||function(e){for(var n,o=1,a=arguments.length;o<a;o++)for(var r in n=arguments[o])Object.prototype.hasOwnProperty.call(n,r)&&(e[r]=n[r]);return e}).apply(this,arguments)};function o(e,n,o){if(o||2==arguments.length)for(var a,r=0,t=n.length;r<t;r++)!a&&r in n||(a||(a=Array.prototype.slice.call(n,0,r)),a[r]=n[r]);return e.concat(a||Array.prototype.slice.call(n))}var a=/[^a-zA-Z0-9\\_:.-]/gim,r=/</g,t=/>/g,i=/&#([a-zA-Z0-9]*);?/gim,R=/&quot;/g,d=/&colon;?/gim,s=/&newline;?/gim,c=/((j\s*a\s*v\s*a|v\s*b|l\s*i\s*v\s*e)\s*s\s*c\s*r\s*i\s*p\s*t\s*|m\s*o\s*c\s*h\s*a):/gi,l=/u\s*r\s*l\s*\(.*/gi,h=/e\s*x\s*p\s*r\s*e\s*s\s*s\s*i\s*o\s*n\s*\(.*/gi,u=/"/g,p=function(e){return e.replace(r,"&lt;").replace(t,"&gt;")},f={indexOf:function(e,n){var o,a;for(o=0,a=e.length;o<a;o++)if(e[o]===n)return o;return -1},forEach:function(e,n,o){var a,r;for(a=0,r=e.length;a<r;a++)n.call(o,e[a],a,e)},some:function(e,n,o){var a,r;for(a=0,r=e.length;a<r;a++)if(n.call(o,e[a],a,e))return!0;return!1},trim:function(e){return e.replace(/(^\s*)|(\s*$)/g,"")},includes:function(e,n){if("string"==typeof e)return -1!==e.indexOf(n);for(var o=0;o<e.length;o++)if(e[o]===n)return!0;return!1},spaceIndex:function(e){var n=/\s|\n|\t/.exec(e);return n?n.index:-1},uniq:function(e){for(var n={},o=[],a=0;a<e.length;a++)n[e[a]]||(o.push(e[a]),n[e[a]]=!0);return o},from:function(e){for(var n=[],o=0;o<e.length;o++)n.push(e[o]);return n},keys:function(e){var n=[];for(var o in e)n.push(o);return n}};function M(e){return null==e}function D(e){var n;return'"'===(n=e)[0]&&'"'===n[n.length-1]||"'"===n[0]&&"'"===n[n.length-1]?e.substr(1,e.length-2):e}function g(e){var n,o,a,r,t,i,R,d="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",s="",c=0;for(e=function(e){e=e.replace(/rn/g,"n");for(var n="",o=0;o<e.length;o++){var a=e.charCodeAt(o);a<128?n+=String.fromCharCode(a):a>127&&a<2048?n+=String.fromCharCode(a>>6|192)+String.fromCharCode(63&a|128):n+=String.fromCharCode(a>>12|224)+String.fromCharCode(a>>6&63|128)+String.fromCharCode(63&a|128)}return n}(e);c<e.length;)r=(n=e.charCodeAt(c++))>>2,t=(3&n)<<4|(o=e.charCodeAt(c++))>>4,i=(15&o)<<2|(a=e.charCodeAt(c++))>>6,R=63&a,isNaN(o)?i=R=64:isNaN(a)&&(R=64),s=s+d.charAt(r)+d.charAt(t)+d.charAt(i)+d.charAt(R);return s}function H(e){var n,o,a,r,t,i,R="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",d="",s=0;for(e=e.replace(/[^A-Za-z0-9+/=]/g,"");s<e.length;)n=R.indexOf(e.charAt(s++))<<2|(r=R.indexOf(e.charAt(s++)))>>4,o=(15&r)<<4|(t=R.indexOf(e.charAt(s++)))>>2,a=(3&t)<<6|(i=R.indexOf(e.charAt(s++))),d+=String.fromCharCode(n),64!==t&&(d+=String.fromCharCode(o)),64!==i&&(d+=String.fromCharCode(a));return function(e){for(var n="",o=0,a=0,r=0,t=0;o<e.length;)(a=e.charCodeAt(o))<128?(n+=String.fromCharCode(a),o++):a>191&&a<224?(n+=String.fromCharCode((31&a)<<6|63&(t=e.charCodeAt(o+1))),o+=2):(t=e.charCodeAt(o+1),n+=String.fromCharCode((15&a)<<12|(63&t)<<6|63&(r=e.charCodeAt(o+2))),o+=3);return n}(d)}function X(e,n,o){var a="",r=0,t=!1,i=!1,R=0,d=e.length,s="",c="";e:for(R=0;R<d;R++){var l=e.charAt(R);if(!1===t){if("<"===l){t=R;continue}}else if(!1===i){if("<"===l){a+=o(e.slice(r,R)),t=R,r=R;continue}if(">"===l||R===d-1){a+=o(e.slice(r,t)),s=function(e){var n,o=f.spaceIndex(e);return n=-1===o?e.slice(1,-1):e.slice(1,o+1),"/"===(n=f.trim(n).toLowerCase()).slice(0,1)&&(n=n.slice(1)),"/"===n.slice(-1)&&(n=n.slice(0,-1)),n}(c=e.slice(t,R+1)),a+=n(t,a.length,s,c,"</"===c.slice(0,2)),r=R+1,t=!1;continue}if('"'===l||"'"===l)for(var h=1,u=e.charAt(R-h);""===u.trim()||"="===u;){if("="===u){i=l;continue e}u=e.charAt(R-++h)}}else if(l===i){i=!1;continue}}return r<d&&(a+=o(e.substr(r))),a}function y(e,n){var o=0,r=0,t=[],i=!1,R=e.length;function d(e,o){if(!((e=(e=f.trim(e)).replace(a,"").toLowerCase()).length<1)){var r=n(e,o||"");r&&t.push(r)}}for(var s=0;s<R;s++){var c=e.charAt(s),l=void 0;if(!1!==i||"="!==c){if(!1===i||s!==r){if(/\s|\n|\t/.test(c)){if(e=e.replace(/\s|\n|\t/g," "),!1===i){if(-1===(l=function(e,n){for(;n<e.length;n++){var o=e[n];if(" "!==o)return"="===o?n:-1}return -1}(e,s))){d(f.trim(e.slice(o,s))),i=!1,o=s+1;continue}s=l-1;continue}if(-1===(l=function(e,n){for(;n>0;n--){var o=e[n];if(" "!==o)return"="===o?n:-1}return -1}(e,s-1))){d(i,D(f.trim(e.slice(o,s)))),i=!1,o=s+1;continue}}}else{if(-1===(l=e.indexOf(c,s+1)))break;d(i,f.trim(e.slice(r+1,l))),i=!1,o=(s=l)+1}}else i=e.slice(o,s),o=s+1,r='"'===e.charAt(o)||"'"===e.charAt(o)?o:function(e,n){for(;n<e.length;n++){var o=e[n];if(" "!==o)return"'"===o||'"'===o?n:-1}return -1}(e,s+1)}return o<e.length&&(!1===i?d(e.slice(o)):d(i,D(f.trim(e.slice(o))))),f.trim(t.join(" "))}function m(e,n,o){if(o=function(e){return e=function(e){for(var n="",o=0,a=e.length;o<a;o++)n+=32>e.charCodeAt(o)?" ":e.charAt(o);return f.trim(n)}(e=(e=(e=e.replace(R,'"')).replace(i,function(e,n){return"x"===n[0]||"X"===n[0]?String.fromCharCode(parseInt(n.substr(1),16)):String.fromCharCode(parseInt(n,10))})).replace(d,":").replace(s," "))}(o),"href"===n||"src"===n){if("#"===(o=f.trim(o)))return"#";if("http://"!==o.substr(0,7)&&"https://"!==o.substr(0,8)&&"mailto:"!==o.substr(0,7)&&"tel:"!==o.substr(0,4)&&"data:image/"!==o.substr(0,11)&&"ftp://"!==o.substr(0,6)&&"./"!==o.substr(0,2)&&"../"!==o.substr(0,3)&&"#"!==o[0]&&"/"!==o[0])return""}else if("background"===n){if(c.lastIndex=0,c.test(o))return""}else if("style"===n&&(h.lastIndex=0,h.test(o)||(l.lastIndex=0,l.test(o)&&(c.lastIndex=0,c.test(o)))))return"";return o=function(e){return e=p(e=e.replace(u,"&quot;"))}(o)}var T=function(e){return"string"==typeof e?e.replace(/'/g,'"').replace('=""',"").replace(/\s+/g,"").toLowerCase():""},b=function(){function e(e){var n=function(e){var n={};for(var o in e)n[o]=e[o];return n}(e||{});n.stripIgnoreTag&&(n.onIgnoreTag,n.onIgnoreTag=function(){return""}),n.whiteList={},n.onTag=function(){},n.onTagAttr=function(){},n.onIgnoreTag=function(){},n.onIgnoreTagAttr=function(){},n.safeAttrValue=m,n.escapeHtml=p,this.options=Object.assign(n,e)}return e.prototype.process=function(e){if(!(e=(e=e||"").toString()))return"";var n,o,a,r,t,i,R=this.options,d=R.whiteList,s=R.onTag,c=R.onIgnoreTag,l=R.onTagAttr,h=R.onIgnoreTagAttr,u=R.safeAttrValue,p=R.escapeHtml;R.stripBlankChar&&(e=(n=(n=e.split("")).filter(function(e){var n=e.charCodeAt(0);return!(127===n||n<=31&&10!==n&&13!==n)})).join("")),R.allowCommentTag||(e=function(e){for(var n="",o=0;o<e.length;){var a=e.indexOf("\x3c!--",o);if(-1===a){n+=e.slice(o);break}n+=e.slice(o,a);var r=e.indexOf("--\x3e",a);if(-1===r)break;o=r+3}return n}(e));var M=!1;R.stripIgnoreTagBody&&(o=R.stripIgnoreTagBody,"function"!=typeof(a=c)&&(a=function(){}),r=!Array.isArray(o),t=[],i=!1,c=(M={onIgnoreTag:function(e,n,R){var d;if(d=e,r||-1!==f.indexOf(o,d)){if(R.isClosing){var s="[/removed]",c=R.position+s.length;return t.push([!1!==i?i:R.position,c]),i=!1,s}return i||(i=R.position),"[removed]"}return a(e,n,R)},remove:function(e){var n="",o=0;return f.forEach(t,function(a){n+=e.slice(o,a[0]),o=a[1]}),n+=e.slice(o)}}).onIgnoreTag);var D=X(e,function(e,n,o,a,r){var t={sourcePosition:e,position:n,isClosing:r,isWhite:Object.prototype.hasOwnProperty.call(d,o)},i=s(o,a,t);if(null!=i)return i;if(t.isWhite){if(t.isClosing)return"</".concat(o,">");var R=function(e){var n=f.spaceIndex(e);if(-1===n)return{html:"",closing:"/"===e[e.length-2]};var o="/"===(e=f.trim(e.slice(n+1,-1)))[e.length-1];return o&&(e=f.trim(e.slice(0,-1))),{html:e,closing:o}}(a),M=d[o],D=y(R.html,function(e,n){var a=-1!==f.indexOf(M,e),r=l(o,e,n,a);return null==r?a?(n=u(o,e,n,null))?"".concat(e,'="').concat(n,'"'):e:null==(r=h(o,e,n,a))?void 0:r:r});return a="<".concat(o),D&&(a+=" ".concat(D)),R.closing&&(a+=" /"),a+=">"}return null==(i=c(o,a,t))?p(a):i},p);return M&&(D=M.remove(D)),D},e}(),S=Function("\nvar _checkXSS = function (it) {\n  return it && it.Math == Math && it;\n};\nreturn _checkXSS(typeof globalThis === 'object' && globalThis) ||\n_checkXSS(typeof window === 'object' && window) ||\n_checkXSS(typeof self === 'object' && self) ||\n_checkXSS(typeof global === 'object' && global) ||\nFunction('return this')();\n")(),v=new(function(){function e(){var e=this;this.batchData=[],this.uniqKeys=new Set,this.timeout=2e3,this.lock=!1,this.getSlardarBid=function(){var n,o,a="douyin_web";if(!f.includes(a,"bid"))return a;if(e.config&&e.config.bid)return e.config.bid;if(S&&S._xssBid)return S._xssBid;if(S&&S.slardar&&"function"==typeof S.slardar.config){var r=(S.slardar.config()||{}).bid;if(r)return r}if(S&&S.Slardar&&"function"==typeof S.Slardar.config){var t=(S.Slardar.config()||{}).bid;if(t)return t}return(null===(o=null===(n=null==S?void 0:S.Slardar)||void 0===n?void 0:n._baseParams)||void 0===o?void 0:o.bid)||"argus"},this.getConfigRegion=function(){var n;return f.includes("cn","region")?e.config&&e.config.region?e.config.region:((null===(n=null==S?void 0:S.gfdatav1)||void 0===n?void 0:n.region)||"cn").toLowerCase():"cn"},this.gerReportUrl=function(){var n={cn:H("aHR0cHM6Ly9tb24uemlqaWVhcGkuY29tL21vbml0b3JfYnJvd3Nlci9jb2xsZWN0L2JhdGNoL3NlY3VyaXR5Lz9iaWQ9"),boe:H("aHR0cHM6Ly9tb24uemlqaWVhcGkuY29tL21vbml0b3JfYnJvd3Nlci9jb2xsZWN0L2JhdGNoL3NlY3VyaXR5Lz9iaWQ9"),ttp:H("aHR0cHM6Ly9tb24udXMudGlrdG9rdi5jb20vbW9uaXRvcl9icm93c2VyL2NvbGxlY3QvYmF0Y2gvc2VjdXJpdHkvP2JpZD0="),va:H("aHR0cHM6Ly9tb24tdmEuYnl0ZW92ZXJzZWEuY29tL21vbml0b3JfYnJvd3Nlci9jb2xsZWN0L2JhdGNoL3NlY3VyaXR5Lz9iaWQ9"),maliva:H("aHR0cHM6Ly9tb24tdmEuYnl0ZW92ZXJzZWEuY29tL21vbml0b3JfYnJvd3Nlci9jb2xsZWN0L2JhdGNoL3NlY3VyaXR5Lz9iaWQ9"),sg:H("aHR0cHM6Ly9tb24tdmEuYnl0ZW92ZXJzZWEuY29tL21vbml0b3JfYnJvd3Nlci9jb2xsZWN0L2JhdGNoL3NlY3VyaXR5Lz9iaWQ9"),boei18n:H("aHR0cHM6Ly9tb24tdmEuYnl0ZW92ZXJzZWEuY29tL21vbml0b3JfYnJvd3Nlci9jb2xsZWN0L2JhdGNoL3NlY3VyaXR5Lz9iaWQ9")}[e.getConfigRegion()];if(n)return n+e.getSlardarBid()}}return e.prototype.setConfig=function(e){this.config=e},e.prototype.upload=function(){var e=this,n=this.gerReportUrl();!this.lock&&n&&0!==this.batchData.length&&(this.lock=!0,setTimeout(function(){var o=e.batchData.slice(0,100);e.batchData=e.batchData.slice(100),S.fetch(n,{method:"post",body:JSON.stringify(o),headers:{"Content-Type":"application/json"}}).catch(function(e){}),e.lock=!1,e.upload()},this.timeout))},e.prototype.generateKey=function(e){return e.collectKey?[e.collectMode,e.collectKey].join("___"):""},e.prototype.push=function(e){this.batchData.push(e),this.upload()},e.prototype.report=function(e){var n=this.generateKey(e);if(S.fetch&&e.collectKey){var o="object"==typeof window?window.location.href:"SSR";e.documentUrl=o;var a={age:Math.floor(Date.now()),type:"xss",url:o,body:e,"user-agent":""};"enforce"===e.disposition&&"SSR"!==o||(a.url=n),"SSR"===o&&(a.url="SSR___".concat(a.url),a.body.ssr=!0),this.push(a)}},e}()),G=function(e){for(var n=0,o=function(o){Array.isArray(e[o])?0===e[o].length?delete e[o]:(e[o]=f.from(f.uniq(e[o])),n+=e[o].length):0===f.keys(e[o]).length?delete e[o]:f.keys(e[o]).forEach(function(a){e[o][a]=f.from(f.uniq(e[o][a])),n+=e[o][a].length})},a=0,r=f.keys(e);a<r.length;a++)o(r[a]);return{count:n,ret:e}};function P(e,n){return v.setConfig(n),new b(n).process(e)}function A(e){var n,o=(n=/\s|\n|\t/.exec(e))?n.index:-1;if(-1===o)return{html:"",closing:"/"===e[e.length-2]};var a="/"===(e=e.slice(o+1,-1).trim())[e.length-1];return a&&(e=e.slice(0,-1).trim()),{html:e,closing:a}}var w=function(e){return -1===(e=(e=(e=(e=e.replace(/&colon;/gi,":")).replace(/&tab;/gi,"")).replace(/&newline;/gi,"")).replace(/(\t|\n|\r)/g,"")).indexOf("&#")?e.trim().toLowerCase():e.trim().replace(/&#(?:(x)([0-9a-f]+)|([0-9]+));?/gi,function(e,n,o,a){return String.fromCharCode(n?parseInt(o,16):parseInt(a))}).replace(/(\t|\n|\r)/g,"").toLowerCase()};function x(e,n){if(void 0===e&&(e=""),"string"!=typeof e)return!0;if(e=w(e),f.includes(e,"base64")&&!function(e){if(""===e||""===e.trim())return!0;try{return!f.includes(e,"data:text/html;base64")}catch(e){return!0}}(e))return n&&n("data:text/html;base64"),!1;var o=["expression(","behavior:","view-source:"];if(f.some(o,function(n){return -1!==e.indexOf(n)}))return f.forEach(o,function(o){-1!==e.indexOf(o)&&n&&n(o)}),!1;var a=["data:application","data:javascript","data:text/html","data:texthtml"];if(f.some(a,function(n){return -1!==e.indexOf(n)}))return f.forEach(a,function(o){-1!==e.indexOf(o)&&n&&n(o)}),!1;if(e.indexOf("javascript:")>0)return n&&n("javascript:"),!1;if(/^javascript:/i.test(e)){var r=e.slice(11).replace(/\s/g,"").trim();return!!f.some(["void","void(0)","void0","false","undefined",";"],function(e){return e===r})||(n&&n("javascript:"),!1)}return!0}var E=function(e,n){var o,a,r="<%= isSaveValidUrl =>";if("string"!=typeof e||(a=Number("<%= urlLimit =>"),void 0!==o&&(a=o),"NaN"!==e.toString()&&-1!==a&&e.length>=a)||x(e,n))return e;try{if(!0===(r=JSON.parse(r))||"true"===r){var t=new URL(e);return t.origin+t.pathname}}catch(e){}return"#"};function V(e,n,a){if(void 0===e&&(e=""),void 0===n&&(n=[]),"string"!=typeof e)return!0;if(!x(e=w(e)))return!1;var r,t={url:(r=e.match(/^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/)||[])[0],scheme:r[1],slash:r[2],host:r[3],port:r[4],path:r[5],query:r[6],hash:r[7]},i=t.scheme,R=t.host;return a?!!a(e):!(!i||!R)&&(!f.includes(["http","https","file"],i)||("object"==typeof window&&window&&(n=o(o([],n,!0),[location.host],!1)),f.some(n,function(e){return!!(e instanceof RegExp&&e.test(R))||e===R})))}var F={a:["target","title","spellcheck","rel"],canvas:[],abbr:["title"],address:[],area:["shape","coords","alt"],article:[],aside:[],audio:["autoplay","controls","loop","preload"],b:[],bdi:["dir"],bdo:["dir"],big:[],blockquote:["cite"],br:[],caption:[],center:[],cite:[],code:[],col:["align","valign","span","width"],colgroup:["align","valign","span","width"],dd:[],del:["datetime"],details:["open"],div:["dir"],dl:[],dt:[],em:[],font:["color","size","face"],footer:[],h1:[],h2:[],h3:[],h4:[],h5:[],h6:[],header:[],hr:[],i:[],img:["alt","title","width","height","decoding"],ins:["datetime"],li:[],mark:[],nav:[],ol:["start"],p:[],pre:[],s:[],section:[],small:[],span:[],sub:[],sup:[],delete:[],form:[],strong:[],mask:["maskunits","x","y","width","height","fill"],table:["width","border","align","valign"],tbody:["align","valign"],td:["width","rowspan","colspan","align","valign"],tfoot:["align","valign"],th:["width","rowspan","colspan","align","valign"],thead:["align","valign"],tr:["rowspan","align","valign"],tt:[],u:[],ul:[],wbr:[],video:["autoplay","controls","loop","preload","height","width"],svg:["viewBox","version","xmlns","fill","width","height","stroke","stroke-width","style"],path:["d","fill","opacity","stroke","p-id","fill-rule","clip-rule","stroke-width","stroke-linecap","stroke-linejoin","fill-opacity","mask"],rect:["x","y","width","height","fill","stroke","rx"],g:[]},L={collect:null,initCollect:function(){this.collect={whiteList:{},filterProtocol:[]}},removeCollect:function(){var e=G(this.collect),n=e.count,o=e.ret;return this.collect=null,{collectKey:0===n?null:JSON.stringify(o),collectMode:"white"}},onIgnoreTagAttr:function(e,n,a){return e&&f.indexOf(["href","src"],n)>-1?L.domainWhiteList&&Array.isArray(L.domainWhiteList)&&L.domainWhiteList.length>0&&!V(a,o([],L.domainWhiteList,!0))?"":"".concat(n,'="').concat(E(a,function(e){var n;null===(n=L.collect)||void 0===n||n.filterProtocol.push(e)}),'"'):e&&(f.indexOf(["style","class","id"],n)>-1||n.indexOf("data-")>-1)?"".concat(n,'="').concat(a,'"'):(L.collect.whiteList[e]=L.collect.whiteList[e]||[],void L.collect.whiteList[e].push(n))},onIgnoreTag:function(e,n){if("style"===e)return n;X(n,function(e,n,o,a){y(A(a).html.replace("/",""),function(e){L.collect.whiteList[o]=L.collect.whiteList[o]||[],L.collect.whiteList[o].push(e)})},p)},whiteList:F,mergeWhiteList:function(e){for(var n,o={},a=0,r=f.keys(F);a<r.length;a++)o[n=r[a]]=f.from(F[n]);for(var t=0,i=f.keys(e);t<i.length;t++)o[n=i[t]]=n in F?F[n].concat(e[n]):f.from(e[n]);return o},setWhiteList:function(e){for(var n=0,o=f.keys(e);n<o.length;n++){var a=o[n];this.whiteList[a]=a in F?F[a].concat(e[a]):f.from(e[a])}}};try{var O={},k="merge";f.includes(k,"override")&&(L.whiteList=O.whiteList),f.includes(k,"merge")&&L.setWhiteList(O.whiteList)}catch(e){}var C=function(e,n){for(var o={},a=0,r=f.keys(e);a<r.length;a++){var t=r[a];Array.isArray(e[t])?o[t]=f.from(e[t]):o[t]=C({},e[t])}for(var i=0,R=f.keys(n);i<R.length;i++)(t=R[i])in e?Array.isArray(e[t])?o[t]=e[t].concat(n[t]):o[t]=C(e[t],n[t]):Array.isArray(n[t])?o[t]=f.from(n[t]):o[t]=C({},n[t]);return o},_={blackList:{a:["folder"],meta:["content"],iframe:["srcdoc"],input:["pattern"],vmlframe:["xmlns"]},blackTags:["script","xml","embed","isindex","object","base","set","handler","animate","payload","import"],blackAttrs:["charset","ns","namespace","formaction","xlink:href","xmlns:xlink","handler","repeat","repeat-start","repeat-end"],blackAttrRegExps:[/^on/],filterList:{param:["value"],video:["poster"],form:["action"]},filterAttrs:["href","src","background","style","dynsrc","lowsrc","content"]};try{var U={};U.blackAttrRegExps&&(U.blackAttrRegExps=U.blackAttrRegExps.map(function(e){return new RegExp(e.toString().slice(1,e.toString().length-1))}));var I="merge";f.includes(I,"override")&&(_=U),f.includes(I,"merge")&&(_=C(_,U))}catch(e){}var W={mode:"black",whiteList:{},blackConfig:_,collect:null,initCollect:function(){W.collect={blackList:{},blackTags:[],blackAttrs:[],blackAttrRegExps:[],filterAttrs:[],filterList:{},filterProtocol:[]}},removeCollect:function(){var e=G(W.collect),n=e.count,o=e.ret;return W.collect=null,{collectKey:0===n?null:JSON.stringify(o),collectMode:"black"}},onIgnoreTag:function(e,n){var o;if(!f.includes(_.blackTags,e))return X(n,function(e,n,o,a,r){if(-1!==o.indexOf("/"))return p(a);if(r)return"</".concat(o,">");var t=A(a),i=y(t.html,function(e,n){var a,r=0;if(_.blackList[o]&&f.includes(_.blackList[o],e)&&(W.collect.blackList[o]=W.collect.blackList[o]||[],W.collect.blackList[o].push(e),r++),_.blackAttrRegExps.length&&_.blackAttrRegExps.some(function(n){return n.test(e)})&&f.forEach(_.blackAttrRegExps,function(n){n.test(e)&&(W.collect.blackAttrRegExps.push("".concat(n.toString(),"->").concat(e)),r++)}),_.blackAttrs.length&&f.includes(_.blackAttrs,e)&&(_.blackAttrs.push(e),r++),!r){if(_.filterList&&_.filterList[o]&&f.includes(_.filterList[o],e)){var t=E(n,function(e){var n;null===(n=W.collect)||void 0===n||n.filterProtocol.push(e)});return t!==n&&(W.collect.filterList[o]=W.collect.filterList[o]||[],W.collect.filterList[o].push(e)),n?"".concat(e,"='").concat(t,"'"):e}return _.filterAttrs&&f.includes(_.filterAttrs,e)?((t=E(n,function(e){var n;null===(n=W.collect)||void 0===n||n.filterProtocol.push(e)}))!==n&&(null===(a=W.collect)||void 0===a||a.filterAttrs.push(e)),n?"".concat(e,"='").concat(t,"'"):e):n?"".concat(e,"='").concat(n,"'"):e}});return a="<".concat(o),i&&(a+=" ".concat(i)),t.closing&&(a+=" /"),a+=">"},p);null===(o=W.collect)||void 0===o||o.blackTags.push(e)}},N=function(e){var n=e.reportOnly,o=void 0===n||n,a=e.block;return o&&"all"===o?"report":("string"==typeof o&&("true"===o&&(o=!0),"false"===o&&(o=!1)),a?"enforce":o?"report":"enforce")},j=function(e){return function(o,a,r){if(!o||"string"!=typeof o)return o;var t=a;e===P&&(t=L).initCollect();var i=e(o,t);if(T(i)===T(o))return o;if(!r)return i;var R=r.logType,d=N(r),s=t.removeCollect();return v.report(n(n({type:R,disposition:d},s),{sourceText:g(o),filterText:g(i)})),"enforce"===d?i:o}},B=j(function(e,n){return void 0===n&&(n={}),n&&n.whiteList||(n.whiteList={a:["target","href","title"],abbr:["title"],address:[],area:["shape","coords","href","alt"],article:[],aside:[],audio:["autoplay","controls","crossorigin","loop","muted","preload","src"],b:[],bdi:["dir"],bdo:["dir"],big:[],blockquote:["cite"],br:[],caption:[],center:[],cite:[],code:[],col:["align","valign","span","width"],colgroup:["align","valign","span","width"],dd:[],del:["datetime"],details:["open"],div:[],dl:[],dt:[],em:[],figcaption:[],figure:[],font:["color","size","face"],footer:[],h1:[],h2:[],h3:[],h4:[],h5:[],h6:[],header:[],hr:[],i:[],img:["src","alt","title","width","height"],ins:["datetime"],li:[],mark:[],nav:[],ol:[],p:[],pre:[],s:[],section:[],small:[],span:[],sub:[],summary:[],sup:[],strong:[],strike:[],table:["width","border","align","valign"],tbody:["align","valign"],td:["width","rowspan","colspan","align","valign"],tfoot:["align","valign"],th:["width","rowspan","colspan","align","valign"],thead:["align","valign"],tr:["rowspan","align","valign"],tt:[],u:[],ul:[],video:["autoplay","controls","crossorigin","loop","muted","playsinline","poster","preload","src","height","width"]}),new b(n).process(e)}),Z=j(P),z=function(e,n,o){var a=[],r=E(e,function(e){a.push(e)});if(r===e)return e;a=f.from(f.uniq(a));var t=n||o||{};if(!t)return r;var i=t.logType,R=N(o);return v.report({type:i,disposition:R,collectKey:a.join("___"),collectData:JSON.stringify(a),collectMode:"black",sourceText:g(e),filterText:g(r)}),"enforce"===R?r:e},K=S._xssProject||{},Y=S.xssNamespace||{},J="3.0.26",$={FilterXSS:b,version:J,webpackPluginVersion:"<%= webpackPluginVersion =>",reportOnly:"<%= reportOnly =>",filterXSS:B,_filterXSS:Z,filterUrl:z,Config:L,BlackConfig:W,project:K,setProjectName:function(e){K[e]=this,S._xssProjectName=e}};Y.douyin_web=$,S.xssNamespace=Y,S.Math&&!S.Math.xssNamespace&&(S.Math.xssNamespace=Y),K[J]=$,S.globalThis=S,S.getFilterXss=function(){return void 0!==this._xssProjectName?this._xssProject[this._xssProjectName]:$},S.xss=$,S.isSafeUrl=V,S.isSafeDomain=V,S.isSafeProtocol=x,S._xssProject=K,S._xssProjectName&&(K[S._xssProjectName]=$);var q=$.setProjectName.bind($);e.BlackConfig=W,e.Config=L,e.FilterXSS=b,e._filterXSS=Z,e.filterUrl=z,e.filterXSS=B,e.isSafeDomain=V,e.isSafeProtocol=x,e.isSafeUrl=V,e.project=K,e.setProjectName=q,e.setXssNamespace=function(e){var n=e.appId,o=e.bid,a=e.region;Y[n]=$;L.bid=o,L.region=a,L.enabled=!0},e.xssNamespace=Y,Object.defineProperty(e,"__esModule",{value:!0})}),(self.webpackChunkdouyin_web=self.webpackChunkdouyin_web||[]).push([["2535"],{980485:function(e,n,o){"use strict";var a=o(101199),r=o(994298);let t=(0,r.A)(function(e){return a.createElement("svg",Object.assign({viewBox:"0 0 24 24",fill:"none",xmlns:"http://www.w3.org/2000/svg",width:"1em",height:"1em",focusable:!1,"aria-hidden":!0},e),a.createElement("path",{fillRule:"evenodd",clipRule:"evenodd",d:"M8.5 2c.83 0 1.5.67 1.5 1.5v3A3.5 3.5 0 0 1 6.5 10h-3a1.5 1.5 0 1 1 0-3h3a.5.5 0 0 0 .5-.5v-3C7 2.67 7.67 2 8.5 2ZM16 2c.83 0 1.5.67 1.5 1.5v3c0 .28.22.5.5.5h3a1.5 1.5 0 0 1 0 3h-3a3.5 3.5 0 0 1-3.5-3.5v-3c0-.83.67-1.5 1.5-1.5ZM2 15.5c0-.83.67-1.5 1.5-1.5h3a3.5 3.5 0 0 1 3.5 3.5v3a1.5 1.5 0 0 1-3 0v-3a.5.5 0 0 0-.5-.5h-3A1.5 1.5 0 0 1 2 15.5Zm12 2a3.5 3.5 0 0 1 3.5-3.5h3a1.5 1.5 0 0 1 0 3h-3a.5.5 0 0 0-.5.5v3a1.5 1.5 0 0 1-3 0v-3Z",fill:"currentColor"}))},"minimize");n.Z=t},927797:function(e,n,o){"use strict";o.d(n,{Z:function(){return r}});let a=`
+Radeon RX 7900 XT|2202
+Radeon RX 7900 XT|1968
+RX 6800 XT|1957
+Radeon RX 6900 XT (XTXH)|1930
+Radeon RX 6900XT|1925
+Radeon PRO W6900X|1889
+RX 6900 XT|1852
+Radeon RX 6900|1814
+Radeon RX 7900 XTX|1773
+RX6800|1695
+FreddyVGA|1603
+Radeon PRO W6800|1564
+Radeon RX 7900 XTX|1437
+Radeon RX 6950 XT|1376
+Radeon RX 6800 XT|1358
+Radeon RX 6750 XT|1310
+Radeon(TM) RX 6850M XT|1294
+Radeon RX 6700|1285
+Radeon RX 6900 XT|1269
+Sapphire Nitro+ RX 6800|1262
+Radeon PRO W6800X|1255
+Radeon PRO W6800X Duo|1218
+Radeon RX 6700|1214
+Radeon RX 6800 XT|1183
+Sapphire Nitro Radeon RX6650XT|1180
+Radeon(TM) RX 6750 XT|1166
+Radeon RX 6800|1163
+Radeon RX 6900 XT|1162
+ASRock RX 6650 XT Phantom Gaming|1161
+Radeon Navi23|1139
+Radeon RX 6650 XT|1132
+Radeon RX 6950 XT|1130
+Radeon 6800|1121
+Radeon RX 6700 XT|1110
+Radeon Pro W6600X|1101
+Radeon RX 6700M|1081
+Radeon RX 6800M|1078
+Radeon RX 5700 XT PJM|1060
+Radeon RX 6800|1054
+Radeon RX 6600 XT|1037
+Radeon RX 6600 XT|1031
+ASUS RX 6600XT macOS Edition|1021
+Radeon RX 6800M|1016
+Radeon Pro Vega II Duo|1015
+Radeon RX 5700 Series|961
+Radeon RX 6800/6800 XT / 6900 XT|961
+Radeon RX 6600 XT|958
+Radeon Pro Vega II|956
+Radeon RX 6650 XT|951
+Navi 10 5700 XT|947
+Radeon Pro Vega II|947
+Radeon RX 5700 Series|946
+Radeon Pro W5700X|934
+Radeon RX 6600|929
+ASUS Radeon RX 5700 XT|926
+Radeon Pro W5700X|917
+Radeon Pro 5700 XT|917
+Radeon RX 6900 XT|915
+Radeon RX 5700 XT|911
+Radeon Pro W5700|895
+Radeon RX 6600/6600 XT/6600M|889
+Radeon RX 6750 XT|883
+Radeon RX 6600|874
+Radeon RX 5700|855
+Radeon RX 5700 XT 50th Anniversary|854
+Radeon VII|851
+Radeon RX 5700 XT 50th Anniversary|845
+Radeon PRO W6800|837
+Radeon Pro Vega 64|824
+Radeon Navi10|822
+Radeon RX 5600 XT|816
+Radeon RX 6600M|803
+Radeon RX 6800S|791
+Radeon Pro 5700 XT|781
+Radeon RX Vega 64 8GB|775
+Radeon Pro 5700|768
+Radeon Vega Frontier Edition|767
+Radeon RX Vega|766
+Radeon RX Vega 56/64|765
+Radeon(TM) RX Vega|756
+Radeon Pro Vega 64X|745
+Radeon RX 5600 XT|744
+Radeon PRO W6600|744
+Radeon Vega 64 LC|735
+Radeon RX Vega 64.1|732
+Radeon RX 6600M|728
+Radeon Pro 5700|714
+Radeon Vega Frontier Edition|707
+Radeon Vega Frontier|704
+Radeon Vega FE|701
+Radeon RX 5700 XT|691
+Radeon Pro Vega 64|673
+Radeon Vega 64|667
+Radeon VII|663
+Radeon Pro WX9100|656
+Sapphire Radeon RX Vega 64 8GB|654
+Radeon(TM) PRO W6600M|654
+Radeon RX 5700 XT 50th Anniversary|652
+Radeon RX 5700|640
+Radeon Pro W5700|640
+Radeon(TM) Pro WX 9100|635
+Radeon RX Vega 56|628
+Radeon RX Vega 56|623
+Radeon Pro 5500 XT|622
+Radeon RX 5600 OEM/5600 XT / 5700/5700 XT|621
+Radeon RX 5500|618
+Radeon RX 5500 XT|617
+Radeon Vega Frontier Edition|617
+Radeon RX 5500M Series|613
+RX xxx|613
+Radeon Pro Vega 64X|611
+Radeon RX Vega 64|610
+Radeon RX 5600 XT|610
+Radeon Pro Vega 64|605
+Radeon RX 6500 XT|603
+Radeon Vega|602
+Radeon Pro W5500|601
+Radeon RX 5600M|600
+Radeon Pro Vega 56|598
+Radeon Pro Vega 64|594
+Radeon Pro 5600M|593
+Radeon Pro Vega 48|592
+Radeon Pro Vega II Duo|590
+Radeon RX 590 Series|589
+Radeon RX Vega 56 8GB|589
+Radeon Pro 5600M|589
+Radeon Pro WX 9100|588
+Radeon Pro 5300|584
+Radeon(TM) R9 Fury Series|579
+Radeon RX 6800 XT 16GB|567
+Radeon Pro 5600M|567
+Radeon Pro W5500X|564
+Radeon(TM) RX 5500M|559
+Radeon HD 7870|556
+Radeon Pro W5500|554
+Radeon RX 5500M|550
+Radeon R9 290X Series|549
+66AF:F0|548
+Radeon Pro 5500 XT|547
+Radeon RX 580 Series|547
+Radeon RX 5500XT|547
+Radeon(TM) RX 580X|546
+Radeon Pro 5500 XT|545
+Radeon(TM) Pro W5500M|544
+Radeon Pro W5500X|544
+Radeon Pro W5500|541
+RadeonT RX 5300|537
+Radeon(TM) RX 570 Graphics|524
+Radeon Pro 5300|522
+Radeon(TM) RX 6500M|521
+Radeon RX Vega M GL|520
+ASUS Radeon RX 570 Series|519
+ASUS Radeon RX 580 Series|518
+Radeon(TM) RX 580|518
+Radeon(TM) Pro V7350x2|518
+Radeon(TM) RX 480 Graphics|516
+Radeon(TM) RX 570 Graphics|515
+Radeon RX 6400|513
+Radeon Pro 580X|513
+Radeon(TM) R9 390 Series|503
+Radeon Pro 5300|500
+Radeon RX 580 2048SP|500
+Radeon PRO W6400|500
+Radeon RX 570 Series|499
+Radeon PRO W6800X Duo|497
+Radeon Pro 580|494
+Radeon RX 5500 XT|493
+Radeon RX 6400|487
+Radeon Pro 580|485
+Radeon(TM) Pro WX 7100 Graphics|485
+Radeon(TM) R9 290X|478
+Sapphire Radeon RX 580 Pulse|477
+Radeon RX 6700/6700 XT / 6800M|476
+Radeon(TM) RX 580|475
+Radeon RX 6700S|475
+Radeon R9 290X|470
+Radeon(TM) RX 470 Graphics|469
+Radeon R9 FURY / NANO Series|468
+Radeon Embedded E9560|467
+Kamen Rider Black RX|466
+Radeon(TM) E9550|464
+Radeon(TM) RX 580 Graphics|463
+Radeon RX Vega 56/64|463
+Radeon(TM) RX 480|462
+Radeon RX 6800 XT|462
+Radeon RX 470 Series|461
+Radeon RX480|456
+66AF:F1|455
+Radeon Pro 480/575|455
+Radeon Embedded E9560|450
+Radeon FURY|450
+Radeon RX 5600 OEM/5600 XT / 5700/5700 XT|447
+Radeon RX 6600 XT|446
+Radeon HD 6800 Series|445
+Radeon Pro 570X|444
+Radeon(TM) RX 470 Graphics|443
+Radeon Pro 575X|443
+Radeon RX 470/480/570/570X/580/580X/590|443
+Radeon RX 6600|443
+Radeon RX Vega M GH Graphics|441
+RX 580|440
+Radeon RX 570|440
+Radeon Pro 570|440
+Radeon RX 590|437
+Radeon(TM) RX 470 Series|435
+Radeon RX 6900 XT|435
+Radeon FURY X|434
+RX 590|431
+Radeon Pro 5500M|430
+???|430
+Radeon(TM) RX 570|430
+Radeon RX 580|429
+Radeon HD 8xxx|426
+Radeon R9 290|425
+Radeon Pro 5500M|420
+Radeon Pro 580X|420
+Radeon RX 6700 XT|420
+Radeon RX 480|419
+Radeon R9 290/390|418
+Radeon Pro 580X|416
+Radeon(TM) Pro Duo|414
+Ellesmere Radeon RX 570|411
+Radeon R9-290X|411
+Radeon Pro 580|411
+Radeon R9 200 Series|406
+Radeon RX 570|406
+Radeon Pro 470/570|404
+Radeon RX 6800M|404
+Radeon RX 5300M|400
+Radeon RX 580 Series (POLARIS10, DRM 3.40.0, 5.11.9-141-tkg-pds, LLVM 11.1.0)|399
+Radeon Pro 5300M|399
+Radeon R9 285|398
+Radeon RX 470|393
+Radeon Pro 575|392
+Radeon Pro 575X|391
+Radeon Pro WX 7100|387
+Radeon RX 6700M|386
+Radeon RX 470/480/570/570X/580/580X/590|382
+Radeon PRO W6600|376
+Radeon Polaris|374
+Radeon RX 6500 XT|374
+Radeon Pro Vega 20|371
+Radeon HD 7970|370
+Radeon Pro Vega 16|370
+Radeon RX 6800|369
+Radeon Pro Vega 64 OpenGL Engine|369
+Radeon(TM) R9 380 Series|367
+Radeon RX 5700XT|366
+FirePro W8100|366
+Radeon Pro Vega 64|365
+Radeon Pro 570|365
+Radeon Pro 570X|363
+Radeon Pro Vega 64 OpenGL Engine|362
+Radeon R9 280x|362
+Radeon R9 380|362
+Radeon R9 280x|361
+Radeon R9 280x|360
+Radeon Pro Vega 56|360
+R9 280X Dual-X|359
+Radeon Pro Vega 56 OpenGL Engine|356
+Radeon HD 7970|355
+Radeon HD 7970X/8970/R9 280X|354
+Radeon R9 285|353
+Radeon R9 380X|352
+Radeon RX 480|352
+Radeon RX 5700 XT Series|350
+ASUS Radeon RX 470 Series|350
+Radeon Pro Vega 64|349
+Radeon R9 200 / HD 7900 Series|346
+ASUS Radeon RX 470 Series|346
+Radeon Vega 56|346
+Radeon RX 580 Series (AMD POLARIS10 / DRM 3.15.0 / 4.12.0-1-amd64, LLVM 4.0.1)|343
+Radeon Pro Vega 20|343
+R9 380|341
+Radeon HD 7970|338
+Radeon RX 5700 XT|336
+Radeon D700|336
+Asus Radeon R9 280|334
+Radeon R9 285|334
+Radeon R9 M395X|332
+Radeon RX 5600 XT|332
+PowerColor Radeon R9 280|330
+Radeon R9 280|329
+FirePro W7100 Graphics Adapter|328
+Radeon R9 M295X Mac Edition|327
+ASUS Radeon RX 5700|327
+Radeon R9 380|326
+Radeon Pro Vega 16|325
+Radeon R9 290X|325
+Radeon RX5600|324
+ASUS Radeon RX 5500 XT|323
+Radeon R9 280|323
+Radeon HD 7950/8950 / R9 280|321
+Radeon R9 M395|319
+Radeon RX 6800/6800 XT / 6900 XT|318
+FirePro D700 (FireGL V)|318
+Radeon RX 5500/5500M / Pro 5500M|318
+MSI Radeon RX 6600 XT Gaming X|318
+FirePro W8000|315
+Radeon HD 7950|315
+Radeon Pro W5700|315
+FirePro W7170M|314
+Radeon PRO W6800|314
+Radeon RX 5500|313
+Radeon RX 580 Special Edition|312
+RadeonT RX 5500M|311
+Radeon R9 M395 (Bootcamp XG edition by bootcampdrivers.com)|311
+Radeon R9 360|309
+Radeon Pro WX 7100|307
+Radeon Pro WX 7100 Mobile|307
+Radeon RX 5700 XT 50th Anniversary|307
+R9 xxx|303
+Radeon RX 5700XT|302
+Radeon PRO W6400|301
+Radeon(TM) R9 370 Series|301
+Radeon RX 470/480/570/570X/580/580X/590|300
+Radeon(TM) PRO W6600M|298
+Radeon HD 8950|298
+Radeon R9 M395X|297
+Radeon R9 M395X|296
+RX Vega 64|296
+Radeon RX Vega 11 Graphics|295
+Radeon Pro 270X|294
+Radeon RX 580 2048SP|290
+Radeon HD 7950|290
+Video Controller (VGA Compatible)|290
+Radeon(TM) R7 370 Series Graphics|290
+Radeon HD 7950|290
+Asus Radeon R9 270X|289
+Radeon RX 580X Series|288
+Radeon(TM) RX 5500M|285
+Radeon R9 270X|285
+RX xxx|285
+ASUS R7 265 Series|281
+Radeon(TM) R9 270|280
+731F:C1|280
+Radeon R9 M395X|279
+Radeon(TM) R7 370 Series|279
+Radeon Pro V520 MxGPU|278
+Radeon R9 M395|277
+FirePro D700|277
+Radeon R9 270X|277
+Radeon(TM) R9 200 Series|276
+Radeon RX 5700|275
+Radeong 0.4 on AMD POLARIS10 (DRM 3.8.0 / 4.9.11-1-ARCH, LLVM 3.9.1)|274
+Radeon HD 7870 XT|274
+Radeon R9 390X|272
+Radeon(TM) RX 570 Graphics|272
+Radeon HD 7870 GHz Edition|271
+Radeon R9 390|270
+FirePro D700|269
+Radeon R9 M395|268
+Radeon R9 270|268
+Radeon RX 5700 / 5700 XT|267
+ASUS R7 370 Series|267
+FirePro W7000|266
+Radeon(TM) Pro V7350x2|266
+Radeon(TM) RX 470 Series|266
+Radeon RX Vega 64 OpenGL Engine|266
+Radeon RX 5500M|265
+Radeon HD 7950/8950 OEM / R9 280|265
+Radeon Vega Frontier Edition OpenGL Engine|265
+Radeon 7950 x2|263
+Radeon R9 270|263
+Radeon VII|263
+Radeon HD 7xxx|262
+Video Controller (VGA Compatible)|262
+Radeon(TM) RX 570|261
+Radeon RX 5500 XT|261
+Radeon R9 M295X|261
+FirePro W7000 (FireGL V) Graphics Adapter|260
+Radeon R9 M390|260
+Radeon HD 7870 GHz Edition|260
+Radeon R9 M390 (Bootcamp edition by bootcampdrivers.com)|260
+Radeon R9 370|259
+Metal|259
+Radeon HD 7870|259
+Radeon RX 470/570|258
+Radeon(TM) R9 370|257
+Radeon(TM) RX 460|257
+Radeon RX 560 Series|256
+Radeon R9 290|255
+Radeon(TM) RX 560 Series|255
+Radeon RX 5300M|254
+FirePro W7000|254
+Radeon R9 290X|253
+67EF:E7|253
+Radeon HD 7850|253
+Radeon(TM) RX 460 Graphics|253
+MSI Radeon RX 580|251
+Radeon R9 290/390|250
+FirePro W8100 (FireGL V)|249
+Radeon Pro WX 9100 OpenGL Engine|248
+Radeon(TM) RX 560|247
+Radeon(TM) RX 560 Series|247
+Radeon Pro Vega II Duo|247
+Radeon HD 7970M|246
+Radeon R9 290|245
+Radeon RX 5600M|245
+FirePro D300|245
+Radeon(TM) RX 5600M Series|244
+Radeon RX 590 Series|244
+Radeon R7 370 Series|244
+Radeon(TM) RX 560|243
+FirePro D300|243
+Radeon R9 390|243
+Radeon RX 470/480/570/570X/580/580X|243
+FirePro D300|243
+Radeon(TM) R7 370 Series|242
+Radeon R9 M390|241
+Radeon RX 560X Series|241
+FirePro D300|241
+Radeon RX 560|240
+Radeon R9 M290X|240
+Gigabyte Vega 64 macOS Edition|239
+Radeon Pro 580|238
+Radeon Pro WX 4100|236
+Radeon Pro WX 7100 OpenGL Engine|236
+Radeon HD - FirePro D300|235
+FirePro D500|234
+Radeon Pro 580 OpenGL Engine|234
+Radeon(TM) E9260|234
+Radeon Pro WX 2100|233
+FirePro D500|232
+FirePro D500|232
+Radeon(TM) RX 6500 XT|232
+Radeon Pro 580X|231
+Radeon HD 7850|231
+Radeon Pro 575|231
+Radeon Pro Vega 64X|231
+ASUS R9 270 Series|230
+Radeon Pro 450|230
+Radeon(TM) RX 560 Graphics|230
+Radeon R9 M290|229
+Radeon Pro 560X|228
+Radeon Pro 480/575|228
+Pitcairn PRO Radeon HD 7850|228
+ASUS Radeon RX 5700 XT|227
+Radeon HD 7870|227
+Radeon(TM) Pro WX 5100 Graphics|226
+Radeon R9 370X|225
+Radeon(TM) RX 480|224
+Radeon HD7970M|224
+FirePro S9000 (FireGL V)|223
+Radeon RX 550 640SP / RX 560/560X|222
+MSI / AMD RX 560 4G|222
+Radeon RX 570 OpenGL Engine|222
+MSI RX650|222
+RX 480|221
+MSI / AMD RX 560|221
+Baffin AMD Radeon RX 560|221
+MSI Baffin RX650|220
+Radeon Pro 5700 XT|220
+Radeon Pro 570|220
+Radeon Pro 575 OpenGL Engine|219
+Asus Radeon R9 270X|219
+Radeon RX RX 560|218
+Radeon RX 560 [Baffin]|218
+RX 460|218
+Radeon R9 370X|218
+Radeon(TM) Pro WX 4100|217
+ASUS R9 390 Series|217
+Radeon Pro 5600M|217
+R9 xxx|217
+Radeon HD 7870 Series|217
+Radeon Pro RX 560|216
+R9 280X Dual-X|215
+Radeon Pro 570 OpenGL Engine|214
+RX 560|213
+Radeon Pro WX 5100|213
+FirePro D700|213
+Radeon(TM) R9 390 Series|213
+Radeon RX 480|212
+Radeon RX 560|212
+Radeon RX 5500/5500M / Pro 5500M|212
+Radeon RX 550 640SP / RX 560/560X|211
+Radeon R9 FURY / NANO Series|211
+Sapphire Radeon RX 560|211
+Radeon RX 460|210
+Radeon RX550/550 Series|210
+inc. Radeon RX 480|209
+Radeon(TM) RX 550|208
+Radeon R9 M290X|206
+Radeon Pro 560 (Bootcamp XG edition by bootcampdrivers.com)|206
+Radeon RX460|206
+Radeon RX 550 Series|205
+Custom GPU 0405|204
+Radeon(TM) RX 460|204
+ASUS AMD Radeon R9-990X|204
+Radeon Pro 555X|203
+Radeon RX 460/560|203
+Radeon HD 7970X/8970/R9 280X|202
+ASUS Radeon RX 550 Series|201
+Radeon HD 8950|201
+FirePro D500 (FireGL V)|201
+RX 5700XT|200
+Radeon 550 Series|200
+Radeon HD 8470 + 7660D Dual Graphics|200
+Radeon HD 7990|200
+Radeon RX 560X|199
+Radeon RX Vega|199
+Radeon HD 7950 Series|198
+Radeon(TM) RX 540|197
+Radeon HD 6970|197
+Radeon HD 7970/8970 / R9 280X|197
+Radeon Navi14|197
+Radeon Pro 560|197
+Radeon RX 550|197
+Radeon R9 285|196
+Radeon Pro W5500|195
+Radeon Pro Vega 56|195
+Radeon Pro 460|195
+Radeon RX 470/480|194
+Radeon PRO Graphics|194
+Radeon(TM) RX550|194
+Radeon Pro 560X|193
+Radeon Pro 570X|192
+66AF:F1|192
+Radeon RX Vega M GH|190
+Radeon R9 M280X|190
+Radeon RX 460/560D / Pro 450/455/460/555/555X/560/560X|189
+Radeon R9 280,|188
+Custom GPU 0405|188
+Radeon HD 7790|187
+Radeon(TM) RX 480 Graphics|187
+Radeon Pro 455|186
+Radeon R9 260|186
+Radeon RX 580 Series|186
+Radeon HD 7950/8950 OEM / R9 280|186
+Radeon R9 290X|185
+Radeon R9 M290X|184
+Radeon(TM) R9 370 Series|184
+Radeon Pro 555|184
+Radeon R7 260X|184
+Radeon HD 6950|183
+FirePro W5000|183
+Radeon(TM) R9 390X|182
+R9 270X Devil|182
+Radeon(TM) RX 470 Graphics (AMD POLARIS10 / DRM 3.23.0 / 4.15.0-1-MANJARO, LLVM 5.0.0)|182
+Radeon R9 380|182
+Radeon(TM) Pro WX 9100|182
+Radeon(TM) R7 360 Series|181
+Radeon RX 570 Series|181
+Radeon(TM) R9 M470X|181
+Radeon(TM) R7 360 Series|181
+Radeon RX480|180
+Radeon R7 200 Series|180
+Radeon Pro WX 4150|180
+Radeon Pro WX 4100|179
+Radeon HD 8xxx|179
+ASUS R9 295X2 Series|179
+Radeon R9 390X|178
+Radeon HD 5870|176
+Radeon Pro 560|176
+Radeon RX 580 OpenGL Engine|175
+Radeon HD 8950|175
+FirePro V(FireGL V) Graphics Adapter|175
+ASUS Radeon RX 580 Series|174
+Radeon Pro WX 4100|174
+Radeon Pro 460|173
+Radeon HD 2600 XT|173
+Radeon Pro WX 4100|172
+Radeon HD 8280|172
+Radeon Pro 575|171
+Radeon Pro 555X|171
+Radeon Pro WX 4130/4150|170
+Radeon RX Vega M GH Graphics|170
+FirePro W5100|170
+Radeon(TM) PRO WX 8200|169
+Radeon Vega Frontier Edition|169
+Radeon Pro 555X|168
+FirePro D700|168
+Radeon HD 6990|167
+Radeon RX 470 OpenGL Engine|167
+Radeon HD 7870 XT|167
+Radeon RX 580|167
+Radeon Polaris|167
+FirePro V8800 (FireGL V)|166
+Radeon RX 550|165
+Radeon HD 6900 Series|165
+FirePro W9100 (FireGL V)|164
+RX 580|163
+Radeon(TM) RX 580X|163
+Radeon RX 550|163
+Radeon HD 6870|163
+Radeon R9 M395X OpenGL Engine|163
+Radeon(TM) R9 360|163
+Radeon(TM) HD 8490|162
+Radeon R9 M295X|162
+Radeon HD 7970M|162
+Radeon R9 M380|161
+FirePro W5100 (FireGL V) Graphics Adapter|161
+ASUS HD7850 Series|161
+FirePro M6100 FireGL V|161
+Radeon Pro 455|160
+Radeon RX 460/560D / Pro 450/455/460/555/555X/560/560X|160
+Radeon R9 M395X|159
+Radeon RX 560X|159
+Radeon Pro 555|158
+RadeonT RX 560X|158
+Radeon Pro Vega 48|158
+ASUS Radeon RX Vega|158
+Radeon Pro WX 9100|158
+Radeon Pro Vega 64|157
+Powered By QiongB A9999999999|157
+Radeon(TM) Pro Duo|157
+FirePro D700|157
+Radeon Pro WX 7100|156
+Radeon RX 460|156
+Radeon HD - FirePro D700 OpenGL Engine|156
+Radeon R9 M290X|156
+Radeon R9 M395 OpenGL Engine|155
+Radeon Pro SSG|155
+FirePro D300|155
+ASUS R9 380 Series|155
+Radeon(TM) R9 Series|153
+Radeon RX 470/480/570/580|153
+FirePro W8000|153
+Cezanne|153
+Radeon(TM) Graphics|153
+FirePro D300|153
+Radeon(TM) R9 Fury Series|153
+Radeon R9 M395|152
+Radeon RX 570|152
+Radeon R9 270X Series|152
+Radeon Pro 5300M|152
+R9 xxx|152
+Radeon Pro 555|152
+FirePro D500|151
+Radeon HD 5850|151
+FirePro D300|150
+Radeon(TM) R9 290X|150
+66AF:F0|149
+Radeon(TM) RX 560|149
+Radeon R9 M290|148
+Radeon Instinct MI25 MxGPU|148
+FirePro V7800 (FireGL) Graphics Adapter|148
+Radeon(TM) R9 M470|147
+Advanced Micro Devices, Inc. [AMD/ATI] Fiji [Radeon R9 FURY / NANO Series]|147
+Radeon HD 5870 Series|147
+Radeon(TM) E9550|147
+Radeon HD 7850|147
+Radeon HD 7770|147
+Radeon Pro Vega 20|146
+Radeon R9 290/390|146
+Radeon Pro 450|146
+Radeon RX 560X Series|146
+Radeon HD 6850|146
+Radeon R9 270 1024SP|145
+ASUS R9 280X Series|145
+Radeon Pro 450|145
+Radeon(TM) R9 390 Series|145
+FirePro V7900 (FireGL V)|145
+Radeon R9 370X|145
+Radeon(TM) RX 560 Series|144
+ASUS R7 250X|144
+Radeon RX 480 OpenGL Engine|144
+Radeon R9 290X|144
+Radeon RX 550X|144
+Radeon(TM) RX 580|144
+ASUS Radeon(TM) RX 470 Series|143
+Baffin Radeon RX 560|143
+Radeon R9 M295X (Bootcamp edition by bootcampdrivers.com)|143
+Radeon R9 M295X Mac Edition|143
+Radeon R7 Series / HD 9000 Series|142
+Advanced Micro Devices [AMD] nee ATI Device|142
+Radeon(TM) Pro WX 7100 Graphics|142
+Radeon RX 640|142
+FirePro D500|141
+Radeon HD 7900 Series|141
+Radeon R9 290|141
+Radeon R7 250X|141
+Radeon(TM) RX Vega|140
+Radeon 630 Series|140
+FirePro W8100 Graphic Adapter|140
+Radeon R9 FURY / NANO Series|140
+Radeon R9 M390|140
+Radeon Pro WX 3100|140
+Radeon R9 290|140
+Radeon(TM) R9 370|140
+FirePro V7900|139
+Radeon HD 7970|139
+Radeon HD - FirePro D500 OpenGL Engine|139
+Radeon HD - FirePro D300 OpenGL Engine|139
+Radeon Pro 580|139
+Radeon HD 7770|139
+Radeon HD - FirePro D500 OpenGL Engine|139
+Radeon 540/540X/550/550X / RX 540X/550/550X|138
+FirePro S9050|138
+Radeon(TM) RX 480 Graphics|138
+Radeon(TM) R9 M390X|137
+Radeon Vega 64|137
+Radeon(TM) Graphics|137
+Tonga PRO GL [FirePro W7100]|136
+HD7950 Martin Ver.|136
+Radeon HD 7990|135
+Radeon R9 280x|135
+Radeon RX550/550 Series|135
+HD7950 MARTIN REV.|134
+Radeon RX560|134
+Radeon R7 250X Series|134
+Radeon R9 M390 OpenGL Engine|134
+ASUS R7 250X|134
+Radeon HD6870|134
+Radeon R9 270X|134
+Radeon Pro 5500 XT|134
+Radeon(TM) RX 480|133
+Radeon R9 270|133
+ASUS HD7970 Series|133
+Radeon RX 540|133
+Radeon 500 Series|132
+Radeon HD 5970|132
+Radeon HD 7770 GHz Edition|132
+Radeon HD 5870|132
+Radeon 540X Series|132
+Radeon HD 6870 Series|132
+Radeon(TM) RX 470 Graphics|132
+Radeon HD - FirePro D300 OpenGL Engine|132
+Radeon HD 7xxx|131
+Radeon HD 5970|131
+RadeonT 540X|131
+Radeon R7 Graphics + R7 350 Dual Graphics|131
+Radeon R9 M295X Mac Edition / R9 380X|131
+Firepro M5100|131
+Radeon(TM) R9 M375X|131
+Radeon R9 280x|130
+Radeon(TM) RX 560X|130
+Radeon HD 6990|130
+Radeon Pro 5500M|130
+Radeon Pro WX 5100 OpenGL Engine|129
+Radeon R9 M395X (Bootcamp edition by bootcampdrivers.com)|129
+Radeon R9 M380|128
+FirePro W5170M|128
+Radeon R9 280|128
+FirePro W5000 (FireGL V)|128
+Radeon(TM) RX 5600M Series|128
+Radeon RX 560D|128
+FirePro D500 (FireGL V)|128
+Radeon(TM) Pro WX 5100 Graphics|128
+Radeon(TM) RX Vega 11 Graphics|128
+Radeon HD 7970|127
+Radeon R9 370|127
+Radeon HD 7770|127
+Radeon R9 M395X|126
+Radeon HD 7660D|126
+Radeon HD 8970|126
+Radeon R9 200 Series|126
+Radeon Pro WX 3200 Series|126
+Radeon HD 7800 Series|125
+Radeon R9 285/380|125
+Radeon R9 270X|124
+FirePro W2100|124
+FirePro W7170M|124
+Radeon HD 7870 GHz Edition|123
+Radeong 0.4 on AMD TONGA (DRM 3.1.0, LLVM 3.9.0)|123
+Radeon RX 460|123
+Radeon HD 5970 Series|123
+Radeon R9 M380|122
+Radeon R9 M395|122
+Asus Radeon R9 280|122
+Radeon HD 6850 Series|122
+Radeon(TM) RX 540|122
+Radeon HD 6900 Series|122
+Device|122
+67DF:C4|121
+Radeon HD 6950|121
+FirePro D300 (FireGL V)|121
+Radeon RX 570|121
+Radeon HD 5850 Series|121
+Radeon HD 7870 XT|121
+Radeon HD 7950|121
+FirePro V7800 (FireGL) Graphics Adapter|121
+Radeon HD 6850|121
+Radeon HD 7950|120
+Radeon HD 7870 GHz Edition|120
+Radeon R7 370 / R9 270X/370X|120
+Radeon HD 6870|120
+Radeon Pro V340|120
+ASUS Radeon RX 570 Series|119
+Radeon(TM) R7 370 Series Graphics|119
+Radeon(TM) RX 580 Graphics|119
+Radeon(TM) RX 470 Graphics|119
+Radeon HD 5870|119
+Radeon HD 7950/8950 / R9 280|119
+Radeon HD 6790|119
+Radeon(TM) RX580|119
+ASUS ARES2|119
+Radeon(TM) R9 380 Series|118
+Radeon HD 7750|118
+Radeon Pro 560X|118
+Radeon R7 250E|118
+Radeon 550 Series|118
+Radeon RX 560|118
+Radeon Pro WX 5100|117
+Radeon R7 370 / R9 270X/370|117
+Radeon HD 7800 Series|117
+FirePro W5000 (FireGL V) Graphics Adapter|117
+Radeon HD 7750 Series|116
+Radeon HD 5870|116
+Radeon R7 450|115
+FirePro R5000|115
+Radeon R7 370 Series|115
+FirePro W9100|114
+Radeon R7 370 / R9 270/370|114
+Radeon(TM) 540 Graphics|114
+Radeon HD 6510 Series|114
+Radeon(TM) R7 370 Series|113
+Sapphire Radeon HD6870|113
+Firepro M5100|113
+Radeon(TM) RX 550|113
+Radeon(TM) Pro Duo|113
+Radeon 540/540X/550/550X / RX 540X/550/550X|113
+Radeon Pro 570|112
+Radeon R9 280|112
+FirePro D700 (FireGL V)|112
+(ATI) FirePro M6000 (FireGL V) Mobility Pro Graphics|112
+Renoir|112
+Radeon 540X Series (POLARIS12, DRM 3.40.0, 5.10.56-1-MANJARO, LLVM 12.0.1)|112
+Radeon HD 6970|112
+Radeon HD 8770|112
+Radeon Pro WX3200 Graphics|112
+Radeon(TM) R9 270|111
+Radeon R9 270X|111
+Radeon R9 285|111
+Radeon HD 7800M Series|111
+Radeon(TM) R7 370 Series|111
+Radeon HD 7870M Series|111
+Radeon Pro 450/550|110
+Radeon HD 7000 series|110
+Radeon HD 7870|110
+Radeon Pro 555X|110
+Radeon RX590 GME|109
+FirePro S10000|109
+Radeon HD 7870M|109
+Radeon HD 5800 Series|109
+Radeon HD 6970M|108
+ASUS HD7770 Series|108
+Radeon(TM) R9 M360|108
+Radeon(TM) RX 550X|107
+Radeon R9 285|107
+Radeon HD 6900M Series|107
+Radeon HD 7870 GHz Edition|107
+FirePro S7000|107
+Radeon R9 M370X|106
+Radeon Pro WX 4100|106
+Radeon HD 6800 Series|106
+Radeon HD 7750|106
+Radeon Pro 455 OpenGL Engine|106
+ASUS R7 370 Series|106
+Radeon Pro 560|105
+Radeon HD 6870|105
+FirePro D300 (FireGL V)|105
+Radeon HD 6970M|105
+Radeon HD 7850|105
+Radeon(TM) R9 200 Series|104
+ASUS HD7750 Series|104
+Radeon HD 6970M OpenGL Engine|104
+Asus Radeon R7 250|104
+Radeon R7 370 / R9 270X/370|104
+Radeon R9 M395X (Bootcamp XG edition by bootcampdrivers.com)|103
+Radeon(TM) RX 560|103
+Radeon RX Vega|103
+Radeon(TM) Pro W5500M|103
+Radeon R9 270|103
+Radeon Pro 560X|103
+Radeon HD 5850|103
+FirePro S7150|103
+Radeon(TM) RX 580|103
+Radeon(TM) R9 370 Series|103
+ASUS Radeon(TM) RX 480 Series|102
+Radeon Graphics Processor|102
+Radeon R9 M370X|102
+FirePro W7100|102
+Radeon R9 M370X|101
+Radeon Pro 460 OpenGL Engine|101
+Radeon RX 580 Series|101
+Radeon 500 Series|100
+Radeon Pro 555|100
+Radeon(TM) Pro WX 4100|100
+Asus Radeon R7 260X|100
+Radeon(TM) RX Vega 10 Graphics|100
+Radeon HD 7790|99
+Radeon Pro 450 OpenGL Engine|99
+Radeon HD 7790/8770 / R7 360 / R9 260/360|99
+FirePro M4000 Mobility Pro Graphics|99
+Radeon HD 7970M|99
+Radeon R9 M270X|99
+Radeon RX 550|98
+Radeon HD 6850|98
+Radeon(TM) RX 460|98
+Radeon(TM) RX Vega11 Graphics|98
+Radeon(TM) RX 460 Graphics|98
+Radeon Pro 460|97
+Radeon HD 7800 Series|97
+Matrox C680 PCIe x16|97
+Radeon(TM) RX 550|97
+Radeon HD 5770|96
+Radeon HD 8670D + 7700 Dual Graphics|96
+Radeon HD 7790|96
+Radeon 630 Series|96
+Radeon RX 560 Series|96
+Firepro M6100|95
+Radeon HD 6700 Series|95
+67EF:E7|95
+Radeon(TM) Vega 10 Graphics|95
+Radeon HD 6900M Series|94
+Radeon Pro 455|94
+FirePro M4000|94
+Radeon R9 260|94
+FirePro W7000|94
+Radeon Instinct MI25|93
+Radeon HD 8870M|93
+Radeon(TM) Vega 11 Graphics|93
+Radeon Pro 450|93
+FirePro W5000|92
+Radeon HD 6770|92
+Radeon(TM) RX560|92
+Radeon(TM) Graphics|91
+ASUS Radeon(TM) RX 460 Series|91
+Radeon(TM) Vega 8 Graphics|91
+Radeon(TM) Graphics|91
+FirePro W5100 Graphics Adapter|90
+Radeon(TM) Pro WX Series|90
+Renoir|90
+STRATO XT (6646)|89
+Radeon(TM) Pro WX 4150 Graphics|89
+Radeon E8870MXM|89
+Radeon HD 8970M|89
+FirePro M6100 FireGL V|89
+Radeon HD 7770|89
+FirePro W5100 (FireGL V) Graphics Adapter|89
+Radeon HD 6970M|89
+Radeon Pro 460|88
+Radeon RX Vega 8 Graphics|88
+Radeon HD 7700 Series|88
+Radeon(TM) R9 M360|88
+ASUS R7 265 Series|88
+Radeon RX Vega M GL Graphics|88
+ASUS Radeon RX 550 Series|88
+Radeon R7 360 / R9 360|88
+Radeon HD 6950|86
+Radeon HD 6790|86
+Radeon Pro WX 2100|86
+ASUS Radeon RX 560 Series|86
+Radeon HD 5750|86
+Radeon(TM) RX 640|86
+Radeon HD 8870M|85
+Radeon R7 260X|85
+Radeon Pro WX 7100|85
+Radeon(TM) R7 360 Series|85
+Radeon Infoshock\u2122 RX 460 Graphics|85
+FirePro W5170M|85
+Radeon R9 M295X|85
+FirePro W8100|85
+Radeon HD 6750|85
+FirePro W5170M|85
+FirePro V5800 (FireGL) Graphics Adapter|84
+ASUS R7 250X|84
+67E8:00|84
+Radeon(TM) RX 550X|84
+Radeon(TM) R7 350|84
+Radeon(TM) E9260|84
+Radeon Sky 500|84
+Radeon R9 M270X|83
+Radeon(TM) R9 350|83
+Radeon(TM) RX Vega 11 Graphics|83
+Firepro M6100|83
+Radeon R9 360|82
+FirePro V7900|82
+FirePro V5800 (FireGL V)|82
+Radeon HD 8830M|82
+Radeon Pro 450|82
+Radeon HD 8950|82
+6980:00|82
+FirePro W5100 (FireGL V)|81
+Radeon E8870|81
+Radeon HD 7750 Series|81
+Radeon HD 7850 / R7 265 / R9 270 1024SP|81
+FirePro\u2122 W4190M|80
+Radeon HD 5770|80
+Radeon(TM) R7 360 Series|80
+FirePro M5100 FireGL V|80
+Radeon RX 470/480/580|80
+Radeon(TM) RX 460 Graphics|79
+Radeon HD 6700 Series|79
+Mobility Radeon HD 5870|79
+Radeon R9 255|79
+Radeon 535 Series|79
+Radeon R9 M380 OpenGL Engine|78
+Radeon(TM) RX 550|78
+Radeon R9 M380|78
+Radeon R7 250X|78
+Saphire Radeon RX 580|78
+Radeong 0.4 on AMD BONAIRE (DRM 2.43.0, LLVM 3.8.0)|78
+Radeon HD 5000|78
+Radeon HD 5770|77
+Radeon RX 460|77
+FirePro W4300|77
+Radeon 530 Series|77
+Radeon(TM) 540X|77
+Radeon R9 M370X OpenGL Engine|77
+FirePro V5900 (FireGL V)|77
+Radeon Pro WX 4100|77
+SAPPHIRE HD 5770|77
+Radeon Pro WX 3100|76
+FirePro W5100|76
+Radeon(TM) Pro Graphics|76
+Radeon Pro WX 3100|76
+67FF:C8|76
+Radeon(TM) HD8970M|76
+Firepro M5100|76
+Radeon(TM) R9 M375X|75
+Radeon 550X Series|75
+Radeon R9 M390|75
+Radeon(TM) Vega 9 Graphics|75
+FirePro V5900 (FireGL V) Graphics Adapter|74
+Radeon HD 8570|74
+Radeon(TM) RX 475M|74
+Radeon HD 6770|74
+Radeon RX 550 Series|74
+Radeon RX 550|74
+FirePro M4000|74
+Radeon RX 460/560D / Pro 450/455/460/560|74
+Radeon Pro 560|74
+Radeon Vega Series / Radeon Vega Mobile Series|74
+Radeon Pro 455|74
+Radeon HD 7870M Series|74
+Radeon(TM) R7 430|74
+Radeon 620 Series|73
+Radeon HD 7770 GHz Edition|73
+Radeon HD 7770|73
+Radeon(TM) R9 360 Series|73
+Radeon HD 7770/8760 / R7 250X|73
+Radeon(TM) 530|73
+15DD Graphics|73
+Radeon RX Vega M GL Graphics|73
+Radeon(TM) R9 380|72
+Radeon(TM) 530 series|72
+Radeon R7 200 Series|72
+Embedded Radeon E9171|72
+Radeon Pro WX3200 Graphics|71
+Radeon HD 8800M Series|71
+Radeon R9 M375|70
+Radeon HD 5770|70
+Radeon Pro 555|70
+Radeon R7 250E|70
+Radeon HD 7750|70
+Radeon Pro 555X|70
+Radeon(TM) Vega 8 Mobile Graphics|70
+Radeon(TM) R9 M380|69
+Radeon R7 260X/360|69
+Barco MXRT 7600 (WDDM)|69
+Radeon(TM) Vega 10 Graphics|69
+Radeon HD 7750|69
+Radeon R9 M370X|69
+Radeon(TM) R2E Graphics|69
+Radeon R9\u2122 M370X|68
+FirePro V4900 (FireGL V)|68
+Radeon(TM) RX Vega11 Graphics|68
+Radeon HD 5770|68
+Radeon(TM) Renoir Graphics D1|68
+Radeon HD 7600 Series|67
+Radeon R5 340|67
+Radeon(TM) Vega 9 Graphics|67
+FirePro W4100 (FireGL V) Graphics Adapter|67
+694E:C0|67
+694C:C0|67
+Radeon R7 250|66
+Radeon HD 6750|66
+RAVEN (DRM 3.36.0, 5.6.5-AMD, LLVM 9.0.1)|66
+FirePro W600|66
+Radeon R9 255|66
+Radeon RX 470|66
+Radeon(TM) R7 250|66
+FirePro V5900|65
+Radeon(TM) 530|65
+Radeon Pro WX Vega M GL Graphics|65
+Radeon RX 470/480|65
+Radeon HD 5750|65
+Radeon R7 260X|65
+FirePro V5900 (FireGL V) Graphics Adapter|65
+FirePro W4100 Graphics Adapter|65
+Radeon HD 6700 Green Edition|65
+Radeon R9 M370X|65
+Radeon(TM) R7 350X|64
+Radeon(TM) R7 350X|64
+Radeon HD 7670|64
+Radeon R9 M200X Series|64
+Radeon R9 M370X|64
+Radeon HD 6670|63
+Radeon(TM) HD 8350|63
+Radeon 530X Series|63
+Radeon(TM) R9 360|63
+Radeon(TM) Pro WX 4150 Graphics|63
+67EF:C5|63
+Radeon R7 Graphics + R5 340 Dual Graphics|62
+Radeon HD 5670|62
+Radeon RX 470/570|62
+Radeon 530 Series|62
+Radeon R7 250 Series|62
+Radeon R7 430|62
+Radeon HD 6750 Graphics|62
+Radeon(TM) R9 M385X|62
+Radeon(TM) Vega 10 Mobile Graphics|62
+FirePro V5900 (FireGL V)|61
+FirePro V5800 (FireGL V)|61
+Radeon(TM) Vega 8 Graphics|61
+FirePro V4800 (FireGL V)|61
+Radeon HD 7600 Series|61
+Radeon(TM) Vega 6 Graphics|61
+Radeon(TM) R9 200 Series|61
+Radeon HD 8850M|61
+Radeon RX460|61
+Radeon R7 M460|61
+Radeon RX 640 Series|60
+Radeon 530|60
+Radeon HD 5600/5700|60
+Radeon HD 5750 Series|60
+Radeon R7 Graphics + R7 200 Dual Graphics|60
+Radeon R7 450|60
+FirePro V4900|60
+Firepro W6150M|60
+ASUS R7 250 Series|60
+Radeon(TM) RX 560 Graphics|60
+Radeon(TM) R7 M370|59
+FirePro M4000 Mobility Pro Graphics|59
+Radeon R5 430|59
+Radeon R9 M275X|59
+FirePro V5800 (FireGL) Graphics Adapter|59
+Mobility Radeon HD 5870|59
+Radeon(TM) R9 M385X|58
+Radeon HD 7750M|58
+Radeon HD 5670|58
+Radeon HD 8850M|58
+Radeon HD 7700M Series|58
+Radeon HD 8670D + R7 200 Dual Graphics|58
+Radeon R7 Series / HD 9000 Series|57
+Radeon HD 6730M/6770M|57
+Radeon(TM) 625|57
+Radeon(TM) R9 M385|57
+Radeon HD 5870M|56
+Radeon 610 Series|56
+FirePro W4100|56
+FirePro M6000 Mobility Pro Graphics|56
+Radeon RX 540 Series|56
+Radeon R7 240|56
+Radeon HD 7560D + HD 7700 Dual Graphics|56
+Radeon R9 M370X (Bootcamp XG edition by bootcampdrivers.com)|56
+FirePro V4900 (ATI FireGL)|55
+Radeon(TM) R7 M350|55
+FirePro M6000 Mobility Pro Graphics|55
+67FF:08|55
+Radeon HD 5750|55
+Radeon HD 7570|55
+Radeon(TM) Vega 11 Graphics|55
+Radeon R7 M460|55
+Radeon HD 5750 OpenGL Engine|55
+Radeon(TM) R7 M370|55
+Radeon HD 6730M/6770M/7690M XT|55
+Radeon E8860|55
+Radeon HD 8790M|54
+Radeon HD 6770M|54
+Radeon R7 M440|54
+Radeon(TM) R7 350|54
+Radeon(TM) R7 350X|54
+Radeon HD 7870 XT|54
+Radeon HD 7800M Series|54
+Radeon 520|54
+Radeon R7 M370|53
+FirePro W4150M FireGL V|53
+(ATI) FirePro M4000 (FireGL V) Mobility Pro Graphics|53
+Radeon R9 M200X Series|53
+Radeon HD 6700M/7700M/7900M Series|53
+Radeon(TM) 620|53
+Picasso|53
+Radeon(TM) RX Vega 10 Graphics|53
+67EF:CF|53
+Radeon(TM) Vega 3 Graphics|53
+Radeon R7 250|53
+FirePro W4190M|53
+Radeon(TM) Vega 8 Graphics|53
+694C:C0|52
+Radeon HD 5670 Series|52
+Radeon(TM) RX Vega 11 Graphics|52
+Radeon HD 6770M OpenGL Engine|52
+Radeon(TM) M535DX|52
+FirePro V4800 (FireGL V)|52
+Radeon R7 350 Series|52
+Barco MXRT 5600 (WDDM)|51
+Radeon 630|51
+FirePro V4900 (FireGL V)|51
+FirePro V4900 (FireGL V) Graphics Adapter|51
+Radeon(TM) Vega 3 Mobile Graphics|51
+Radeon 535 Series|51
+Radeon R7 Graphics|51
+Radeon HD 5670|51
+FirePro W4170M|50
+Radeon HD 8700M Series|50
+Radeon HD 8670 / R7 250/350|50
+Picasso|50
+FirePro V4800 (FireGL) Graphics Adapter|50
+Mobility Radeon HD 5850|49
+OPAL XT/GL (6604)|49
+Radeon R5 M335|49
+Matrox C900 PCIe x16|49
+Radeon HD 7670|49
+Radeon HD 6750M|49
+Radeon(TM) 535|49
+Radeon 540X Series|49
+Radeon R9 M275|49
+Radeon(TM) RX 640|49
+Radeon HD 5700 Series|48
+Radeon R5 M230 Series|48
+Firepro M6100|48
+Radeon(TM) R9 M375|48
+Radeon R5 430|48
+Radeon(TM) R7 250|47
+Radeon R9 M265X|47
+Radeon HD 6730M/6770M|47
+Radeon HD 8670D|47
+Radeon R5 340|47
+Radeon 520|47
+Radeon(TM) 520|47
+FirePro V (FireGL V) Graphics Adapter|47
+FirePro M5100 FireGL V|46
+Radeon HD 6670|46
+Radeon R7 M260X|46
+Radeon HD 8550|46
+FirePro M4150|46
+Radeon HD 6670|46
+Radeon HD 7700 Series|46
+FirePro M4170|46
+Radeon HD 7570|46
+Radeon HD 8670D + HD 6670 Dual Graphics|45
+699F:C1|45
+Radeon R7 Graphics|45
+Radeon(TM) R7 M340|45
+FirePro W4170M (FireGL V)|45
+Radeon(TM) HD 8500M/8700M|45
+Radeon R7 M340|44
+FirePro M5950|44
+Radeon HD 8570D + R7 240 Dual Graphics|44
+Radeon HD 6770M|44
+Radeon HD 7730M|44
+Radeon HD 8790M|44
+Radeon HD 7750|44
+Radeon HD 8690A|44
+Mobility Radeon HD 5730 / 6570M|44
+Radeon R9 A375|44
+Radeon(TM) R8 M445DX|43
+FirePro V (FireGL V) Graphics Adapter|43
+Radeon HD 7750/8740 / R7 250E|43
+FirePro V3900|43
+Radeon HD 7600A Series|43
+Radeon(TM) R7 200 Series Graphics|43
+Radeon R7 Graphics|43
+Radeon HD 6770M|43
+Radeon R7 M260 Series|43
+Radeon R7 M360|43
+Radeon HD 8970M|43
+Radeon(TM) Vega 6 Graphics|43
+Radeon HD 8570|42
+Radeon R7 M440|42
+Radeon HD 8670A/8670M/8750M|42
+Mobility Radeon HD 5850|42
+Radeon HD 8750M|42
+Embedded Radeon E9173|42
+Radeon(TM) R7 M440|42
+Radeon HD 8730M|42
+Radeon R7 240 + HD 8570D Dual Graphics|42
+FirePro V3900|42
+Radeon(TM) 535DX|42
+Radeon(TM) 520|42
+Radeon(TM) Vega 8 Mobile Graphics|42
+Radeon(TM) Vega 8 Graphics|42
+Radeon(TM) Vega 2 Graphics|42
+Radeon(TM) R9 M375|42
+Radeon(TM) R8 M445DX|41
+Radeon HD 6750M|41
+RadeonT 540X|41
+Radeon(TM) 530|41
+Radeon HD 7560D + HD 6670 Dual Graphics|41
+Radeon R7 240|41
+Radeon(TM) R7 M360|41
+Radeon R9 M280X|41
+Radeon HD 7520G + HD 7600M Dual Graphics|41
+Radeon(TM) R7 M445|41
+Radeon Vega 8 Mobile|40
+Radeon(TM) R9 255|40
+Radeon R7 M260X|40
+Radeon R8 M535DX|40
+Radeon R7 240/340|40
+Radeon(TM) R9 M375|40
+Radeon(TM) R7 Graphics|40
+Radeon(TM) R5 M420|40
+Radeon HD 6750M|40
+Radeon R9 M265X|40
+Radeon R7 M340|40
+Radeon HD 6570|40
+Radeon HD 7500/7600 Series|39
+Radeon R7 430|39
+FirePro W2100|39
+Radeon HD 7730M|39
+Radeon HD 8670D|39
+Radeon R5 M255|39
+Radeon HD 7560D + HD 6570 Dual Graphics|39
+Radeon RX Vega|39
+Radeon R7 240 Series|39
+Radeon(TM) R7 M445|39
+Radeon HD 6800M Series|39
+Radeon HD 8690M|39
+Radeon HD 7660D + HD 6570 Dual Graphics|39
+Radeon R7 M370|39
+Radeon(TM) HD 6650M|38
+Radeon R5 M435|38
+Radeon HD 6500 Series|38
+Radeon R7 Graphics|38
+FirePro M7820|38
+Radeon(TM) R8 M445DX Graphics|38
+Radeon HD 5570|38
+Radeon HD 8650G + 8750M Dual Graphics|38
+Radeon HD 8670A/8670M/8750M|38
+Radeon HD 6650M|38
+Radeon R7 M260 Series|38
+Radeon HD 7660G + 7600M Dual Graphics|38
+Radeon HD 7600M Series|38
+Radeon HD 7670M|37
+Radeon. HD 7670M|37
+Radeon(TM) R7 M265|37
+Mobility Radeon HD 5000|37
+Radeon HD 7500M/7600M Series|37
+Radeon R5/R6/R7 Graphics|37
+Radeon R7 M270|37
+Radeon HD 8650G + HD 7600M Dual Graphics|37
+Firepro M5100|37
+Radeon HD 7730M|37
+Radeon HD 8570D|37
+Radeon(TM) HD 7650A Graphics|37
+Radeon R7 Graphics|37
+Radeon(TM) RX Vega 10 Graphics|37
+Radeon HD 7600A Series|36
+Radeon R7 M270|36
+Radeon HD 7660D + HD 6670 Dual Graphics|36
+Radeon HD 7570M/HD 7670M Graphics|36
+Radeon 6600M and 6700M Series|36
+Radeon R7 Graphics + R7 200 Dual Graphics|36
+Radeon HD 7570 Series|36
+Radeon HD 8750M|36
+Radeon HD 6550D|36
+FirePro M5950|36
+Radeon HD 7660G + 7600M Dual Graphics|36
+Radeon HD 6550D|36
+Radeon HD 7600M/7700M Series|36
+Radeon(TM) Vega 3 Graphics|36
+Radeon(TM) 625|36
+Mobility Radeon HD 5570|36
+Radeon HD8730|36
+Radeon(TM) R9 M380|36
+Radeon(TM) R5 240|36
+Radeon HD 7650M|35
+Radeon HD 7560D|35
+Radeon HD 8690M|35
+Radeon HD 8650G + 8750M Dual Graphics|35
+Radeon HD 8650G + HD 8750M Dual Graphics|35
+Radeon HD 8650G + HD 8570M Dual Graphics|35
+Radeon HD 6570|35
+Radeon HD 7650M|35
+Radeon HD 6630M/6650M/6750M/7670M/7690M|35
+Radeon HD 6500 Series|35
+Radeon(TM) 520|35
+Radeon HD 8570D|35
+Radeon HD 7600M Series|35
+Radeon R7 Graphics|35
+Radeon HD 7660G + 8670M Dual Graphics|35
+Radeon R7 200 Series|35
+Radeon HD 6630M/6650M/6750M/7670M/7690M|35
+Radeon R7 M265|35
+Radeon HD 8650G + HD 8750M Dual Graphics|35
+Radeon HD 8650G + 8670M Dual Graphics|35
+Radeon R7 Graphics|34
+Radeon HD 6630M Series|34
+Radeon(TM) 520|34
+Radeon HD 7660D|34
+ASUS R7 240 Series|34
+Radeon R9 M280X|34
+Radeon(TM) R5 340|34
+Radeon HD 8550G + 8600/8700M Dual Graphics|34
+Radeon R7 Graphics|34
+Radeon(TM) HD 8500M/8700M|34
+Radeon HD 7660G + HD 7600M Dual Graphics|34
+Radeon HD 7670M|34
+Radeon(TM) R5 M430|34
+Radeon HD 8650G + 8500M Dual Graphics|34
+Radeon(TM) R5 340X|34
+Radeon(TM) R5 230 series|34
+Radeon HD 8550|34
+FirePro W2100 (FireGL V)|34
+Firepro M4100 FireGL V|34
+Radeon HD 6550D|34
+Radeon HD 6630M|34
+Radeon(TM) R9 M375|34
+Radeon HD 5670 OpenGL Engine|33
+Radeon HD 5670|33
+Radeon R7 Graphics|33
+Radeon HD 7660G|33
+Radeon HD 5570|33
+Radeon HD 7550M/7650M Graphics|33
+Radeon HD 7660D|33
+Radeon HD 7560D|33
+Radeon HD 7560D|33
+Radeon R5 M445 Series|33
+Radeon R5 M315|33
+Radeon HD 8570D|33
+Radeon R7 M265|33
+Radeon HD 7640G + HD 7500/7600 Dual Graphics|33
+Radeon R7 Graphics|33
+Radeon HD 8500M Series|33
+Mobility Radeon HD 5000|33
+Radeon(TM) R7 M360|33
+Firepro M4100|33
+Radeon(TM) Vega 10 Graphics|32
+Radeon HD 7500M/7600M Series|32
+Radeon HD 8550G + HD 8600/8700M Dual Graphics|32
+Radeon HD 7660G|32
+Radeon HD 7350|32
+Radeon HD 8470D + HD 6450 Dual Graphics|32
+Radeon R7 Graphics|32
+Radeon HD 8730M|32
+Radeon HD 7640G + HD 7400M Dual Graphics|32
+Radeon HD 8690A|32
+Radeon HD 8650G + 8600/8700M Dual Graphics|32
+Radeon R7|32
+Radeon(TM) Vega 11 Graphics|32
+Radeon(TM) Vega 8 Graphics|32
+Radeon R5 M200 Series|32
+Radeon(TM) R5 M335|32
+Radeon(TM) R5 M430|32
+Radeon HD 8550G + HD 8570M Dual Graphics|32
+Radeon HD 7650M Series|32
+Radeon R7 250 Series|32
+Radeon(TM) R7 M460|32
+Radeon HD 6550D|32
+Radeon HD 7660G + HD 7600M Dual Graphics|32
+Radeon(TM) Vega 3 Graphics|32
+Radeon HD 8470D|32
+Radeon R8 M365DX|31
+Madison [Mobility Radeon HD 5650/5750 / 6530M/6550M]|31
+Radeon HD 6630M/6650M/6750M/7670M/7690M|31
+Radeon R7 Graphics|31
+Radeon E6760|31
+Radeon R7 Graphics|31
+Radeon(TM) Vega 8 Graphics|31
+Radeon(TM) R5 M330|31
+Radeon HD 8670A/8670M/8690M|31
+Radeon R7 A360|31
+Radeon HD 8650G + HD 8600M Dual Graphics|31
+Radeon R5 M200 / HD 8500M Series|31
+Radeon(TM) R8 M435DX|30
+Radeon HD 7640G + HD 7670M Dual Graphics|30
+Radeon(TM) Vega 10 Mobile Graphics|30
+Radeon R7 Graphics|30
+Radeon Pro 450/550|30
+Radeon HD 8800M Series|30
+Radeon HD 8470D|30
+Radeon HD 7660D|30
+Radeon HD 8610G + HD 8600M Dual Graphics|30
+Radeon HD 7660G + 7670M Dual Graphics|30
+Radeon(TM) Vega 8 Mobile Graphics|30
+Radeon 610 Series|30
+Radeon(TM) R5 M330|30
+Radeon HD 7660G|30
+Radeon HD 7640G|30
+Radeon R8 M365DX|30
+Radeon HD 8550G|29
+Radeon HD 7540D|29
+Radeon HD 7640G|29
+Radeon HD 8650G|29
+Radeon(TM) R7 Graphics|29
+Radeon(TM) RX Vega 11 Graphics|29
+Radeon HD 6650M|29
+Radeon HD 7660G|29
+Radeon 6600M and 6700M Series|29
+Radeon HD 7640G + HD 7400M Dual Graphics|29
+Radeon(TM) R5 340X|29
+Radeon R5 435|29
+Radeon HD 6500M/5600/5700 Series|29
+Firepro M4100 FireGL V|29
+Radeon R7 Graphics|29
+Radeon(TM) 535|29
+Radeon R7 240 Series|29
+Radeon(TM) R7|29
+Radeon HD 8550G + 8500M Dual Graphics|28
+Radeon(TM) 530|28
+Radeon HD 5650 Series|28
+Radeon HD 7570M|28
+Radeon HD 7570M|28
+ASUS R7 240 Series|28
+Radeon HD 6570|28
+Radeon(TM) Vega 8 Graphics|28
+Radeon E8860|28
+Radeon(TM) 530 series|28
+Radeon(TM) R5 M315|28
+Radeon HD 5500 Series|28
+Radeon HD 8610G + HD 8670M Dual Graphics|28
+Radeon(TM) R6|28
+Radeon R9 M275X|28
+Radeon HD 8550G + R5 M230 Dual Graphics|28
+Radeon HD 8470D|28
+Radeon HD 8670D|28
+Radeon HD 7620G|28
+Radeon(TM) R8 M350DX|28
+Radeon HD 8470D|27
+Radeon(TM) R8 M445DX|27
+Radeon(TM) R7 Graphics|27
+Radeon(TM) R5 Graphics|27
+Radeon(TM) R7 M340|27
+Radeon(TM) R6 Graphics|27
+Radeon R6 Graphics|27
+Radeon R5 M230 Series|27
+Radeon HD 8650G|27
+Radeon HD 7480D|27
+Radeon(TM) R8 M445DX Graphics|27
+Radeon(TM) R6 Graphics|27
+Radeon R7 Graphics|27
+Radeon R6|27
+Radeon R5 M255|27
+Radeon(TM) Vega 3 Graphics|27
+Radeon 550X|27
+Radeon(TM) Vega 3 Graphics|27
+Radeon HD 7500/7600 Series|27
+Radeon HD 8650G|27
+Radeon HD 5500 Series|27
+Radeon HD 7610M|27
+Radeon Instinct MI25 MxGPU|27
+Radeon(TM) HD8530M|27
+Radeon R7 M260|27
+Radeon(TM) R8 M445DX|27
+Radeon R7 Graphics|26
+Radeon HD 8500M|26
+Radeon(TM) R7 M260DX|26
+Radeon HD 8410G|26
+Radeon HD 8670A/8670M/8690M|26
+Radeon(TM) R7 M360|26
+Radeon(TM) R7 M360|26
+Radeon HD 8670D|26
+Radeon R9 M275|26
+Radeon HD 7640G|26
+Radeon(TM) R7 Graphics|26
+MxGPU|26
+Radeon HD 8370D|26
+Radeon HD 6620G|25
+Radeon HD 7560D|25
+Radeon HD 8570 / R5 430 / R7 240/340 / Radeon 520|25
+Radeon R4 Graphics|25
+Radeon R6 Graphics|25
+Radeon R7 Graphics|25
+Radeon(TM) 535DX|25
+Radeon(TM) 540 Graphics|25
+Radeon(TM) R5 M330|25
+Radeon HD 6530D|25
+Radeon R6 Graphics|25
+Radeon HD 8510G|25
+Radeon HD 6620G|25
+Radeon R7 M360|24
+Radeon(TM) R6 Graphics|24
+Radeon R7 M260|24
+Radeon HD 8610G + HD 8600M Dual Graphics|24
+Radeon(TM) R6 Graphics|24
+Radeon R5 M200 / HD 8500M Series|24
+Radeon R7 Graphics|24
+Radeon HD 7600G|24
+Radeon R7 Graphics|24
+Radeon HD 6620G|24
+Radeon R5 M330|24
+Radeon(TM) R5 240|24
+Radeon(TM) HD 6620G|24
+FirePro V3800 (FireGL V)|24
+Radeon HD 6520G|24
+Radeon R7 Graphics|24
+Radeon HD 7520G|24
+Radeon(TM) R6 Graphics|24
+Radeon(TM) R7 M260|24
+Radeon RX 540 Series|24
+Radeon(TM) R5 M320|24
+Radeon HD 8500M|23
+Radeon R5 M230|23
+Radeon HD 8670M|23
+Radeon HD 8550G + HD 8750M Dual Graphics|23
+Radeon HD 8600M Series (HAINAN, DRM 3.40.0, 5.11.13-arch1-1, LLVM 11.1.0)|23
+Radeon HD 8550G|23
+Radeon R5 M240|23
+Radeon R5 M240 Series|23
+Radeon HD 7540D|23
+Radeon(TM) R5 M430|23
+Radeon R5 Graphics|23
+Radeon(TM) R5 M430|23
+Radeon R6 Graphics|23
+Radeon HD 7520G|23
+Radeon R7 Graphics|23
+Radeon HD 8610G|22
+FirePro 3800 (FireGL) Graphics Adapter|22
+Radeon HD 7570M/HD 7670M Graphics|22
+Radeon HD 7480D|22
+Radeon(TM) R7 Graphics|22
+Radeon HD 8650G + HD 8600M Dual Graphics|22
+Radeon(TM) Vega 6 Graphics|22
+Radeon R7 Graphics|22
+Radeon R5 Graphics|22
+Radeon HD 7660G + HD 8600M Dual Graphics|22
+FirePro M2000|22
+Radeon R7 Graphics|22
+Radeon HD 7870M|22
+Radeon R5 M335|22
+Radeon R5|22
+Radeon HD 8500M Series|22
+Radeon(TM) HD 8490|22
+Radeon HD 8670M|22
+Radeon HD 7660G + HD 7670M Dual Graphics|22
+Radeon 7500M/7600M Series|22
+Radeon R5 Graphics|21
+Radeon(TM) R4 Graphics|21
+Radeon HD 8490|21
+Radeon HD 8490|21
+Radeon R7 Graphics|21
+Radeon HD 8570M|21
+Radeon(TM) R5 M320|21
+Radeon R2|21
+Radeon HD 6530D|21
+Radeon(TM) HD 6470M|21
+MxGPU|21
+Radeon HD 7000 series|21
+Radeon HD 7470|21
+Radeon(TM) R8 M350DX|21
+Radeon R7 Graphics|21
+Radeon HD 7520G + HD 7400M Dual Graphics|21
+Radeon(TM) R5 M335|21
+Radeon HD 7400G|21
+Radeon HD 7640G + HD 8500M Dual Graphics|21
+Radeon HD 7000 series|21
+Radeon(TM) R5 Graphics|20
+Radeon(TM) R7 M520 (R17M-M1-30)|20
+Radeon HD 8470|20
+Radeon HD 7480D|20
+Radeon HD 6400M/7400M Series|20
+Radeon(TM) R3 Graphics|20
+Radeon R6 M255DX|20
+Radeon HD 8370D|20
+Radeon R5 Graphics|20
+Radeon R7 Graphics|20
+Radeon HD 6410D|20
+Radeon(TM) R5 Graphics|20
+Radeon R5 M330|20
+Radeon R7 M260DX|20
+Radeon(TM) R5 Graphics|20
+Radeon HD 7480D|20
+Radeon HD 6470M|20
+Radeon Hybrid (Blocked)|20
+Radeon(TM) R7 Graphics|20
+Radeon(TM) R6 M340DX|20
+Radeon R5 235|20
+Radeon HD 7520G|19
+Radeon(TM) R6 M255DX|19
+Radeon R5 M240|19
+Radeon(TM) R3 Graphics|19
+Radeon R7E Graphics|19
+Radeon R5 M200 Series|19
+Radeon HD 7470|19
+Radeon HD 7640G + 8500M Dual Graphics|19
+Radeon(TM) R5 M330|19
+Radeon HD 6470M|19
+Radeon R3 Graphics|19
+Radeon HD 8400E|19
+Radeon HD 7640G + HD 8570M Dual Graphics|19
+Radeon HD 8400|19
+Radeon HD 8400 / R3 Series|19
+Radeon R5 Graphics|19
+Radeon(TM) R7 M265|19
+Radeon R5 M230|19
+Radeon R5 Graphics|19
+Radeon HD 7620G|19
+Radeon R5 Graphics|19
+Radeon(TM) HD 6470M|19
+Radeon HD 7480D|18
+Radeon R7 Graphics|18
+Radeon(TM) R5 Graphics|18
+Radeon HD 8550G|18
+Radeon HD 8370D|18
+Radeon R5 Graphics|18
+Radeon(TM) HD 7450|18
+Radeon HD 6530D|18
+Radeon HD 8570M|18
+Radeon R6 Graphics|18
+Radeon HD 7650A|18
+Radeon HD 8450G|18
+Radeon HD 8550G + R5 M230 Dual Graphics|18
+Radeon HD 7640G + 7470M Dual Graphics|18
+Radeon HD 8370D|18
+Radeon HD 7400M Series|18
+Radeon HD 8670D + R5 200 Dual Graphics|17
+Radeon HD 7500G|17
+Radeon HD 7790|17
+Radeon HD 7450M|17
+Radeon(TM) HD 7450A Graphics|17
+Radeon(TM) R5 Graphics|17
+Radeon(TM) R6 Graphics|17
+Radeon(TM) R4 Graphics|17
+Radeon HD 8650G + HD 8500M Dual Graphics|17
+Radeon HD 7400M Series|17
+Radeon HD 8450G|17
+Radeon HD 6520G|17
+Radeon HD 8470D|17
+Radeon(TM) R5 Graphics|17
+Radeon(TM) R4E Graphics|17
+Radeon HD 8330|17
+Radeon HD 8400|17
+Radeon(TM) HD 8510G|17
+Radeon(TM) R5 Graphics|17
+Radeon HD 8650G|17
+Radeon HD 6490M|17
+Radeon R7 Graphics|16
+Radeon HD 6400 Series|16
+Radeon HD 8510G|16
+Radeon HD 7400 Series|16
+Radeon HD 7400 Series|16
+Radeon(TM) HD 8510G|16
+Radeon HD 6370D|16
+Radeon HD 7420G|16
+Radeon HD 7520G + HD 7600M Dual Graphics|16
+Radeon R9 260|16
+Radeon HD 7640G + 7600M Dual Graphics|16
+Radeon HD 7470M|16
+Radeon(TM) R2 Graphics|16
+RADEON HD 6450|16
+Radeon(TM) R1E Graphics|16
+Radeon R5 Graphics|16
+Radeon HD 7420G|16
+Radeon(TM) R4 Graphics|16
+Radeon(TM) R4 Graphics|16
+Radeon(TM) R4 Graphics|16
+Radeon HD 7480D|16
+Radeon HD 6490M|15
+RADEON HD 6450|15
+Radeon(TM) HD 8610G|15
+Radeon(TM) HD 8610G|15
+Radeon HD 8610G + 8600M Dual Graphics|15
+Radeon HD 7350|15
+Radeon(TM) HD 6480G|15
+Radeon HD 8650G + 8600M Dual Graphics|15
+Radeon HD 8570D|15
+Radeon HD 6370M|15
+Mobility Radeon HD 5000 Series|15
+Radeon R2 Graphics|15
+Radeon HD 8240 / R3 Series|15
+Radeon HD 8650G + R5 M200 Dual Graphics|15
+Radeon HD 8400E|15
+Radeon(TM) R4 Graphics|15
+Radeon R5 Graphics|15
+Radeon HD 8610G|15
+Radeon HD 8650G + HD 8500M Dual Graphics|15
+Radeon(TM) R7 M260|15
+ASUS EAH6450 Series|15
+Radeon R3 Graphics|15
+Radeon(TM) R6 M340DX|15
+Radeon R6E Graphics|15
+Radeon R5 Graphics|15
+Radeon R2 Series|14
+Radeon HD 6450/7450/8450/R5 230|14
+Radeon HD 8200 / R3 Series|14
+Radeon(TM) R3 Graphics|14
+Radeon R5 230|14
+Radeon(TM) HD 8510G|14
+Radeon(TM) R4 Graphics|14
+Radeon R5 M435|14
+Radeon HD 8240|14
+ASUS R5 230 Series|14
+FirePro M2000|14
+Radeon HD 7500G|14
+Radeon HD 7450|14
+RADEON HD 6450|14
+Radeon HD 8400E|14
+RADEON HD 6350|14
+Radeon HD 6480G|14
+Radeon(TM) R5E Graphics|14
+CARRIZO 9874|14
+Mobility Radeon HD 5000 Series|14
+Radeon HD 6630M|14
+Radeon HD 6370M|14
+Radeon HD 8400 / R3 Series|14
+Radeon(TM) R2 Graphics|14
+ASUS EAH6450 Series|14
+Radeon HD 7470M|13
+Mobility Radeon HD 5470|13
+Mobility Radeon HD 5400 Series|13
+Radeon(TM) R5E Graphics|13
+Radeon(TM) R2 Graphics|13
+Radeon HD 6540|13
+Radeon HD 7450|13
+Radeon HD 5450|13
+Radeon HD 8600M Series|13
+Radeon HD 8400 / R3 Series|13
+Kaveri|13
+Radeon(TM) HD 6480G|13
+Radeon HD 5400 Series|13
+Radeon HD 8330|13
+RADEON HD 6350|13
+Radeon R4/R5 Graphics|13
+Radeon HD 7600G +\u2122 HD Dual Graphics|13
+Radeon R3 Graphics|13
+ASUS R5 230 Series|13
+Radeon(TM) R7 Graphics|13
+Radeon HD 7620G|13
+Radeon HD 8250|13
+Radeon(TM) R7 Graphics|12
+Radeon HD 6450/7450/8450 / R5 230|12
+Radeon HD 6480G|12
+Radeon(TM) R7 Graphics|12
+Radeon HD 5450 Series|12
+Radeon HD 8400 / R3 Series|12
+Radeon(TM) HD 6400 Series|12
+Radeon(TM) R4 Graphics|12
+RADEON HD5450|12
+Radeon R5 Graphics|12
+Radeon R5 Graphics|12
+Radeon(TM) R6 Graphics|12
+Radeon(TM) R4 Graphics|12
+Radeon(TM) R2 Graphics|12
+Radeon HD 8210|12
+Radeon R5 230|12
+Radeon R3 Graphics|12
+FirePro 2270|12
+Radeon(TM) R2E Graphics|12
+Radeon HD 8400 / R3 Series|12
+Radeon HD 8350G|12
+Radeon HD 8400|12
+Radeon R2 Graphics|12
+Radeon HD 8210 Graphics|12
+Radeon E6460|12
+Radeon(TM) HD 8280E|12
+Radeon R2 Graphics|11
+Radeon HD 8450G + HD 8750M Dual Graphics|11
+Radeon HD 8330|11
+Radeon HD 5470|11
+Radeon HD 7600G + 7500M/7600M Dual Graphics|11
+Radeon R5 220|11
+Radeon HD 8200 / R3 Series|11
+Radeon HD 8240|11
+Radeon HD 8400 / R3 Series|11
+Radeon HD 8200 / R3 Series|11
+Radeon HD 5450|11
+Radeon(TM) 620|11
+Radeon(TM) Vega 8 Mobile Graphics|11
+Radeon HD 6530D|11
+Radeon(TM) HD 6520G|11
+Radeon HD 6300M Series|11
+ASUS EAH5450|11
+Radeon R5 220|11
+Radeon HD 8250|11
+Radeon HD 7340|11
+Radeon HD 7340M|11
+Radeon HD 8210|11
+Radeon HD 7700 Series|10
+Radeon HD 6380G|10
+Radeon HD 5400 Series|10
+Radeon HD 8240|10
+Radeon HD 7640G + 7670M Dual Graphics|10
+Radeon(TM) R6 Graphics|10
+ASUS EAH5450 Series|10
+Radeon HD 6320|10
+Radeon HD 7340G|10
+Radeon HD 6410D|10
+Radeon HD 7340|10
+Radeon HD 6320|10
+Radeon(TM) R2 Graphics|10
+Radeon HD 8180|9
+Mobility Radeon HD 5430|9
+Radeon R2 Graphics|9
+Radeon R2 Series|9
+Radeon HD 8210|9
+FirePro 2270|9
+Radeon R2E Graphics|9
+Radeon HD 7340|9
+Radeon HD 6320|9
+Radeon HD 7310|9
+Radeon HD 6310|9
+Radeon R7 Graphics|9
+Radeon HD 7310|8
+Radeon HD 8250|8
+Radeon HD 8180|8
+Radeon HD 6630M|8
+Radeon HD 6230|8
+Radeon HD 6320|8
+Radeon HD 6400M Series|8
+Radeon HD 7290 Graphics|7
+Radeon HD 6290|7
+Radeon HD 6310|7
+Radeon HD 8180|7
+ASUS EAH5450 Series|7
+Radeon(TM) R2 Graphics|6
+Radeon HD 6310|6
+Radeon HD 7500G|6
+Radeon HD 8240 / R3 Series|6
+Radeon HD 6250|6
+Radeon HD 6380G|6
+Radeon HD 6300M Series|5
+Radeon HD 7310|5
+Radeon R3 Graphics|5
+Radeon(TM) R6 Graphics|5
+Radeon HD 6250|5
+Radeon HD 6290|5
+Radeon HD 6250|5
+Radeon HD 7290 Graphics|4
+Radeon HD 5000/6000/7350/8350 Series|3
+Radeon RX Vega 56 OpenGL Engine|-1
+FirePro V4800 (FireGL) Graphics Adapter|-1
+Radeon HD 7670M|-1
+Radeon HD 8570D|-1
+7340:C5|-1
+Radeon HD 8550G|-1
+Radeon R5 Graphics|-1
+ASUS R7 360 Series|-1
+Bonaire [FirePro W5100]|-1
+Radeon HD 6380G|-1
+Radeon R7 Graphics|-1
+FireGL V8650|-1
+FirePro S7150|-1
+FirePro V3900 (FireGL V)|-1
+FirePro V7800 (FireGL V)|-1
+FirePro W4100 Graphics Adapter|-1
+FirePro W4170M (FireGL V)|-1
+Gigabyte Radeon RX 580|-1
+Mobility FireGL V5700|-1
+Mobility Radeon 4100|-1
+Mobility Radeon HD 2400|-1
+Mobility Radeon HD 2400 XT|-1
+Mobility Radeon HD 2600|-1
+Mobility Radeon HD 2600 XT|-1
+Mobility Radeon HD 3200|-1
+Mobility Radeon HD 3400 Series|-1
+Mobility Radeon HD 3430|-1
+Mobility Radeon HD 3470|-1
+Mobility Radeon HD 3650|-1
+Mobility Radeon HD 4200 Series|-1
+Mobility Radeon HD 4250|-1
+Mobility Radeon HD 4300 Series|-1
+Mobility Radeon HD 4500 Series|-1
+Mobility Radeon HD 4500/5100 Series|-1
+Mobility Radeon HD 4650|-1
+Mobility Radeon HD 4670|-1
+Mobility Radeon HD 4850|-1
+R9 270X Devil|-1
+RX 560X|-1
+Radeon|-1
+Radeon(TM) HD8530M|-1
+Radeon 3000|-1
+Radeon 3100 Graphics|-1
+Radeon HD 2400 PRO|-1
+Radeon HD 2400 XT|-1
+Radeon HD 2600 Pro|-1
+Radeon HD 2600 XT|-1
+Radeon HD 2900 GT|-1
+Radeon HD 3200 Graphics|-1
+Radeon HD 3300|-1
+Radeon HD 3450|-1
+Radeon HD 3470|-1
+Radeon HD 3600 Series|-1
+Radeon HD 3650|-1
+Radeon HD 3850|-1
+Radeon HD 3870|-1
+Radeon HD 3870 X2|-1
+Radeon HD 4200|-1
+Radeon HD 4250|-1
+Radeon HD 4290|-1
+Radeon HD 4300/4500 Series|-1
+Radeon HD 4550|-1
+Radeon HD 4600 Series|-1
+Radeon HD 4650|-1
+Radeon HD 4670|-1
+Radeon HD 4830|-1
+Radeon HD 4850|-1
+Radeon HD 4870|-1
+Radeon HD 4890|-1
+Radeon HD 5670 640SP Edition|-1
+Radeon HD 5800 Series|-1
+Radeon HD 5850|-1
+Radeon HD 6490M|-1
+Radeon HD 6730M/6770M|-1
+Radeon HD 6750|-1
+Radeon HD 6800M Series|-1
+Radeon HD 7540D + HD 6670 Dual Graphics|-1
+Radeon HD 7700M Series|-1
+Radeon HD 7800 Series|-1
+Radeon HD 8350|-1
+Radeon HD 8370D|-1
+Radeon HD 8600/8700M|-1
+Radeon Pro WX Vega M GL Graphics|-1
+Radeon R5 200 Series|-1
+Radeon R7 A370|-1
+Radeon R9 200 Series|-1
+Radeon R9 290X/390X|-1
+Radeon R9 380X|-1
+Radeon RX 480|-1
+Radeon RX 550X|-1
+Radeon RX 6650M|-1
+Radeon RX6600XT|-1
+Radeon(TM) R8 M435DX|-1
+Radeon(TM) R9 290X|-1
+Radeon(TM) RX540|-1
+inc. Radeon HD 7970|-1
+Radeong 0.4 on AMD CAPE VERDE (DRM 2.43.0, LLVM 3.7.0)|-1
+Radeong 0.4 on AMD CAPE VERDE (DRM 3.9.0 / 4.9.0-rc1+, LLVM 4.0.0)|-1
+Radeong 0.4 on AMD FIJI (DRM 3.2.0 / 4.7.0-rc5+, LLVM 4.0.0)|-1
+Radeong 0.4 on AMD TAHITI (DRM 2.43.0, LLVM 3.9.0)|-1
+`;function r(){return a}},272003:function(e,n){"use strict";n.length=function(e){var n=e.length;if(!n)return 0;for(var o=0;--n%4>1&&"="===e.charAt(n);)++o;return Math.ceil(3*e.length)/4-o};for(var o=Array(64),a=Array(123),r=0;r<64;)a[o[r]=r<26?r+65:r<52?r+71:r<62?r-4:r-59|43]=r++;n.encode=function(e,n,a){for(var r=null,t=[],i,R=0,d=0;n<a;){var s=e[n++];switch(d){case 0:t[R++]=o[s>>2],i=(3&s)<<4,d=1;break;case 1:t[R++]=o[i|s>>4],i=(15&s)<<2,d=2;break;case 2:t[R++]=o[i|s>>6],t[R++]=o[63&s],d=0}R>8191&&((r||(r=[])).push(String.fromCharCode.apply(String,t)),R=0)}return(d&&(t[R++]=o[i],t[R++]=61,1===d&&(t[R++]=61)),r)?(R&&r.push(String.fromCharCode.apply(String,t.slice(0,R))),r.join("")):String.fromCharCode.apply(String,t.slice(0,R))};var t="invalid encoding";n.decode=function(e,n,o){for(var r=o,i,R=0,d=0;d<e.length;){var s=e.charCodeAt(d++);if(61===s&&R>1)break;if(void 0===(s=a[s]))throw Error(t);switch(R){case 0:i=s,R=1;break;case 1:n[o++]=i<<2|(48&s)>>4,i=s,R=2;break;case 2:n[o++]=(15&i)<<4|(60&s)>>2,i=s,R=3;break;case 3:n[o++]=(3&i)<<6|s,R=0}}if(1===R)throw Error(t);return o-r},n.test=function(e){return/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(e)}},958487:function(e,n){"use strict";Object.defineProperty(n,"__esModule",{value:!0}),n.default=function(e){for(var n=0,o=arguments.length,a=Array(o>1?o-1:0),r=1;r<o;r++)a[r-1]=arguments[r];var t=!0,i=!1,R=void 0;try{for(var d,s=a[Symbol.iterator]();!(t=(d=s.next()).done);t=!0){var c=d.value;n+=c.length}}catch(e){i=!0,R=e}finally{try{!t&&s.return&&s.return()}finally{if(i)throw R}}var l=new e(n),h=0,u=!0,p=!1,f=void 0;try{for(var M,D=a[Symbol.iterator]();!(u=(M=D.next()).done);u=!0){var g=M.value;l.set(g,h),h+=g.length}}catch(e){p=!0,f=e}finally{try{!u&&D.return&&D.return()}finally{if(p)throw f}}return l}},838025:function(e,n,o){"use strict";function a(e,n){for(var o=Math.abs(e).toString();o.length<n;)o="0"+o;return(e<0?"-":"")+o}o.d(n,{Z:function(){return a}})},326883:function(e){var n=Object.prototype.hasOwnProperty;e.exports=function(e,o){return null!=e&&n.call(e,o)}},268926:function(e,n,o){var a=o(681919),r=o(511791),t=o(745627),i=Math.ceil,R=Math.max;e.exports=function(e,n,o){n=(o?r(e,n,o):void 0===n)?1:R(t(n),0);var d=null==e?0:e.length;if(!d||n<1)return[];for(var s=0,c=0,l=Array(i(d/n));s<d;)l[c++]=a(e,s,s+=n);return l}},96772:function(e,n,o){var a=o(568558);e.exports=function(e,n,o){var r=(o="function"==typeof o?o:void 0)?o(e,n):void 0;return void 0===r?a(e,n,void 0,o):!!r}},51692:function(e,n,o){var a=o(653129),r=o(79594),t=o(671674),i=o(431356),R=o(511791);e.exports=function(e,n,o){var d=i(e)?a:t;return o&&R(e,n,o)&&(n=void 0),d(e,r(n,3))}},695575:function(e){"use strict";e.exports="SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED"},697233:function(e,n,o){"use strict";o.d(n,{ZP:function(){return g},kd:function(){return p}});var a=o(730084),r=o(341429),t=o(770605),i=o(63412),R=o.n(i);function d(e,n){for(var o=0;o<n.length;o++){var a=n[o];a.enumerable=a.enumerable||!1,a.configurable=!0,"value"in a&&(a.writable=!0),Object.defineProperty(e,function(e){var n=function(e,n){if("object"!==h(e)||null===e)return e;var o=e[Symbol.toPrimitive];if(void 0!==o){var a=o.call(e,n||"default");if("object"!==h(a))return a;throw TypeError("@@toPrimitive must return a primitive value.")}return("string"===n?String:Number)(e)}(e,"string");return"symbol"===h(n)?n:String(n)}(a.key),a)}}function s(){return(s="undefined"!=typeof Reflect&&Reflect.get?Reflect.get.bind():function(e,n,o){var a=function(e,n){for(;!Object.prototype.hasOwnProperty.call(e,n)&&null!==(e=l(e)););return e}(e,n);if(a){var r=Object.getOwnPropertyDescriptor(a,n);return r.get?r.get.call(arguments.length<3?e:o):r.value}}).apply(this,arguments)}function c(e,n){return(c=Object.setPrototypeOf?Object.setPrototypeOf.bind():function(e,n){return e.__proto__=n,e})(e,n)}function l(e){return(l=Object.setPrototypeOf?Object.getPrototypeOf.bind():function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function h(e){return(h="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}var u={CONTROLS:"controls",ROOT:"root"},p={ROOT:"root",ROOT_LEFT:"rootLeft",ROOT_RIGHT:"rootRight",ROOT_TOP:"rootTop",CONTROLS_LEFT:"controlsLeft",CONTROLS_RIGTH:"controlsRight",CONTROLS_RIGHT:"controlsRight",CONTROLS_CENTER:"controlsCenter",CONTROLS:"controls"},f="xg-icon-disable";function M(e){return!!e&&e.indexOf&&/^(?:http|data:|\/)/.test(e)}function D(e,n){var o=arguments.length>2&&void 0!==arguments[2]?arguments[2]:"",t=arguments.length>3&&void 0!==arguments[3]?arguments[3]:{},i=arguments.length>4&&void 0!==arguments[4]?arguments[4]:"",R=null;if(e instanceof window.Element)return a.ZP.addClass(e,o),Object.keys(t).map(function(n){e.setAttribute(n,t[n])}),e;if(M(e)||M(e.url))return t.src=M(e)?e:e.url||"",R=a.ZP.createDom(e.tag||"img","",t,"xg-img ".concat(o));if("function"==typeof e)try{if((R=e())instanceof window.Element)return a.ZP.addClass(R,o),Object.keys(t).map(function(e){R.setAttribute(e,t[e])}),R;r.Z.logWarn("warn>>icons.".concat(n," in config of plugin named [").concat(i,"] is a function mast return an Element Object"));return null}catch(e){return r.Z.logError("Plugin named [".concat(i,"]:createIcon"),e),null}return"string"==typeof e?a.ZP.createDomFromHtml(e,t,o):(r.Z.logWarn("warn>>icons.".concat(n," in config of plugin named [").concat(i,"] is invalid")),null)}var g=function(e){!function(e,n){if("function"!=typeof n&&null!==n)throw TypeError("Super expression must either be null or a function");e.prototype=Object.create(n&&n.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),Object.defineProperty(e,"prototype",{writable:!1}),n&&c(e,n)}(H,e);var n,o,t,i,M,g=(n=H,o=function(){if("undefined"==typeof Reflect||!Reflect.construct||Reflect.construct.sham)return!1;if("function"==typeof Proxy)return!0;try{return Boolean.prototype.valueOf.call(Reflect.construct(Boolean,[],function(){})),!0}catch(e){return!1}}(),function(){var e,a=l(n);return e=o?Reflect.construct(a,arguments,l(this).constructor):a.apply(this,arguments),function(e,n){if(n&&("object"===h(n)||"function"==typeof n))return n;if(void 0!==n)throw TypeError("Derived constructors may only return object or undefined");return function(e){if(void 0===e)throw ReferenceError("this hasn't been initialised - super() hasn't been called");return e}(e)}(this,e)});function H(){var e,n=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};return!function(e,n){if(!(e instanceof n))throw TypeError("Cannot call a class as a function")}(this,H),(e=g.call(this,n)).__delegates=[],e}return t=H,i=[{key:"__init",value:function(e){if(s(l(H.prototype),"__init",this).call(this,e),!!e.root){var n=e.root,o=null;this.icons={},this.root=null,this.parent=null,!function(e,n){var o=n.config.icons||n.playerConfig.icons;Object.keys(e).map(function(a){var r,t,i,R,d=e[a],s=d&&d.class?d.class:"",c=d&&d.attr?d.attr:{},l=null;if(o&&o[a]){;r=o[a],t=s,s="object"===h(r)&&r.class&&"string"==typeof r.class?"".concat(t," ").concat(r.class):t,i=o[a],R=c,"object"===h(i)&&i.attr&&"object"===h(i.attr)&&Object.keys(i.attr).map(function(e){R[e]=i.attr[e]}),c=R,l=D(o[a],a,s,c,n.pluginName)}!l&&d&&(l=D(d.icon?d.icon:d,c,s,{},n.pluginName)),n.icons[a]=l})}(this.registerIcons()||{},this),this.langText={},!function(e,n){Object.keys(e).map(function(o){Object.defineProperty(n.langText,o,{get:function(){var a=n.lang,r=n.i18n;return r[o]?r[o]:e[o]&&e[o][a]||""}})})}(this.registerLanguageTexts()||{},this);var t="";try{t=this.render()}catch(e){throw r.Z.logError("Plugin:".concat(this.pluginName,":render"),e),Error("Plugin:".concat(this.pluginName,":render:").concat(e.message))}if(t)(o=H.insert(t,n,e.index)).setAttribute("data-index",e.index);else{if(!e.tag)return;(o=a.ZP.createDom(e.tag,"",e.attr,e.name)).setAttribute("data-index",e.index),n.appendChild(o)}this.root=o,this.parent=n;var i=this.config.attr||{},R=this.config.style||{};this.setAttr(i),this.setStyle(R),this.config.index&&this.root.setAttribute("data-index",this.config.index),this.__registerChildren()}}},{key:"__registerChildren",value:function(){var e=this;if(!!this.root){this._children=[];var n=this.children();n&&"object"===h(n)&&Object.keys(n).length>0&&Object.keys(n).map(function(o){var r,t,i=n[o],R={root:e.root};"function"==typeof i?(r=e.config[o]||{},t=i):"object"===h(i)&&"function"==typeof i.plugin&&(r=i.options?a.ZP.deepCopy(e.config[o]||{},i.options):e.config[o]||{},t=i.plugin),R.config=r,void 0!==r.index&&(R.index=r.index),r.root&&(R.root=r.root),e.registerPlugin(t,R,o)})}}},{key:"updateLang",value:function(e){!e&&(e=this.lang);var n=this.root,o=this.i18n,a=this.langText;n&&!function e(n,o){for(var a=0;a<n.children.length;a++)n.children[a].children.length>0?e(n.children[a],o):o(n.children[a])}(n,function(n){var r=n.getAttribute&&n.getAttribute("lang-key");if(!!r){var t=o[r.toUpperCase()]||a[r];t&&(n.innerHTML="function"==typeof t?t(e):t)}})}},{key:"lang",get:function(){return this.player.lang}},{key:"changeLangTextKey",value:function(e){var n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"",o=this.i18n||{},a=this.langText;e.setAttribute&&e.setAttribute("lang-key",n);var r=o[n]||a[n]||"";r&&(e.innerHTML=r)}},{key:"plugins",value:function(){return this._children}},{key:"disable",value:function(){this.config.disable=!0,a.ZP.addClass(this.find(".xgplayer-icon"),f)}},{key:"enable",value:function(){this.config.disable=!1,a.ZP.removeClass(this.find(".xgplayer-icon"),f)}},{key:"children",value:function(){return{}}},{key:"registerPlugin",value:function(e){var n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},o=arguments.length>2&&void 0!==arguments[2]?arguments[2]:"";n.root=n.root||this.root;var a=s(l(H.prototype),"registerPlugin",this).call(this,e,n,o);return this._children.push(a),a}},{key:"unregisterPlugin",value:function(e){if(this._children instanceof Array){var n=function(e,n){if(e instanceof Array){for(var o=0;o<e.length;o++)if(n.call(null,e[o],o,e))return o}return -1}(this._children,function(n){return n===e||n.pluginName&&n.pluginName===e.pluginName});n>-1&&this._children.splice(n,1)}}},{key:"registerIcons",value:function(){return{}}},{key:"registerLanguageTexts",value:function(){return{}}},{key:"find",value:function(e){if(!!this.root)return this.root.querySelector(e)}},{key:"bind",value:function(e,n,o){var a=this;if(arguments.length<3&&"function"==typeof n)Array.isArray(e)?e.forEach(function(e){a.bindEL(e,n)}):this.bindEL(e,n);else{var r=H.delegate.call(this,this.root,e,n,o);this.__delegates=this.__delegates.concat(r)}}},{key:"unbind",value:function(e,n){var o=this;if(arguments.length<3&&"function"==typeof n)Array.isArray(e)?e.forEach(function(e){o.unbindEL(e,n)}):this.unbindEL(e,n);else{for(var a="".concat(e,"_").concat(n),r=0;r<this.__delegates.length;r++)if(this.__delegates[r].key===a){this.__delegates[r].destroy(),this.__delegates.splice(r,1);break}}}},{key:"setStyle",value:function(e,n){var o=this;if(!!this.root){if("String"===a.ZP.typeOf(e))return this.root.style[e]=n;"Object"===a.ZP.typeOf(e)&&Object.keys(e).map(function(n){o.root.style[n]=e[n]})}}},{key:"setAttr",value:function(e,n){var o=this;if(!!this.root){if("String"===a.ZP.typeOf(e))return this.root.setAttribute(e,n);"Object"===a.ZP.typeOf(e)&&Object.keys(e).map(function(n){o.root.setAttribute(n,e[n])})}}},{key:"setHtml",value:function(e,n){if(!!this.root)this.root.innerHTML=e,"function"==typeof n&&n()}},{key:"bindEL",value:function(e,n){var o=arguments.length>2&&void 0!==arguments[2]&&arguments[2];if(!!this.root)"on".concat(e) in this.root&&"function"==typeof n&&this.root.addEventListener(e,n,o)}},{key:"unbindEL",value:function(e,n){var o=arguments.length>2&&void 0!==arguments[2]&&arguments[2];if(!!this.root)"on".concat(e) in this.root&&"function"==typeof n&&this.root.removeEventListener(e,n,o)}},{key:"show",value:function(e){var n=!(arguments.length>1)||void 0===arguments[1]||arguments[1];if(!!this.root){if(this.root.style.display=void 0!==e?e:"block",n&&"none"===window.getComputedStyle(this.root,null).getPropertyValue("display"))return this.root.style.display="block"}}},{key:"hide",value:function(){this.root&&(this.root.style.display="none")}},{key:"appendChild",value:function(e,n){if(!this.root)return null;if(arguments.length<2&&arguments[0]instanceof window.Element)return this.root.appendChild(arguments[0]);if(!n||!(n instanceof window.Element))return null;try{if("string"==typeof e)return this.find(e).appendChild(n);return e.appendChild(n)}catch(e){return r.Z.logError("Plugin:appendChild",e),null}}},{key:"render",value:function(){return""}},{key:"destroy",value:function(){}},{key:"__destroy",value:function(){var e=this,n=this.player;this.__delegates.map(function(e){e.destroy()}),this.__delegates=[],this._children instanceof Array&&(this._children.forEach(function(e){n.unRegisterPlugin(e.pluginName)}),this._children=null),this.root&&(this.root.hasOwnProperty("remove")?this.root.remove():this.root.parentNode&&this.root.parentNode.removeChild(this.root)),s(l(H.prototype),"__destroy",this).call(this),this.icons={},["root","parent"].map(function(n){e[n]=null})}}],M=[{key:"insert",value:function(e,n){var o=arguments.length>2&&void 0!==arguments[2]?arguments[2]:0,a=n.children.length,r=Number(o),t=e instanceof window.Node;if(!a)return t?n.appendChild(e):n.insertAdjacentHTML("beforeend",e),n.children[n.children.length-1];for(var i=0,R=null,d="";i<a;i++){var s=Number((R=n.children[i]).getAttribute("data-index"));if(s>=r){d="beforebegin";break}s<r&&(d="afterend")}return t?"afterend"===d?n.appendChild(e):n.insertBefore(e,R):R.insertAdjacentHTML(d,e),"afterend"===d?n.children[n.children.length-1]:n.children[i]}},{key:"defaultConfig",get:function(){return{}}},{key:"delegate",value:function(e,n,o,a){var r=arguments.length>4&&void 0!==arguments[4]&&arguments[4],t=[];if(e instanceof window.Node&&"function"==typeof a){if(Array.isArray(o))o.forEach(function(o){var i=R()(e,n,o,a,r);i.key="".concat(n,"_").concat(o),t.push(i)});else{var i=R()(e,n,o,a,r);i.key="".concat(n,"_").concat(o),t.push(i)}}return t}},{key:"ROOT_TYPES",get:function(){return u}},{key:"POSITIONS",get:function(){return p}}],i&&d(t.prototype,i),M&&d(t,M),Object.defineProperty(t,"prototype",{writable:!1}),H}(t.ZP)},110877:function(e,n){"use strict";Object.defineProperty(n,"__esModule",{value:!0}),n.default=function(e){var n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:[];e.__hooks={},n&&n.map(function(n){e.__hooks[n]=null}),Object.defineProperty(e,"hooks",{get:function(){return e.__hooks&&Object.keys(e.__hooks).map(function(n){if(e.__hooks[n])return n})}})},n.delHooksDescriptor=function(e){e.__hooks=null},n.hook=function(e,n){var r=arguments.length>2&&void 0!==arguments[2]?arguments[2]:{pre:null,next:null};return!this.__hooks&&(this.__hooks={}),this.__hooks[e]||(this.__hooks[e]=null),(function(){var t=arguments,i=this;if(r.pre)try{(R=r.pre).call.apply(R,[this].concat(Array.prototype.slice.call(arguments)))}catch(n){throw n.message="[pluginName: ".concat(this.pluginName,":").concat(e,":pre error] >> ").concat(n.message),n}if(this.__hooks&&this.__hooks[e])try{var R,d,s=(d=this.__hooks[e]).call.apply(d,[this,this].concat(Array.prototype.slice.call(arguments)));s?s.then?s.then(function(e){if(!1!==e){var R;a.apply(void 0,[i,n,r.next].concat((R=t,function(e){if(Array.isArray(e))return o(e)}(R)||function(e){if("undefined"!=typeof Symbol&&null!=e[Symbol.iterator]||null!=e["@@iterator"])return Array.from(e)}(R)||function(e,n){if(e){if("string"==typeof e)return o(e,n);var a=Object.prototype.toString.call(e).slice(8,-1);if("Object"===a&&e.constructor&&(a=e.constructor.name),"Map"===a||"Set"===a)return Array.from(e);if("Arguments"===a||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(a))return o(e,n)}}(R)||function(){throw TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}())))}}).catch(function(e){throw e}):a.apply(void 0,[this,n,r.next].concat(Array.prototype.slice.call(arguments))):void 0===s&&a.apply(void 0,[this,n,r.next].concat(Array.prototype.slice.call(arguments)))}catch(n){throw n.message="[pluginName: ".concat(this.pluginName,":").concat(e,"] >> ").concat(n.message),n}else a.apply(void 0,[this,n,r.next].concat(Array.prototype.slice.call(arguments)))}).bind(this)},n.removeHooks=function(e,n){var o=this.__hooks;if(!!o)if(Array.isArray(o[e])){var a=o[e],t=r.call(this,e,n);-1!==t&&a.splice(t,1)}else o[e]&&(o[e]=null)},n.removePluginHooks=function(e){if(!!this.plugins&&!!this.plugins[e.toLowerCase()]){var n=this.plugins[e.toLowerCase()];if(n){for(var o=arguments.length,a=Array(o>1?o-1:0),r=1;r<o;r++)a[r-1]=arguments[r];return n.removeHooks&&n.removeHooks.apply(n,a)}}},n.runHooks=function(e,n,o){for(var a=arguments.length,r=Array(a>3?a-3:0),t=3;t<a;t++)r[t-3]=arguments[t];if(!e.__hooks||!e.__hooks[n])return o.call.apply(o,[e,e].concat(r));var i,R=(i=e.__hooks[n]).call.apply(i,[e,e].concat(r));if(R&&R.then)R.then(function(n){return!1===n?null:o.call.apply(o,[e,e].concat(r))}).catch(function(e){});else if(!1!==R)return o.call.apply(o,[e,e].concat(r))},n.useHooks=function(e,n){var o=this.__hooks;return o?!!o.hasOwnProperty(e)&&(o&&(o[e]=n),!0):void 0},n.usePluginHooks=function(e){if(!!this.plugins&&!!this.plugins[e.toLowerCase()]){for(var n=this.plugins[e.toLowerCase()],o=arguments.length,a=Array(o>1?o-1:0),r=1;r<o;r++)a[r-1]=arguments[r];return n.useHooks&&n.useHooks.apply(n,a)}};function o(e,n){(null==n||n>e.length)&&(n=e.length);for(var o=0,a=Array(n);o<n;o++)a[o]=e[o];return a}function a(e,n,o){for(var a=arguments.length,r=Array(a>3?a-3:0),t=3;t<a;t++)r[t-3]=arguments[t];var i=n.call.apply(n,[e].concat(r));if(!!o&&"function"==typeof o)i&&i.then?i.then(function(){for(var n=arguments.length,a=Array(n),r=0;r<n;r++)a[r]=arguments[r];o.call.apply(o,[e].concat(a))}):o.call.apply(o,[e].concat(r))}function r(e,n){var o=this.__hooks;if(!o||!Array.isArray(o[e]))return -1;for(var a=o[e],r=0;r<a.length;r++)if(a[r]===n)return r;return -1}},839092:function(e,n,o){"use strict";o.r(n)},742981:function(e,n,o){"use strict";o.d(n,{Z:function(){return g}}),o(932651);var a=o(908219),r=o.n(a),t=o(101199),i=o(426337),R=o(469935),d=o.n(R),s=o(622689),c=o.n(s),l=o(629937),h=o(248767);o(436503);var u=o(158871),p=o(653552),f=o(678503),M=function(e,n){var o={};for(var a in e)Object.prototype.hasOwnProperty.call(e,a)&&0>n.indexOf(a)&&(o[a]=e[a]);if(null!=e&&"function"==typeof Object.getOwnPropertySymbols)for(var r=0,a=Object.getOwnPropertySymbols(e);r<a.length;r++)0>n.indexOf(a[r])&&Object.prototype.propertyIsEnumerable.call(e,a[r])&&(o[a[r]]=e[a[r]]);return o};let D=l.U.PREFIX;class g extends i.Z{componentDidMount(){var e;this.foundation.init(),this.handler=r()(this.handleClick,null!==(e=this.props.duration)&&void 0!==e?e:g.defaultProps.duration)}componentWillUnmount(){this.foundation.destroy()}get adapter(){return Object.assign(Object.assign({},super.adapter),{updateVisible:e=>{this.setState({visible:e})},notifyClick:e=>{this.props.onClick&&this.props.onClick(e)},targetIsWindow:e=>e===window,isWindowUndefined:()=>void 0===window,targetScrollToTop:(e,n)=>{e===window?(document.body.scrollTop=n,document.documentElement.scrollTop=n):e.scrollTop=n}})}handleClick(e){this.foundation.onClick(e)}renderDefault(){return t.createElement(u.Z,{theme:"light",icon:t.createElement(p.Z,null)})}render(){let e=this.props,{children:n,className:o,style:a,onClick:r,visibilityHeight:i,target:R}=e,s=M(e,["children","className","style","onClick","visibilityHeight","target"]),{visible:c}=this.state,l=d()(D,o),h=n||this.renderDefault();return c?t.createElement("div",Object.assign({},s,{className:l,style:a,onClick:e=>this.handler(e),"x-semi-prop":"children"}),h):null}constructor(e){super(e),this.state={visible:!1},this.foundation=new h.Z(this.adapter)}}g.__SemiComponentName__="BackTop",g.defaultProps=(0,f.GW)(g.__SemiComponentName__,{visibilityHeight:400,target:()=>window,duration:450}),g.propTypes={target:c().func,visibilityHeight:c().number,duration:c().number,onClick:c().func,style:c().object,className:c().string}},940971:function(e,n,o){"use strict";o(932651),o(490629),o(76375),o(683656),o(759943);var a=o(72137),r=o.n(a),t=o(85079),i=o.n(t),R=o(101199),d=o(622689),s=o.n(d),c=o(469935),l=o.n(c),h=o(912077),u=o(559748),p=o(297222),f=o(438136),M=o(9444),D=o(151943),g=o(63793),H=o(343388),X=o(155553),y=o(127243),m=o(209873),T=function(e,n){var o={};for(var a in e)Object.prototype.hasOwnProperty.call(e,a)&&0>n.indexOf(a)&&(o[a]=e[a]);if(null!=e&&"function"==typeof Object.getOwnPropertySymbols)for(var r=0,a=Object.getOwnPropertySymbols(e);r<a.length;r++)0>n.indexOf(a[r])&&Object.prototype.propertyIsEnumerable.call(e,a[r])&&(o[a[r]]=e[a[r]]);return o};class b extends R.Component{componentDidMount(){this.setState({uuid:(0,X.Cd)()},()=>{this.props.collapsible&&requestAnimationFrame(()=>{this.scrollActiveTabItemIntoView()})})}componentDidUpdate(e){e.activeKey!==this.props.activeKey&&this.props.collapsible&&this.scrollActiveTabItemIntoView()}renderIcon(e){return R.createElement("span",null,e)}renderExtra(){let{tabBarExtraContent:e,type:n,size:o}=this.props,a=e&&e.props?e.props.style:{},r=l()(h.UX.TABS_BAR_EXTRA,{[`${h.UX.TABS_BAR}-${n}-extra`]:n,[`${h.UX.TABS_BAR}-${n}-extra-${o}`]:o});if(e){let n=Object.assign(Object.assign({},{float:"right"}),a);return R.createElement("div",{className:r,style:n,"x-semi-prop":"tabBarExtraContent"},e)}return null}render(){let e=this.props,{type:n,style:o,className:a,list:r,tabPosition:t,more:i,collapsible:d}=e,s=T(e,["type","style","className","list","tabPosition","more","collapsible"]),c=l()(a,{[h.UX.TABS_BAR]:!0,[h.UX.TABS_BAR_LINE]:"line"===n,[h.UX.TABS_BAR_CARD]:"card"===n,[h.UX.TABS_BAR_BUTTON]:"button"===n,[h.UX.TABS_BAR_SLASH]:"slash"===n,[`${h.UX.TABS_BAR}-${t}`]:t,[`${h.UX.TABS_BAR}-collapse`]:d}),p=this.renderExtra(),f=d?this.renderCollapsedTab():i?this.renderWithMoreTrigger():this.renderTabComponents(r);return R.createElement("div",Object.assign({role:"tablist","aria-orientation":"left"===t?"vertical":"horizontal",className:c,style:o},(0,u.Z)(s),{"data-uuid":this.state.uuid}),f,p)}constructor(e){var n;super(e),n=this,this.handleItemClick=(e,n)=>{this.props.onTabClick(e,n)},this.handleKeyDown=(e,n,o)=>{this.props.handleKeyDown(e,n,o)},this.renderTabItem=e=>{let{size:n,type:o,deleteTabItem:a,handleKeyDown:t,tabPosition:i}=this.props,d=this._isActive(e.itemKey);return R.createElement(y.Z,Object.assign({},r()(e,["disabled","icon","itemKey","tab","closable"]),{key:this._getBarItemKeyByItemKey(e.itemKey),selected:d,size:n,type:o,tabPosition:i,handleKeyDown:t,deleteTabItem:a,onClick:this.handleItemClick}))},this.scrollTabItemIntoViewByKey=function(e){let o=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"nearest",a=document.querySelector(`[data-uuid="${n.state.uuid}"] .${h.UX.TABS_TAB}[data-scrollkey="${e}"]`);null==a||a.scrollIntoView({behavior:"smooth",block:o,inline:o})},this.scrollActiveTabItemIntoView=e=>{let n=this._getBarItemKeyByItemKey(this.props.activeKey);this.scrollTabItemIntoViewByKey(n,e)},this.renderTabComponents=e=>e.map(e=>this.renderTabItem(e)),this.handleArrowClick=(e,n)=>{let o="start"===n?e.pop():e.shift();if(!o)return;let a=this._getBarItemKeyByItemKey(o.itemKey);this.scrollTabItemIntoViewByKey(a)},this.renderCollapse=(e,n,o)=>{var a;let r=l()({[`${h.UX.TABS_BAR}-arrow-${o}`]:o,[`${h.UX.TABS_BAR}-arrow`]:!0});if(i()(e))return R.createElement("div",{role:"presentation",className:r},R.createElement(M.Z,{disabled:!0,icon:n,theme:"borderless"}));let{dropdownClassName:t,dropdownStyle:d,showRestInDropdown:s,dropdownProps:c}=this.props,{rePosKey:u}=this.state,p=!e.length,D=R.createElement(f.Z.Menu,null,e.map(e=>{let{icon:n,tab:o,itemKey:a}=e,r=n?this.renderIcon(e.icon):null;return R.createElement(f.Z.Item,{key:a,onClick:e=>this.handleItemClick(a,e),active:this._isActive(a)},r,o)})),g=R.createElement("div",{role:"presentation",className:r,onClick:n=>this.handleArrowClick(e,o)},R.createElement(M.Z,{disabled:p,icon:n,theme:"borderless"})),H=l()(t,{[`${h.UX.TABS_BAR}-dropdown`]:!0}),X=null!==(a=null==c?void 0:c[o])&&void 0!==a?a:{};return R.createElement(R.Fragment,null,s?R.createElement(f.Z,Object.assign({className:H,clickToHide:!0,clickTriggerToHide:!0,key:`${u}-${o}`,position:"start"===o?"bottomLeft":"bottomRight",render:p?null:D,showTick:!0,style:d,trigger:"hover",disableFocusListener:!0},X),g):g)},this.renderOverflow=e=>e.map((e,n)=>{let o=0===n?"start":"end",a=0===n?R.createElement(D.Z,null):R.createElement(g.Z,null),r=this.renderCollapse(e,a,o);return this.props.renderArrow?this.props.renderArrow(e,o,()=>this.handleArrowClick(e,o),r):r}),this.renderCollapsedTab=()=>{let{list:e}=this.props,n=e.map(e=>{let{itemKey:n}=e;return Object.assign({key:this._getBarItemKeyByItemKey(n),active:this._isActive(n)},e)});return R.createElement(p.Z,{items:n,overflowRenderDirection:this.props.arrowPosition,wrapperStyle:this.props.visibleTabsStyle,overflowRenderer:this.renderOverflow,renderMode:"scroll",className:`${h.UX.TABS_BAR}-overflow-list`,visibleItemRenderer:this.renderTabItem,onVisibleStateChange:e=>{var n,o;let a=new Map;e.forEach((e,n)=>{a.set(this._getItemKeyByBarItemKey(n),e)}),null===(o=(n=this.props).onVisibleTabsChange)||void 0===o||o.call(n,a)}})},this.renderWithMoreTrigger=()=>{let e;let{list:n,more:o}=this.props,a=[],r=R.createElement("div",{className:l()({[`${h.UX.TABS_BAR}-more-trigger`]:!0,[`${h.UX.TABS_BAR}-more-trigger-${this.props.type}`]:!0})},R.createElement(m.Z,{componentName:"Tabs"},(e,n)=>R.createElement("div",{className:`${h.UX.TABS_BAR}-more-trigger-content`},R.createElement("div",null,e.more),R.createElement(H.Z,{className:`${h.UX.TABS_BAR}-more-trigger-content-icon`}))));if("number"==typeof o)e=n.length-Math.min(o,n.length),a=n.slice(0,e).map(e=>this.renderTabItem(e));else if("object"==typeof o)e=n.length-Math.min(o.count,n.length),a=n.slice(0,e).map(e=>this.renderTabItem(e)),o.render&&(r=o.render());else if(void 0!==o)throw Error("[Semi Tabs]: invalid tab props format: more");return R.createElement(R.Fragment,null,a,this.renderMoreDropdown(n.slice(e),null==o?void 0:o.dropdownProps,r))},this.renderMoreDropdown=(e,n,o)=>R.createElement(f.Z,Object.assign({trigger:"hover",showTick:!0,position:"bottomLeft",className:`${h.UX.TABS_BAR}-more-dropdown-${this.props.type}`,clickToHide:!0,menu:e.map(e=>({node:"item",name:e.tab,icon:e.icon,onClick:n=>this.props.onTabClick(e.itemKey,n),active:this.props.activeKey===e.itemKey}))},n),o),this._isActive=e=>e===this.props.activeKey,this._getBarItemKeyByItemKey=e=>`${e}-bar`,this._getItemKeyByBarItemKey=e=>e.replace(/-bar$/,""),this.state={endInd:e.list.length,rePosKey:0,startInd:0,uuid:"",currentVisibleItems:[]}}}b.propTypes={activeKey:s().string,className:s().string,collapsible:s().bool,list:s().array,onTabClick:s().func,size:s().oneOf(h.j2.SIZE),style:s().object,tabBarExtraContent:s().node,tabPosition:s().oneOf(h.j2.POSITION_MAP),type:s().oneOf(h.j2.TYPE_MAP),closable:s().bool,deleteTabItem:s().func,more:s().oneOfType([s().number,s().object])},n.Z=b},12829:function(e,n,o){"use strict";o.d(n,{Bh:function(){return R},Dt:function(){return t.Dt},G6:function(){return t.G6},SE:function(){return a.S},Yd:function(){return r.Y},dB:function(){return d},gJ:function(){return i},vU:function(){return t.vU}}),o(190932),o(808483),o(126159),o(100832),o(825666),o(943281),o(82726),o(591964),o(414931),o(374954),o(527553),o(661870);var a=o(123960),r=o(428630);o(24777);var t=o(290654);function i(){for(var e=arguments.length,n=Array(e),o=0;o<e;o++)n[o]=arguments[o];let a=new Uint8Array((n=n.filter(Boolean)).reduce((e,n)=>e+n.byteLength,0)),r=0;return n.forEach(e=>{a.set(e,r),r+=e.byteLength}),a}function R(e){let n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:0;return(e[n]<<24>>>0)+(e[n+1]<<16)+(e[n+2]<<8)+(e[n+3]||0)}function d(e){let n,o="avc1.";for(let a=0;a<3;a++)(n=e[a].toString(16)).length<2&&(n=`0${n}`),o+=n;return o}},950397:function(e,n,o){"use strict";function a(){let e,n;let o=new Promise((o,a)=>{e=o,n=a});return o.used=!1,o.resolve=function(){for(var n=arguments.length,a=Array(n),r=0;r<n;r++)a[r]=arguments[r];return o.used=!0,e(...a)},o.reject=function(){for(var e=arguments.length,a=Array(e),r=0;r<e;r++)a[r]=arguments[r];return o.used=!0,n(...a)},o}function r(){try{return parseInt(performance.now(),10)}catch(e){return new Date().getTime()}}o.d(n,{Q:function(){return a},j:function(){return r}}),o(679308),o(490629),o(527553)},529737:function(e,n,o){"use strict";o.d(n,{b:function(){return s}});var a=o(480333);o(591964),o(190932),o(808483),o(126159),o(100832),o(825666),o(943281),o(82726),o(490629),o(374954),o(561433);var r=o(582898),t=o(115002);let i=4294967296-1,R="video",d="hevc";class s{static box(e){for(var n=arguments.length,o=Array(n>1?n-1:0),a=1;a<n;a++)o[a-1]=arguments[a];let r=8+(o=o.filter(Boolean)).reduce((e,n)=>e+n.byteLength,0),t=new Uint8Array(r);t[0]=r>>24&255,t[1]=r>>16&255,t[2]=r>>8&255,t[3]=255&r,t.set(e,4);let i=8;return o.forEach(e=>{t.set(e,i),i+=e.byteLength}),t}static ftyp(e){return e.find(e=>e.codecType===d)?s.FTYPHEV1:s.FTYPAVC1}static initSegment(e){let n=s.ftyp(e);return(0,r.gJ)(n,s.moov(e))}static pssh(e){let n=new Uint8Array([1,0,0,0].concat([16,119,239,236,192,178,77,2,172,227,60,30,82,226,251,75],[0,0,0,1],(0,r.Qc)(e.kid),[0,0,0,0]));return s.box(s.types.pssh,n)}static moov(e){if(!e[0].useEME||!e[0].encv&&!e[0].enca)return s.box(s.types.moov,s.mvhd(e[0].mvhdDurtion||e[0].duration,e[0].mvhdTimecale||e[0].timescale),...e.map(e=>s.trak(e)),s.mvex(e));{!e[0].pssh&&(e[0].pssh={kid:e[0].kid});let n=this.pssh(e[0].pssh);return s.box(s.types.moov,s.mvhd(e[0].mvhdDurtion||e[0].duration,e[0].mvhdTimecale||e[0].timescale),s.mvex(e),...e.map(e=>s.trak(e)),n)}}static mvhd(e){let n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:9e4;return s.box(s.types.mvhd,new Uint8Array([0,0,0,0,0,0,0,0,0,0,0,0,n>>24&255,n>>16&255,n>>8&255,255&n,e>>24&255,e>>16&255,e>>8&255,255&e,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,64,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,255,255,255,255]))}static trak(e){return s.box(s.types.trak,s.tkhd(e.id,e.tkhdDuration||0,e.width,e.height),s.mdia(e))}static tkhd(e,n){let o=arguments.length>2&&void 0!==arguments[2]?arguments[2]:0,a=arguments.length>3&&void 0!==arguments[3]?arguments[3]:0;return s.box(s.types.tkhd,new Uint8Array([0,0,0,7,0,0,0,0,0,0,0,0,e>>24&255,e>>16&255,e>>8&255,255&e,0,0,0,0,n>>24&255,n>>16&255,n>>8&255,255&n,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,64,0,0,0,o>>8&255,255&o,0,0,a>>8&255,255&a,0,0]))}static mdia(e){return s.box(s.types.mdia,s.mdhd(e.duration,e.timescale),s.hdlr(e.type),s.minf(e))}static mdhd(e){let n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:9e4;return s.box(s.types.mdhd,new Uint8Array([0,0,0,0,0,0,0,0,0,0,0,0,n>>24&255,n>>16&255,n>>8&255,255&n,e>>24&255,e>>16&255,e>>8&255,255&e,85,196,0,0]))}static hdlr(e){return s.box(s.types.hdlr,s.HDLR_TYPES[e])}static minf(e){return s.box(s.types.minf,e.type===R?s.VMHD:s.SMHD,s.DINF,s.stbl(e))}static stbl(e){let n=[];return e&&e.ext&&e.ext.stss&&n.push(s.stss(e.ext.stss.entries)),s.box(s.types.stbl,s.stsd(e),s.STTS,n[0],s.STSC,s.STSZ,s.STCO)}static stsd(e){let n;return n="audio"===e.type?e.useEME&&e.enca?s.enca(e):s.mp4a(e):e.useEME&&e.encv?s.encv(e):e.av1C?s.av01(e):s.avc1hev1(e),s.box(s.types.stsd,new Uint8Array([0,0,0,0,0,0,0,1]),n)}static enca(e){let n=e.enca.channelCount,o=e.enca.sampleRate,a=new Uint8Array([0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,n,0,16,0,0,0,0,o>>8&255,255&o,0,0]),r=s.esds(e.config),t=s.sinf(e.enca);return s.box(s.types.enca,a,r,t)}static encv(e){let n=e.sps.length>0?e.sps[0]:[],o=e.pps.length>0?e.pps[0]:[],a=e.width,r=e.height,t=e.sarRatio[0],i=e.sarRatio[1],R=new Uint8Array([0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,a>>8&255,255&a,r>>8&255,255&r,0,72,0,0,0,72,0,0,0,0,0,0,0,1,18,100,97,105,108,121,109,111,116,105,111,110,47,104,108,115,46,106,115,0,0,0,0,0,0,0,0,0,0,0,0,0,0,24,17,17]),d=new Uint8Array([1,n[1],n[2],n[3],255,225,n.length>>>8&255,255&n.length].concat(...n).concat([1,o.length>>>8&255,255&o.length]).concat(...o)),c=new Uint8Array([0,0,88,57,0,15,200,192,0,4,86,72]),l=s.sinf(e.encv),h=new Uint8Array([t>>24,t>>16&255,t>>8&255,255&t,i>>24,i>>16&255,i>>8&255,255&i]);return s.box(s.types.encv,R,s.box(s.types.avcC,d),s.box(s.types.btrt,c),l,s.box(s.types.pasp,h))}static schi(e){let n=new Uint8Array([]),o=s.tenc(e);return s.box(s.types.schi,n,o)}static tenc(e){let n=new Uint8Array([0,0,0,0,0,0,255&e.default_IsEncrypted,255&e.default_IV_size].concat((0,r.Qc)(e.default_KID)));return s.box(s.types.tenc,n)}static sinf(e){let n=new Uint8Array([]),o=new Uint8Array([e.data_format.charCodeAt(0),e.data_format.charCodeAt(1),e.data_format.charCodeAt(2),e.data_format.charCodeAt(3)]),a=new Uint8Array([0,0,0,0,99,101,110,99,0,1,0,0]),r=s.schi(e);return s.box(s.types.sinf,n,s.box(s.types.frma,o),s.box(s.types.schm,a),r)}static av01(e){return s.box(s.types.av01,new Uint8Array([0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,e.width>>8&255,255&e.width,e.height>>8&255,255&e.height,0,72,0,0,0,72,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,24,17,17]),e.av1C,e.colr)}static avc1hev1(e){let n=e.codecType===d,o=n?s.types.hvc1:s.types.avc1,a=n?s.hvcC(e):s.avcC(e),r=[new Uint8Array([0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,e.width>>8&255,255&e.width,e.height>>8&255,255&e.height,0,72,0,0,0,72,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,24,17,17]),a];return n?r.push(s.box(s.types.fiel,new Uint8Array([1,0]))):e.sarRatio&&e.sarRatio.length>1&&r.push(s.pasp(e.sarRatio)),s.box(o,...r)}static avcC(e){let n;let o=[],a=[];return e.sps.forEach(e=>{n=e.byteLength,o.push(n>>>8&255),o.push(255&n),o.push(...e)}),e.pps.forEach(e=>{n=e.byteLength,a.push(n>>>8&255),a.push(255&n),a.push(...e)}),s.box(s.types.avcC,new Uint8Array([1,o[3],o[4],o[5],255,224|e.sps.length].concat(...o).concat([e.pps.length]).concat(...a)))}static hvcC(e){let n;let o=e.hvcC;if(o instanceof ArrayBuffer||o instanceof Uint8Array)return o;let{vps:a,sps:r,pps:t}=e;if(o){let e=o.generalProfileCompatibilityFlags,i=o.generalConstraintIndicatorFlags,R=(a.length&&1)+(r.length&&1)+(t.length&&1);n=[1,o.generalProfileSpace<<6|o.generalTierFlag<<5|o.generalProfileIdc,e>>>24,e>>>16,e>>>8,e,i[0],i[1],i[2],i[3],i[4],i[5],o.generalLevelIdc,240,0,252,252|o.chromaFormatIdc,248|o.bitDepthLumaMinus8,248|o.bitDepthChromaMinus8,0,0,o.numTemporalLayers<<3|o.temporalIdNested<<2|3,R];let d=e=>{n.push(e.length>>8,e.length),n.push(...e)};a.length&&(n.push(160,0,a.length),a.forEach(d)),r.length&&(n.push(161,0,r.length),r.forEach(d)),t.length&&(n.push(162,0,t.length),t.forEach(d))}else n=[1,1,96,0,0,0,144,0,0,0,0,0,93,240,0,252,253,248,248,0,0,15,3,160,0,1,0,24,64,1,12,1,255,255,1,96,0,0,3,0,144,0,0,3,0,0,3,0,93,153,152,9,161,0,1,0,45,66,1,1,1,96,0,0,3,0,144,0,0,3,0,0,3,0,93,160,2,128,128,45,22,89,153,164,147,43,154,128,128,128,130,0,0,3,0,2,0,0,3,0,50,16,162,0,1,0,7,68,1,193,114,180,98,64];return s.box(s.types.hvcC,new Uint8Array(n))}static pasp(e){let[n,o]=e;return s.box(s.types.pasp,new Uint8Array([n>>24,n>>16&255,n>>8&255,255&n,o>>24,o>>16&255,o>>8&255,255&o]))}static mp4a(e){return s.box(s.types.mp4a,new Uint8Array([0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,e.channelCount,0,16,0,0,0,0,e.sampleRate>>8&255,255&e.sampleRate,0,0]),e.config.length?s.esds(e.config):void 0)}static esds(e){let n=e.length;return s.box(s.types.esds,new Uint8Array([0,0,0,0,3,23+n,0,0,0,4,15+n,64,21,0,6,0,0,0,218,192,0,0,218,192,5].concat([n]).concat(e).concat([6,1,2])))}static mvex(e){return s.box(s.types.mvex,...e.map(e=>s.trex(e.id)))}static trex(e){return s.box(s.types.trex,new Uint8Array([0,0,0,0,e>>24,e>>16&255,e>>8&255,255&e,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,1]))}static trex1(e){return s.box(s.types.trex,new Uint8Array([0,0,0,0,e>>24,e>>16&255,e>>8&255,255&e,0,0,0,1,0,0,2,0,0,0,0,0,0,1,0,0]))}static trex2(e){return s.box(s.types.trex,new Uint8Array([0,0,0,0,e>>24,e>>16&255,e>>8&255,255&e,0,0,0,1,0,0,4,0,0,0,0,0,2,0,0,0]))}static moof(e){return s.box(s.types.moof,s.mfhd(e[0].samples?e[0].samples[0].gopId:0),...e.map(e=>s.traf(e)))}static mfhd(e){return s.box(s.types.mfhd,new Uint8Array([0,0,0,0,e>>24,e>>16&255,e>>8&255,255&e]))}static traf(e){let n=s.tfhd(e.id),o=s.tfdt(e,e.baseMediaDecodeTime),a=0;if(e.isVideo&&e.videoSenc&&e.videoSenc.forEach(function(e){a+=8,e.subsamples&&e.subsamples.length&&(a+=2+6*e.subsamples.length)}),e.videoSencLength=a,e.useEME&&(e.isVideoEncryption||e.isAudioEncryption)){if(e.isVideoEncryption){if(e.isVideo){let a=s.saiz(e),r=s.saio(e),t=s.trun1(e),i=s.senc(e);return s.box(s.types.traf,n,o,a,r,t,i)}if(e.isAudioEncryption){let a=s.sbgp(),r=s.saiz(e),t=s.saio(e),i=s.senc(e),R=s.trun1(e);return s.box(s.types.traf,n,o,a,r,t,i,R)}{let a=s.sbgp(),r=s.trun1(e);return s.box(s.types.traf,n,o,a,r)}}else{if(e.isVideo){let a=s.trun1(e);return s.box(s.types.traf,n,o,a)}{let a=s.sbgp(),r=s.saiz(e),t=s.saio(e),i=s.senc(e),R=s.trun1(e);return s.box(s.types.traf,n,o,a,r,t,i,R)}}}{let a=s.sdtp(e);return s.box(s.types.traf,n,o,a,s.trun(e.samples,a.byteLength+76))}}static sdtp(e){let n=new t.Z;return e.samples.forEach(o=>{n.write(new Uint8Array(e.isVideo?[o.keyframe?32:16]:[16]))}),s.box(s.types.sdtp,this.extension(0,0),n.buffer)}static trun1(e){let n=new t.Z,o=t.Z.writeUint32(e.samples.length),a=null;if(e.isVideo){let n=e.videoSencLength;a=t.Z.writeUint32(16*e.samples.length+n+149),!e.isVideoEncryption&&e.isAudioEncryption&&(a=t.Z.writeUint32(16*e.samples.length+92))}else{let n=12*e.samples.length+124;e.isAudioEncryption&&(n=12*e.samples.length+8*e.audioSenc.length+177),a=t.Z.writeUint32(n)}return e.samples.forEach(o=>{n.write(t.Z.writeUint32(o.duration)),n.write(t.Z.writeUint32(o.size)),n.write(t.Z.writeUint32(o.keyframe?33554432:65536)),e.isVideo&&n.write(t.Z.writeUint32(o.cts?o.cts:0))}),s.box(s.types.trun,this.extension(0,e.flags),o,a,n.buffer)}static senc(e){let n=new t.Z,o=e.samples.length,a=e.isVideo?16:8,r=e.isVideo?2:0,i=[],R=0;return e.isVideo?(i=e.videoSenc,R=e.videoSencLength):i=e.audioSenc,R=R||a*o,n.write(t.Z.writeUint32(16+R),s.types.senc,this.extension(0,r)),n.write(t.Z.writeUint32(o)),i.forEach(e=>{for(let o=0;o<e.InitializationVector.length;o++)n.write(new Uint8Array([e.InitializationVector[o]]));e.subsamples&&e.subsamples.length&&(n.write(t.Z.writeUint16(e.subsamples.length)),e.subsamples.forEach(e=>{n.write(t.Z.writeUint16(e.BytesOfClearData)),n.write(t.Z.writeUint32(e.BytesOfProtectedData))}))}),n.buffer}static saio(e){let n=12*e.samples.length+141;!e.isVideo&&e.isAudioEncryption&&(n=149);let o=new Uint8Array([1,0,0,0,0,0,0,1,0,0,0,0,n>>24&255,n>>16&255,n>>8&255,255&n]);return s.box(s.types.saio,o)}static saiz(e){let n=e.samples.length,o=new Uint8Array([0,0,0,0,16,n>>24&255,n>>16&255,n>>8&255,255&n]);return s.box(s.types.saiz,o)}static sbgp(){let e=new Uint8Array([114,111,108,108,0,0,0,1,0,0,1,25,0,0,0,1]);return s.box(s.types.sbgp,this.extension(0,0),e)}static extension(e,n){return new Uint8Array([e,n>>16&255,n>>8&255,255&n])}static tfhd(e){return s.box(s.types.tfhd,new Uint8Array([0,0,0,0,e>>24,e>>16&255,e>>8&255,255&e]))}static tfdt(e,n){let o=Math.floor(n/(i+1)),a=Math.floor(n%(i+1));return e.useEME&&(e.isVideoEncryption||e.isAudioEncryption)?s.box(s.types.tfdt,new Uint8Array([0,0,0,0,a>>24,a>>16&255,a>>8&255,255&a])):s.box(s.types.tfdt,new Uint8Array([1,0,0,0,o>>24,o>>16&255,o>>8&255,255&o,a>>24,a>>16&255,a>>8&255,255&a]))}static trun(e,n){let o=e.length,a=12+16*o;n+=8+a;let r=new Uint8Array(a);r.set([0,0,15,1,o>>>24&255,o>>>16&255,o>>>8&255,255&o,n>>>24&255,n>>>16&255,n>>>8&255,255&n],0);for(let n=0;n<o;n++){let{duration:o,size:a,flag:t={},cts:i=0}=e[n];r.set([o>>>24&255,o>>>16&255,o>>>8&255,255&o,a>>>24&255,a>>>16&255,a>>>8&255,255&a,t.isLeading<<2|(null===t.dependsOn||void 0===t.dependsOn?1:t.dependsOn),t.isDependedOn<<6|t.hasRedundancy<<4|t.paddingValue<<1|(null===t.isNonSyncSample||void 0===t.isNonSyncSample?1:t.isNonSyncSample),61440&t.degradationPriority,15&t.degradationPriority,i>>>24&255,i>>>16&255,i>>>8&255,255&i],12+16*n)}return s.box(s.types.trun,r)}static moovMP4(e){return s.box(s.types.moov,s.mvhd(e[0].duration,e[0].timescale),...e.map(e=>s.trackMP4(e)))}static trackMP4(e){return s.box(s.types.trak,s.tkhd(e.id,e.duration,e.width,e.height),s.mdiaMP4(e))}static mdiaMP4(e){return s.box(s.types.mdia,s.mdhd(e.duration,e.timescale),s.hdlr(e.type),s.minfMP4(e))}static minfMP4(e){return s.box(s.types.minf,e.type===R?s.VMHD:s.SMHD,s.DINF,s.stblMP4(e))}static stblMP4(e){let{ext:n}=e,o=[s.stsd(e),s.stts(n.stts),s.stsc(n.stsc),s.stsz(n.stsz),s.stco(n.stco)];return n.stss.length&&o.push(s.stss(n.stss)),n.ctts.length&&o.push(s.ctts(n.ctts)),s.box(s.types.stbl,...o)}static stts(e){let n=e.length,o=new Uint8Array(8*n),a=0;return e.forEach(e=>{let{value:n,count:r}=e;o.set([r>>24,r>>16&255,r>>8&255,255&r,n>>24,n>>16&255,n>>8&255,255&n],a),a+=8}),s.box(s.types.stts,(0,r.gJ)(new Uint8Array([0,0,0,0,n>>24,n>>16&255,n>>8&255,255&n]),o))}static stsc(e){let n=e.length,o=new Uint8Array(12*n),a=0;return e.forEach(e=>{let{firstChunk:n,samplesPerChunk:r,sampleDescIndex:t}=e;o.set([n>>24,n>>16&255,n>>8&255,255&n,r>>24,r>>16&255,r>>8&255,255&r,t>>24,t>>16&255,t>>8&255,255&t],a),a+=12}),s.box(s.types.stsc,(0,r.gJ)(new Uint8Array([0,0,0,0,n>>24,n>>16&255,n>>8&255,255&n]),o))}static stsz(e){let n=e.length,o=new Uint8Array(4*n),a=0;return e.forEach(e=>{o.set([e>>24,e>>16&255,e>>8&255,255&e],a),a+=4}),s.box(s.types.stsz,(0,r.gJ)(new Uint8Array([0,0,0,0,0,0,0,0,n>>24,n>>16&255,n>>8&255,255&n]),o))}static stco(e){let n=e.length,o=new Uint8Array(4*n),a=0;return e.forEach(e=>{o.set([e>>24,e>>16&255,e>>8&255,255&e],a),a+=4}),s.box(s.types.stco,(0,r.gJ)(new Uint8Array([0,0,0,0,n>>24,n>>16&255,n>>8&255,255&n]),o))}static stss(e){let n=e.length,o=new Uint8Array(4*n),a=0;return e.forEach(e=>{o.set([e>>24,e>>16&255,e>>8&255,255&e],a),a+=4}),s.box(s.types.stss,(0,r.gJ)(new Uint8Array([0,0,0,0,n>>24,n>>16&255,n>>8&255,255&n]),o))}static ctts(e){let n=e.length,o=new Uint8Array(8*n),a=0;return e.forEach(e=>{let{value:n,count:r}=e;o.set([r>>24,r>>16&255,r>>8&255,255&r,n>>24,n>>16&255,n>>8&255,255&n],a),a+=8}),s.box(s.types.ctts,(0,r.gJ)(new Uint8Array([0,0,0,0,n>>24,n>>16&255,n>>8&255,255&n]),o))}static styp(){return s.box(s.types.styp,new Uint8Array([109,115,100,104,0,0,0,0,109,115,100,104,109,115,105,120]))}static sidx(e){let n=e.timescale,o=e.samples[0].duration,a=o*e.samples.length,r=e.samples[0].sampleOffset*o,t=8;e.samples.forEach(e=>{t+=e.size});let i=0;if(e.isVideo){let n,o=0;e.videoSenc&&(n=e.videoSenc),e.isVideo&&n.forEach(e=>{o+=8,e.subsamples&&e.subsamples.length&&(o+=2+6*e.subsamples.length)}),e.videoSencLength=o,i=t+141+16*e.samples.length+o,e.useEME&&e.isAudioEncryption&&!e.isVideoEncryption&&(i=t+16*e.samples.length+84)}else i=t+116+12*e.samples.length,e.useEME&&e.isAudioEncryption&&(i=t+169+12*e.samples.length+8*e.audioSenc.length);let R=new Uint8Array([0,0,0,0,0,0,0,255&e.id,n>>24&255,n>>16&255,n>>8&255,255&n,r>>24&255,r>>16&255,r>>8&255,255&r,0,0,0,0,0,0,0,1,0,i>>16&255,i>>8&255,255&i,a>>24&255,a>>16&255,a>>8&255,255&a,144,0,0,0]);return s.box(s.types.sidx,R)}static mdat(e){return s.box(s.types.mdat,e)}}(0,a._)(s,"types",["av01","av1C","avc1","avcC","hvc1","hvcC","dinf","dref","esds","ftyp","hdlr","mdat","mdhd","mdia","mfhd","minf","moof","moov","mp4a","mvex","mvhd","pasp","stbl","stco","stsc","stsd","stsz","stts","tfdt","tfhd","traf","trak","trex","tkhd","vmhd","smhd","ctts","stss","styp","pssh","sidx","sbgp","saiz","saio","senc","trun","encv","enca","sinf","btrt","frma","tenc","schm","schi","mehd","fiel","sdtp"].reduce((e,n)=>(e[n]=[n.charCodeAt(0),n.charCodeAt(1),n.charCodeAt(2),n.charCodeAt(3)],e),Object.create(null))),(0,a._)(s,"HDLR_TYPES",{video:new Uint8Array([0,0,0,0,0,0,0,0,118,105,100,101,0,0,0,0,0,0,0,0,0,0,0,0,86,105,100,101,111,72,97,110,100,108,101,114,0]),audio:new Uint8Array([0,0,0,0,0,0,0,0,115,111,117,110,0,0,0,0,0,0,0,0,0,0,0,0,83,111,117,110,100,72,97,110,100,108,101,114,0])}),(0,a._)(s,"FTYPAVC1",s.box(s.types.ftyp,new Uint8Array([105,115,111,109,0,0,0,1,105,115,111,109,97,118,99,49]))),(0,a._)(s,"FTYPHEV1",s.box(s.types.ftyp,new Uint8Array([105,115,111,109,0,0,0,1,105,115,111,109,104,101,118,49]))),(0,a._)(s,"DINF",s.box(s.types.dinf,s.box(s.types.dref,new Uint8Array([0,0,0,0,0,0,0,1,0,0,0,12,117,114,108,32,0,0,0,1])))),(0,a._)(s,"VMHD",s.box(s.types.vmhd,new Uint8Array([0,0,0,1,0,0,0,0,0,0,0,0]))),(0,a._)(s,"SMHD",s.box(s.types.smhd,new Uint8Array([0,0,0,0,0,0,0,0]))),(0,a._)(s,"StblTable",new Uint8Array([0,0,0,0,0,0,0,0])),(0,a._)(s,"STTS",s.box(s.types.stts,s.StblTable)),(0,a._)(s,"STSC",s.box(s.types.stsc,s.StblTable)),(0,a._)(s,"STSZ",s.box(s.types.stsz,new Uint8Array([0,0,0,0,0,0,0,0,0,0,0,0]))),(0,a._)(s,"STCO",s.box(s.types.stco,s.StblTable))},850672:function(e,n,o){"use strict";o.d(n,{Z:function(){return t}});var a=o(390063),r=o.n(a);function t(e){let{value:n,maxLength:o,getValueLength:a}=e;if(!r()(a))return n.slice(0,o);{let e=0,r=n.length;for(;e<r;){let t=e+Math.floor((r-e)/2);a(n.slice(0,t+1))>o?r=t:e=t+1}return n.slice(0,e)}}},226210:function(e,n,o){"use strict";o(932651);var a=o(101199);function r(){return(r=Object.assign||function(e){for(var n=1;n<arguments.length;n++){var o=arguments[n];for(var a in o)Object.prototype.hasOwnProperty.call(o,a)&&(e[a]=o[a])}return e}).apply(this,arguments)}let t=a.forwardRef(function(e,n){return a.createElement("svg",r({viewBox:"0 0 24 24",fill:"none",xmlns:"http://www.w3.org/2000/svg",width:"1em",height:"1em",focusable:!1,ref:n},e),a.createElement("path",{d:"M7 12C7 13.1046 6.10457 14 5 14C3.89543 14 3 13.1046 3 12C3 10.8954 3.89543 10 5 10C6.10457 10 7 10.8954 7 12Z",fill:"currentColor"}),a.createElement("path",{d:"M14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12Z",fill:"currentColor"}),a.createElement("path",{d:"M19 14C20.1046 14 21 13.1046 21 12C21 10.8954 20.1046 10 19 10C17.8954 10 17 10.8954 17 12C17 13.1046 17.8954 14 19 14Z",fill:"currentColor"}))});t.elementType="Icon",n.Z=t},302483:function(e,n,o){"use strict";o.d(n,{O:function(){return a}});var a=new(o(242447)).SB(function(e){var n;null===(n=e.reaction)||void 0===n||n.dispose(),e.reaction=null})},579657:function(e,n,o){"use strict";o(679308),o.e("16787").then(o.bind(o,146116))},653112:function(e,n,o){"use strict";o(679308),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,539153)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,263113)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,31527)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,522573)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,124653)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,769591)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,915669)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,138440)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,766903)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,945173)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,983190)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,526317)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,180388)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,621401)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,26604)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,415134)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,310443)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,671195)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,893933)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,24913)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,787831)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,695755)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,364759)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,105345)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,530266)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,619619)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,571508)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,304495)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,140939)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,66425)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,586441)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,631214)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,524491)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,595980)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,869275)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,631056)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,588386)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,593870)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,865525)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,130289)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,315659)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,522030)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,93458)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,497409)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,51600)),Promise.all([o.e("74792"),o.e("73286"),o.e("42422"),o.e("96537"),o.e("30933"),o.e("28161"),o.e("73356"),o.e("69855"),o.e("5974"),o.e("21467"),o.e("72230"),o.e("68055"),o.e("6593"),o.e("6757"),o.e("8465"),o.e("19452"),o.e("21185"),o.e("61565"),o.e("6873"),o.e("73231")]).then(o.bind(o,225479))},612729:function(e,n,o){"use strict";o.d(n,{v:function(){return i}});var a=o(466150);let r="object"==typeof self?self:globalThis,t=(e,n)=>{let o=(n,o)=>(e.set(o,n),n),t=i=>{if(e.has(i))return e.get(i);let[R,d]=n[i];switch(R){case a.uk:case a.Zn:return o(d,i);case a.tF:{let e=o([],i);for(let n of d)e.push(t(n));return e}case a.$l:{let e=o({},i);for(let[n,o]of d)e[t(n)]=t(o);return e}case a.Hu:return o(new Date(d),i);case a.o1:{let{source:e,flags:n}=d;return o(new RegExp(e,n),i)}case a.nN:{let e=o(new Map,i);for(let[n,o]of d)e.set(t(n),t(o));return e}case a.JH:{let e=o(new Set,i);for(let n of d)e.add(t(n));return e}case a.pn:{let{name:e,message:n}=d;return o(new r[e](n),i)}case a.EA:return o(BigInt(d),i);case"BigInt":return o(Object(BigInt(d)),i);case"ArrayBuffer":return o(new Uint8Array(d).buffer,d);case"DataView":{let{buffer:e}=new Uint8Array(d);return o(new DataView(e),d)}}return o(new r[R](d),i)};return t},i=e=>t(new Map,e)(0)},72170:function(e,n,o){"use strict";o.d(n,{B:function(){return r}});var a=o(900312);function r(e,n){let o={src:(0,a.F)(n.url)};null!==n.alt&&void 0!==n.alt&&(o.alt=n.alt),null!==n.title&&void 0!==n.title&&(o.title=n.title);let r={type:"element",tagName:"img",properties:o,children:[]};return e.patch(n,r),e.applyData(n,r)}},99312:function(e,n,o){"use strict";o.d(n,{C:function(){return a}});let a={name:"labelStartImage",resolveAll:o(473818).Z.resolveAll,tokenize:function(e,n,o){let a=this;return function(n){return e.enter("labelImage"),e.enter("labelImageMarker"),e.consume(n),e.exit("labelImageMarker"),r};function r(n){return 91===n?(e.enter("labelMarker"),e.consume(n),e.exit("labelMarker"),e.exit("labelImage"),t):o(n)}function t(e){return 94===e&&"_hiddenFootnoteSupport"in a.parser.constructs?o(e):n(e)}}}},708385:function(e,n,o){"use strict";o.d(n,{E:function(){return t}}),o(932651);var a=o(873781),r=o(304174);class t extends a.XY{compute(e,n){let o;let{cfg:r}=this,t=r.hasher.create(),i=a.Ic.create(),R=i.words,{keySize:d,iterations:s}=r;for(;R.length<d;){o&&t.update(o),o=t.update(e).finalize(n),t.reset();for(let e=1;e<s;e+=1)o=t.finalize(o),t.reset();i.concat(o)}return i.sigBytes=4*d,i}constructor(e){super(),this.cfg=Object.assign(new a.XY,{keySize:4,hasher:r.pt,iterations:1},e)}}}}]);

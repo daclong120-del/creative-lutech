@@ -1,0 +1,76 @@
+{
+  "cookies": [
+    {
+      "name": "__ac_nonce",
+      "value": "06a4f515d009e5ba3ebed",
+      "domain": "www.douyin.com",
+      "path": "/",
+      "expires": 1783584869.395059,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "__ac_signature",
+      "value": "_02B4Z6wo00f01McnzkQAAIDD0DHs3PBDWwjHB8rAAFuMbf",
+      "domain": "www.douyin.com",
+      "path": "/",
+      "expires": 1815119069,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "ttwid",
+      "value": "1%7CeSCVQIJmHCZHULcK_vyz8bsHPHpVut10OV5hUbMBAbs%7C1783583070%7C58338d31c9fedad9b8e4ace45333a2ec1e8318775eb803a5d850593e19c838fa",
+      "domain": ".douyin.com",
+      "path": "/",
+      "expires": 1814687070.23535,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "enter_pc_once",
+      "value": "1",
+      "domain": ".douyin.com",
+      "path": "/",
+      "expires": 1818143070.235583,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "UIFID_TEMP",
+      "value": "ed3eadd74fe8fd7fe8cc39b2f8425a87324d41d3f6a0cfdc014da4c26c6540519461b6e98e1d88e075601c2648c0acb38ffcf650d46335974be003ed10e277ae2ce72973c2ec72e99ed36c5463d9268e",
+      "domain": ".douyin.com",
+      "path": "/",
+      "expires": 1818143070.235641,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "x-web-secsdk-uid",
+      "value": "32df9b46-2f10-4fcc-bf37-36650496069c",
+      "domain": "www.douyin.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "s_v_web_id",
+      "value": "verify_mrd7b8bs_9zaqi4y3_4Z4P_4ANp_A3vc_tnkVHuDQm6TI",
+      "domain": "www.douyin.com",
+      "path": "/",
+      "expires": 1788767074,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "msToken": "",
+  "updatedAt": "2026-07-09T07:44:35.403Z"
+}
