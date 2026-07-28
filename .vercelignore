@@ -1,0 +1,16 @@
+node_modules
+.next
+.vercel
+dashboard/node_modules
+dashboard/.next
+dashboard/.vercel
+crawler-pipeline/node_modules
+crawler-pipeline/output
+automation-test/node_modules
+desktop-app/release
+.git
+.gitnexus
+builds
+dashboard/public/assets_test
+assets_test
+**/assets_test
