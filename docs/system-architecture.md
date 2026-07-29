@@ -8,6 +8,10 @@ Hệ thống được thiết kế theo mô hình phân tách hoàn toàn giữa
 
 ## 1. Sơ đồ Kiến trúc Tổng quan (High-Level System Architecture)
 
+![Sơ đồ Kiến trúc Tổng quan](workflows/system-architecture.svg)
+
+---
+
 ### Bản vẽ Mermaid (Đã sửa cú pháp)
 
 ```mermaid
