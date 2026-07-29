@@ -2,7 +2,7 @@
 setlocal
 
 set "HELP_DIR=%~dp0"
-for %%I in ("%HELP_DIR%..") do set "ROOT_DIR=%%~fI"
+for %%I in ("%HELP_DIR%..\..") do set "ROOT_DIR=%%~fI"
 set "DASHBOARD_DIR=%ROOT_DIR%\dashboard"
 set "AUTOTEST_DIR=%ROOT_DIR%\automation-test"
 set "BASE_URL=http://127.0.0.1:3000"

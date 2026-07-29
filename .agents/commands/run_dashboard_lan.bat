@@ -6,7 +6,7 @@ echo DANG KHOI DONG TOAN BO DICH VU SINOMEDIA (LAN STACK)
 echo ============================================================
 echo.
 
-set "ROOT=%~dp0.."
+set "ROOT=%~dp0..\.."
 set "DASHBOARD_PORT=3000"
 set "SUPABASE_PORT=54321"
 set "POSTGRES_PORT=54322"

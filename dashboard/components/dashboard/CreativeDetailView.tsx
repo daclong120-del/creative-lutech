@@ -555,9 +555,10 @@ export default function CreativeDetailView({
             </div>
             <button
               onClick={onClose}
-              className="size-8 rounded-lg border border-border bg-card text-foreground hover:bg-muted transition-colors flex items-center justify-center"
+              className="size-8 rounded-lg border border-border bg-card text-foreground hover:bg-muted transition-colors flex items-center justify-center active-press"
               title="Đóng (Esc)"
             >
+
               <svg className="size-4 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>

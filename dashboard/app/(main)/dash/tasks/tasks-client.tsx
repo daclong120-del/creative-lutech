@@ -485,10 +485,11 @@ export default function TasksClient({ initialTasks, initialError }: TasksClientP
             )}
           </p>
         </div>
-        <button onClick={() => setShowModal(true)} className="h-8 px-3 text-xs font-medium rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors flex items-center gap-1.5 shrink-0 cursor-pointer">
+        <button onClick={() => setShowModal(true)} className="h-8 px-3 text-xs font-medium rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors flex items-center gap-1.5 shrink-0 cursor-pointer active-press">
           <svg className="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
           Tạo nhiệm vụ mới
         </button>
+
       </div>
 
       {/* Database Error Banner */}

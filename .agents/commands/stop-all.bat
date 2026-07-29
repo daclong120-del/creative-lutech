@@ -19,8 +19,11 @@ echo.
 
 :: 3. Stop Supabase
 echo [3/3] Stopping Supabase backend...
+pushd "%~dp0..\.." >nul
 call npx supabase stop
+popd >nul
 echo.
+
 
 echo ==========================================
 echo All services have been stopped!

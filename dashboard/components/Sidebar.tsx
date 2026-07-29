@@ -311,9 +311,13 @@ export default function Sidebar({ isMobileOpen = false, onMobileClose }: Sidebar
   return (
     <>
       {/* Mobile backdrop */}
-      {isMobileOpen && (
-        <div onClick={onMobileClose} className="fixed inset-0 z-45 bg-black/40 lg:hidden" />
-      )}
+      <div
+        onClick={onMobileClose}
+        className={cn(
+          "fixed inset-0 z-45 bg-black/40 lg:hidden transition-opacity duration-300 ease-out",
+          isMobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        )}
+      />
 
       <aside className={cn(
         "fixed bottom-0 top-0 z-50 flex flex-col border-r border-border bg-sidebar transition-all duration-300 ease-in-out select-none",
@@ -326,8 +330,8 @@ export default function Sidebar({ isMobileOpen = false, onMobileClose }: Sidebar
           <div className="flex items-center gap-2.5 min-w-0">
             <SpiderIcon className={cn("size-7 text-sinomedia-orange shrink-0")} />
             <span className={cn(
-              "text-sm font-bold text-foreground tracking-tight transition-all duration-200",
-              isCollapsed && "lg:opacity-0 lg:w-0 lg:hidden"
+              "text-sm font-bold text-foreground tracking-tight transition-all duration-200 whitespace-nowrap overflow-hidden",
+              isCollapsed ? "lg:opacity-0 lg:w-0 lg:pointer-events-none" : "lg:opacity-100 lg:w-auto"
             )}>
               Creative Lutech
             </span>
@@ -343,7 +347,7 @@ export default function Sidebar({ isMobileOpen = false, onMobileClose }: Sidebar
         {/* Search */}
         <div className="px-3 mb-2 mt-2">
           <div onClick={() => searchInputRef.current?.focus()} className={cn(
-            "relative flex items-center rounded-lg border border-sidebar-border bg-sidebar-accent/50 hover:bg-sidebar-accent transition-colors cursor-text",
+            "relative flex items-center rounded-lg border border-sidebar-border bg-sidebar-accent/50 hover:bg-sidebar-accent transition-colors cursor-text overflow-hidden",
             isCollapsed ? "lg:justify-center lg:h-9" : "h-9 px-3"
           )}>
             <SearchIcon className="text-muted-foreground shrink-0" />
@@ -354,13 +358,13 @@ export default function Sidebar({ isMobileOpen = false, onMobileClose }: Sidebar
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Tìm kiếm..."
               className={cn(
-                "ml-2 w-full bg-transparent text-xs text-foreground placeholder:text-muted-foreground focus:outline-none",
-                isCollapsed && "lg:hidden lg:w-0"
+                "ml-2 w-full bg-transparent text-xs text-foreground placeholder:text-muted-foreground focus:outline-none transition-all duration-200",
+                isCollapsed ? "lg:opacity-0 lg:w-0 lg:pointer-events-none" : "lg:opacity-100"
               )}
             />
             <kbd className={cn(
-              "hidden sm:inline-flex h-5 select-none items-center gap-0.5 rounded border border-sidebar-border bg-sidebar-accent px-1.5 font-mono text-[9px] font-medium text-muted-foreground pointer-events-none shrink-0",
-              isCollapsed && "lg:hidden"
+              "hidden sm:inline-flex h-5 select-none items-center gap-0.5 rounded border border-sidebar-border bg-sidebar-accent px-1.5 font-mono text-[9px] font-medium text-muted-foreground pointer-events-none shrink-0 transition-all duration-200",
+              isCollapsed ? "lg:opacity-0 lg:w-0 lg:p-0 lg:border-0 lg:hidden" : "lg:opacity-100"
             )}>
               Ctrl K
             </kbd>
@@ -399,7 +403,10 @@ export default function Sidebar({ isMobileOpen = false, onMobileClose }: Sidebar
                           title={item.label}
                         >
                           {IconComp && <IconComp className={cn("shrink-0 text-slate-700 group-hover:text-slate-950 dark:text-zinc-300 dark:group-hover:text-white")} />}
-                          <span className={cn("flex-1 truncate", isCollapsed && "lg:opacity-0 lg:w-0 lg:hidden")}>{item.label}</span>
+                          <span className={cn(
+                            "flex-1 truncate transition-all duration-200 whitespace-nowrap overflow-hidden",
+                            isCollapsed ? "lg:opacity-0 lg:w-0 lg:pointer-events-none" : "lg:opacity-100 lg:w-auto"
+                          )}>{item.label}</span>
                           {!isCollapsed && <ChevronIcon expanded={expanded} className="text-slate-500 group-hover:text-slate-800 dark:text-zinc-400 shrink-0" />}
                         </button>
                       ) : (
@@ -416,7 +423,10 @@ export default function Sidebar({ isMobileOpen = false, onMobileClose }: Sidebar
                           title={item.label}
                         >
                           {IconComp && <IconComp className={cn("shrink-0 transition-colors", active ? "text-blue-600 dark:text-blue-400" : "text-slate-700 group-hover:text-slate-950 dark:text-zinc-300 dark:group-hover:text-white")} />}
-                          <span className={cn("truncate", isCollapsed && "lg:opacity-0 lg:w-0 lg:hidden")}>{item.label}</span>
+                          <span className={cn(
+                            "truncate transition-all duration-200 whitespace-nowrap overflow-hidden",
+                            isCollapsed ? "lg:opacity-0 lg:w-0 lg:pointer-events-none" : "lg:opacity-100 lg:w-auto"
+                          )}>{item.label}</span>
                         </Link>
                       )}
 
