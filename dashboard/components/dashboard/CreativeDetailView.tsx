@@ -500,7 +500,7 @@ export default function CreativeDetailView({
               <div
                 key={ad.id}
                 onClick={() => handleCreativeClick(ad.id)}
-                className="w-44 bg-card border border-border rounded-xl p-2.5 space-y-2 shrink-0 cursor-pointer hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-md transition-all group"
+                className="w-44 bg-card border border-border rounded-xl p-2.5 space-y-2 shrink-0 cursor-pointer hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-md transition-[border-color,box-shadow] group"
               >
                 <div className="aspect-[9/16] rounded-lg bg-zinc-950 dark:bg-black overflow-hidden flex items-center justify-center text-[7px] text-zinc-500 uppercase font-bold relative">
                   {ad.cover_url ? (
@@ -510,7 +510,7 @@ export default function CreativeDetailView({
                         src={ad.cover_url}
                         alt={ad.title || "Similar Creative"}
                         referrerPolicy="no-referrer"
-                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-250 ease-out group-hover:scale-[1.03]"
                       />
                     </>
                   ) : (

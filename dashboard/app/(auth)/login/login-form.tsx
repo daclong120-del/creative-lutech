@@ -216,7 +216,7 @@ export default function LoginForm() {
             }}
             onBlur={() => setEmailError(validateEmail(email))}
             placeholder={d.emailPlaceholder}
-            className={`w-full px-3 py-2 rounded-lg border bg-white dark:bg-zinc-800 text-sm font-medium transition-all outline-none focus:ring-1 focus:ring-primary ${
+            className={`w-full px-3 py-2 rounded-lg border bg-white dark:bg-zinc-800 text-sm font-medium transition-colors outline-none focus:ring-1 focus:ring-primary ${
               emailError ? "border-destructive focus:ring-destructive" : "border-neutral-300 dark:border-zinc-700 hover:border-neutral-400 focus:border-primary"
             }`}
             disabled={isLoading}
@@ -244,7 +244,7 @@ export default function LoginForm() {
               }}
               onBlur={() => setPasswordError(validatePassword(password))}
               placeholder="••••••••"
-              className={`w-full pl-3 pr-10 py-2 rounded-lg border bg-white dark:bg-zinc-800 text-sm font-medium transition-all outline-none focus:ring-1 focus:ring-primary ${
+              className={`w-full pl-3 pr-10 py-2 rounded-lg border bg-white dark:bg-zinc-800 text-sm font-medium transition-colors outline-none focus:ring-1 focus:ring-primary ${
                 passwordError ? "border-destructive focus:ring-destructive" : "border-neutral-300 dark:border-zinc-700 hover:border-neutral-400 focus:border-primary"
               }`}
               disabled={isLoading}
@@ -279,7 +279,7 @@ export default function LoginForm() {
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full bg-[#0051c3] hover:bg-[#0040a1] text-white text-sm font-semibold py-2.5 rounded-lg transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed select-none shadow-sm active-press"
+          className="w-full bg-[#0051c3] hover:bg-[#0040a1] text-white text-sm font-semibold py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed select-none shadow-sm active-press"
           disabled={isLoading || !email || !password}
         >
 

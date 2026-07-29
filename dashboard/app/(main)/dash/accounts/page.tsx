@@ -203,14 +203,14 @@ export default function AccountsPage() {
 
       {/* Add Account Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => {
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 animate-in fade-in duration-200" onClick={() => {
           setAlias("");
           setCookie("");
           setProxy("");
           setErrorMsg("");
           setShowModal(false);
         }}>
-          <div className="bg-card rounded-xl border border-border w-full max-w-xl shadow-xl" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-card rounded-xl border border-border w-full max-w-xl shadow-xl animate-in fade-in zoom-in-95 duration-150" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between px-6 py-4 border-b border-border">
               <h2 className="text-sm font-bold text-card-foreground">Nạp tài khoản cào mới</h2>
               <button onClick={() => {

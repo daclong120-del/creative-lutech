@@ -17,7 +17,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
         />
         <div className="flex-1 flex flex-col h-screen overflow-hidden min-w-0">
           <Header onMenuToggle={() => setIsMobileSidebarOpen(true)} />
-          <main className="flex-1 overflow-y-auto bg-background">
+          <main className="flex-1 overflow-y-auto bg-background animate-in fade-in duration-300">
             {children}
           </main>
         </div>

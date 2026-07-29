@@ -126,7 +126,7 @@ export function RolesPanel({ roles, showToast }: RolesPanelProps) {
               key={role.roleName}
               onClick={() => setSelectedRoleIndex(idx)}
               className={cn(
-                "w-full text-left p-3 rounded-lg border transition-all text-xs flex flex-col gap-1 cursor-pointer",
+                "w-full text-left p-3 rounded-lg border transition-colors text-xs flex flex-col gap-1 cursor-pointer",
                 selectedRoleIndex === idx
                   ? "border-primary bg-primary/5 text-foreground"
                   : "border-border/60 hover:bg-muted text-muted-foreground hover:text-foreground"

@@ -45,6 +45,7 @@
   /* Custom easing curves from AUDIT.md */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in: cubic-bezier(0.6, -0.28, 0.735, 0.045);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 
   /* Map entry/exit animations */
   --animate-in: enter 150ms var(--ease-out);
@@ -210,4 +211,37 @@
   }
 }
 
+@utility stagger-item {
+  animation-delay: calc(var(--stagger-index, 0) * 50ms);
+  animation-fill-mode: both;
+}
 
+@utility slide-in-from-bottom-4 {
+  --tw-enter-translate-y: 1rem;
+}
+
+/* ─── Accessibility: Reduced Motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-in {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+
+  .active-press:active {
+    transform: none !important;
+  }
+
+  .animate-pulse,
+  .animate-ping {
+    animation: none !important;
+  }
+}

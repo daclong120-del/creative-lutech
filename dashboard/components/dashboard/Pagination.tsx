@@ -101,7 +101,7 @@ export default function Pagination({
           type="button"
           onClick={() => onPageChange(Math.max(1, currentPage - 1))}
           disabled={currentPage === 1}
-          className="size-8 rounded-lg border border-border bg-card flex items-center justify-center text-foreground hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+          className="size-8 rounded-lg border border-border bg-card flex items-center justify-center text-foreground hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           <svg className="size-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -124,7 +124,7 @@ export default function Pagination({
               key={`page-${page}`}
               onClick={() => onPageChange(page as number)}
               className={cn(
-                "size-8 rounded-lg text-xs font-semibold border transition-all flex items-center justify-center",
+                "size-8 rounded-lg text-xs font-semibold border transition-colors flex items-center justify-center",
                 isCurrent
                   ? "bg-primary border-primary text-primary-foreground shadow-sm shadow-primary/20 font-bold"
                   : "bg-card border-border text-foreground hover:bg-muted"
@@ -140,7 +140,7 @@ export default function Pagination({
           type="button"
           onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
           disabled={currentPage === totalPages}
-          className="size-8 rounded-lg border border-border bg-card flex items-center justify-center text-foreground hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+          className="size-8 rounded-lg border border-border bg-card flex items-center justify-center text-foreground hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           <svg className="size-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />

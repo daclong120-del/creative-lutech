@@ -320,7 +320,7 @@ export default function Sidebar({ isMobileOpen = false, onMobileClose }: Sidebar
       />
 
       <aside className={cn(
-        "fixed bottom-0 top-0 z-50 flex flex-col border-r border-border bg-sidebar transition-all duration-300 ease-in-out select-none",
+        "fixed bottom-0 top-0 z-50 flex flex-col border-r border-border bg-sidebar transition-[width,transform] duration-300 ease-out select-none",
         "lg:sticky lg:top-0 lg:h-screen lg:z-30",
         isCollapsed ? "lg:w-16" : "lg:w-[290px] shrink-0",
         isMobileOpen ? "translate-x-0 w-[290px]" : "-translate-x-full lg:translate-x-0"
@@ -330,7 +330,7 @@ export default function Sidebar({ isMobileOpen = false, onMobileClose }: Sidebar
           <div className="flex items-center gap-2.5 min-w-0">
             <SpiderIcon className={cn("size-7 text-sinomedia-orange shrink-0")} />
             <span className={cn(
-              "text-sm font-bold text-foreground tracking-tight transition-all duration-200 whitespace-nowrap overflow-hidden",
+              "text-sm font-bold text-foreground tracking-tight transition-[opacity,width] duration-200 whitespace-nowrap overflow-hidden",
               isCollapsed ? "lg:opacity-0 lg:w-0 lg:pointer-events-none" : "lg:opacity-100 lg:w-auto"
             )}>
               Creative Lutech
@@ -358,12 +358,12 @@ export default function Sidebar({ isMobileOpen = false, onMobileClose }: Sidebar
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Tìm kiếm..."
               className={cn(
-                "ml-2 w-full bg-transparent text-xs text-foreground placeholder:text-muted-foreground focus:outline-none transition-all duration-200",
+                "ml-2 w-full bg-transparent text-xs text-foreground placeholder:text-muted-foreground focus:outline-none transition-[opacity,width] duration-200",
                 isCollapsed ? "lg:opacity-0 lg:w-0 lg:pointer-events-none" : "lg:opacity-100"
               )}
             />
             <kbd className={cn(
-              "hidden sm:inline-flex h-5 select-none items-center gap-0.5 rounded border border-sidebar-border bg-sidebar-accent px-1.5 font-mono text-[9px] font-medium text-muted-foreground pointer-events-none shrink-0 transition-all duration-200",
+              "hidden sm:inline-flex h-5 select-none items-center gap-0.5 rounded border border-sidebar-border bg-sidebar-accent px-1.5 font-mono text-[9px] font-medium text-muted-foreground pointer-events-none shrink-0 transition-[opacity,width] duration-200",
               isCollapsed ? "lg:opacity-0 lg:w-0 lg:p-0 lg:border-0 lg:hidden" : "lg:opacity-100"
             )}>
               Ctrl K
@@ -377,7 +377,7 @@ export default function Sidebar({ isMobileOpen = false, onMobileClose }: Sidebar
             <div key={group.id} className="space-y-1">
               {group.title && (
                 <h3 className={cn(
-                  "px-3 text-[11px] font-bold tracking-wider text-slate-500 dark:text-zinc-400 uppercase transition-all duration-200",
+                  "px-3 text-[11px] font-bold tracking-wider text-slate-500 dark:text-zinc-400 uppercase transition-[opacity,height] duration-200",
                   isCollapsed && "lg:opacity-0 lg:h-0 lg:overflow-hidden"
                 )}>
                   {group.title}
@@ -404,7 +404,7 @@ export default function Sidebar({ isMobileOpen = false, onMobileClose }: Sidebar
                         >
                           {IconComp && <IconComp className={cn("shrink-0 text-slate-700 group-hover:text-slate-950 dark:text-zinc-300 dark:group-hover:text-white")} />}
                           <span className={cn(
-                            "flex-1 truncate transition-all duration-200 whitespace-nowrap overflow-hidden",
+                            "flex-1 truncate transition-[opacity,width] duration-200 whitespace-nowrap overflow-hidden",
                             isCollapsed ? "lg:opacity-0 lg:w-0 lg:pointer-events-none" : "lg:opacity-100 lg:w-auto"
                           )}>{item.label}</span>
                           {!isCollapsed && <ChevronIcon expanded={expanded} className="text-slate-500 group-hover:text-slate-800 dark:text-zinc-400 shrink-0" />}
@@ -424,33 +424,40 @@ export default function Sidebar({ isMobileOpen = false, onMobileClose }: Sidebar
                         >
                           {IconComp && <IconComp className={cn("shrink-0 transition-colors", active ? "text-blue-600 dark:text-blue-400" : "text-slate-700 group-hover:text-slate-950 dark:text-zinc-300 dark:group-hover:text-white")} />}
                           <span className={cn(
-                            "truncate transition-all duration-200 whitespace-nowrap overflow-hidden",
+                            "truncate transition-[opacity,width] duration-200 whitespace-nowrap overflow-hidden",
                             isCollapsed ? "lg:opacity-0 lg:w-0 lg:pointer-events-none" : "lg:opacity-100 lg:w-auto"
                           )}>{item.label}</span>
                         </Link>
                       )}
 
-                      {/* Children */}
-                      {hasChildren && expanded && !isCollapsed && item.children && (
-                        <div className="relative pl-3 ml-[21px] border-l-2 border-slate-200 dark:border-zinc-700 space-y-0.5 mt-1 mb-2">
-                          {item.children.map((child) => {
-                            const childActive = isActive(child.href);
-                            return (
-                              <Link
-                                key={child.id}
-                                href={child.href}
-                                onClick={onMobileClose}
-                                className={cn(
-                                  "flex items-center py-1.5 px-3 rounded-lg text-xs transition-colors font-semibold",
-                                  childActive
-                                    ? "bg-slate-200/80 dark:bg-zinc-800 text-slate-950 dark:text-white font-bold shadow-2xs"
-                                    : "text-slate-700 dark:text-zinc-300 hover:bg-muted/60 hover:text-slate-950 dark:hover:text-white"
-                                )}
-                              >
-                                {child.label}
-                              </Link>
-                            );
-                          })}
+                      {/* Children — animated expand/collapse via CSS grid */}
+                      {hasChildren && !isCollapsed && item.children && (
+                        <div
+                          className="grid transition-[grid-template-rows] duration-200 ease-out"
+                          style={{ gridTemplateRows: expanded ? '1fr' : '0fr' }}
+                        >
+                          <div className="overflow-hidden min-h-0">
+                            <div className="relative pl-3 ml-[21px] border-l-2 border-slate-200 dark:border-zinc-700 space-y-0.5 mt-1 mb-2">
+                              {item.children.map((child) => {
+                                const childActive = isActive(child.href);
+                                return (
+                                  <Link
+                                    key={child.id}
+                                    href={child.href}
+                                    onClick={onMobileClose}
+                                    className={cn(
+                                      "flex items-center py-1.5 px-3 rounded-lg text-xs transition-colors font-semibold",
+                                      childActive
+                                        ? "bg-slate-200/80 dark:bg-zinc-800 text-slate-950 dark:text-white font-bold shadow-2xs"
+                                        : "text-slate-700 dark:text-zinc-300 hover:bg-muted/60 hover:text-slate-950 dark:hover:text-white"
+                                    )}
+                                  >
+                                    {child.label}
+                                  </Link>
+                                );
+                              })}
+                            </div>
+                          </div>
                         </div>
                       )}
                     </li>
@@ -465,7 +472,7 @@ export default function Sidebar({ isMobileOpen = false, onMobileClose }: Sidebar
         <div className="border-t border-border p-2 hidden lg:block bg-sidebar">
           <button
             onClick={() => setSidebarCollapsed(!isCollapsed)}
-            className="flex h-8 w-full items-center justify-center rounded-lg text-zinc-500 dark:text-zinc-400 hover:bg-muted hover:text-zinc-950 dark:hover:text-zinc-50 transition-all duration-150"
+            className="flex h-8 w-full items-center justify-center rounded-lg text-zinc-500 dark:text-zinc-400 hover:bg-muted hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors duration-150"
             title={isCollapsed ? "Mở rộng sidebar" : "Thu gọn sidebar"}
           >
             <svg className={cn("size-4 transition-transform duration-300", isCollapsed && "rotate-180")} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

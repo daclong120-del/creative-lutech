@@ -633,7 +633,7 @@ export default function TasksClient({ initialTasks, initialError }: TasksClientP
                       <button 
                         onClick={() => setSelectedTask(task.id === selectedTask ? null : task.id)} 
                         className={cn(
-                          "h-6 gap-1 rounded-[10px] px-2 text-[11px] inline-flex items-center justify-center font-semibold transition-all cursor-pointer border shrink-0",
+                          "h-6 gap-1 rounded-[10px] px-2 text-[11px] inline-flex items-center justify-center font-semibold transition-colors cursor-pointer border shrink-0",
                           task.id === selectedTask 
                             ? "bg-muted text-foreground border-border" 
                             : "bg-background border-border hover:bg-muted text-muted-foreground hover:text-foreground"
@@ -655,7 +655,7 @@ export default function TasksClient({ initialTasks, initialError }: TasksClientP
                       {(task.status === "pending" || task.status === "running") && (
                         <button 
                           onClick={() => handleCancelTask(task.id)} 
-                          className="h-6 gap-1 rounded-[10px] px-2 text-[11px] inline-flex items-center justify-center font-semibold bg-destructive/10 text-destructive hover:bg-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 transition-all cursor-pointer shrink-0"
+                          className="h-6 gap-1 rounded-[10px] px-2 text-[11px] inline-flex items-center justify-center font-semibold bg-destructive/10 text-destructive hover:bg-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 transition-colors cursor-pointer shrink-0"
                         >
                           <XCircle size={11} />
                           Huỷ
@@ -665,7 +665,7 @@ export default function TasksClient({ initialTasks, initialError }: TasksClientP
                       {(task.status === "failed" || task.status === "cancelled") && (
                         <button 
                           onClick={() => handleRetryTask(task.id)} 
-                          className="h-6 gap-1 rounded-[10px] px-2 text-[11px] inline-flex items-center justify-center font-semibold bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 dark:bg-emerald-500/20 dark:text-emerald-400 dark:hover:bg-emerald-500/30 transition-all cursor-pointer shrink-0"
+                          className="h-6 gap-1 rounded-[10px] px-2 text-[11px] inline-flex items-center justify-center font-semibold bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 dark:bg-emerald-500/20 dark:text-emerald-400 dark:hover:bg-emerald-500/30 transition-colors cursor-pointer shrink-0"
                         >
                           <RotateCcw size={11} />
                           Chạy lại

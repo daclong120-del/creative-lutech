@@ -9,6 +9,7 @@ interface MetricCardProps {
   trendLabel?: string;
   subtitle?: string;
   className?: string;
+  style?: React.CSSProperties;
 }
 
 const COLOR_MAP: Record<string, { icon: string; ring: string }> = {
@@ -20,7 +21,7 @@ const COLOR_MAP: Record<string, { icon: string; ring: string }> = {
   amber:   { icon: "bg-amber-500/10 text-amber-600 dark:text-amber-400", ring: "ring-amber-500/20" },
 };
 
-export default function MetricCard({ label, value, icon, color, trend, trendLabel, subtitle, className }: MetricCardProps) {
+export default function MetricCard({ label, value, icon, color, trend, trendLabel, subtitle, className, style }: MetricCardProps) {
   const colors = COLOR_MAP[color] || COLOR_MAP.blue;
   const isPositive = trend != null && trend > 0;
   const isNegative = trend != null && trend < 0;
@@ -29,7 +30,7 @@ export default function MetricCard({ label, value, icon, color, trend, trendLabe
     <div className={cn(
       "relative rounded-xl border border-border bg-card p-4 transition-shadow hover:shadow-sm",
       className
-    )}>
+    )} style={style}>
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
           <p className="text-[11px] font-medium text-muted-foreground mb-1 truncate">{label}</p>

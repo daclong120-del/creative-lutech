@@ -161,7 +161,7 @@ export default function AdvertisersClient({ initialData, initialTotal, initialFi
                     key={p}
                     onClick={() => togglePlatform(p)}
                     className={cn(
-                      "px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-all flex items-center gap-1 capitalize",
+                      "px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-colors flex items-center gap-1 capitalize",
                       isSelected
                         ? "bg-primary border-primary text-primary-foreground"
                         : "bg-background border-border text-foreground hover:bg-muted"
@@ -270,14 +270,14 @@ export default function AdvertisersClient({ initialData, initialTotal, initialFi
                       <div className="flex items-center justify-center gap-1.5" onClick={(e) => e.stopPropagation()}>
                         <Link
                           href={`/dash/creative/advertisers/${adv.id}`}
-                          className="px-2 py-1 bg-muted hover:bg-zinc-200 dark:hover:bg-zinc-700 text-foreground font-semibold text-[10px] rounded transition-all"
+                          className="px-2 py-1 bg-muted hover:bg-zinc-200 dark:hover:bg-zinc-700 text-foreground font-semibold text-[10px] rounded transition-colors"
                           title="Xem hồ sơ"
                         >
                           Hồ sơ
                         </Link>
                         <Link
                           href={`/dash/creative/search?q=${encodeURIComponent(adv.nickname)}`}
-                          className="px-2 py-1 bg-primary/10 hover:bg-primary/20 text-primary font-semibold text-[10px] rounded transition-all"
+                          className="px-2 py-1 bg-primary/10 hover:bg-primary/20 text-primary font-semibold text-[10px] rounded transition-colors"
                           title="Xem creatives"
                         >
                           Creatives

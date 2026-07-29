@@ -106,7 +106,7 @@ export default function GrowthClient({ initialData, initialFilters }: GrowthClie
               <button
                 onClick={() => setSortBy("growth_pct_desc")}
                 className={cn(
-                  "flex-1 h-8 rounded-lg text-xs font-semibold border transition-all",
+                  "flex-1 h-8 rounded-lg text-xs font-semibold border transition-colors",
                   sortBy === "growth_pct_desc"
                     ? "bg-primary border-primary text-primary-foreground shadow-sm"
                     : "bg-background border-border text-foreground hover:bg-muted"
@@ -117,7 +117,7 @@ export default function GrowthClient({ initialData, initialFilters }: GrowthClie
               <button
                 onClick={() => setSortBy("growth_abs_desc")}
                 className={cn(
-                  "flex-1 h-8 rounded-lg text-xs font-semibold border transition-all",
+                  "flex-1 h-8 rounded-lg text-xs font-semibold border transition-colors",
                   sortBy === "growth_abs_desc"
                     ? "bg-primary border-primary text-primary-foreground shadow-sm"
                     : "bg-background border-border text-foreground hover:bg-muted"
@@ -136,7 +136,7 @@ export default function GrowthClient({ initialData, initialFilters }: GrowthClie
             <button
               onClick={() => setSelectedPlatform("all")}
               className={cn(
-                "px-3 py-1.5 rounded-lg text-xs font-medium border transition-all",
+                "px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors",
                 selectedPlatform === "all"
                   ? "bg-foreground border-foreground text-background"
                   : "bg-background border-border text-foreground hover:bg-muted"
@@ -149,7 +149,7 @@ export default function GrowthClient({ initialData, initialFilters }: GrowthClie
                 key={p}
                 onClick={() => setSelectedPlatform(p)}
                 className={cn(
-                  "px-3 py-1.5 rounded-lg text-xs font-medium border transition-all capitalize",
+                  "px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors capitalize",
                   selectedPlatform === p
                     ? "bg-primary border-primary text-primary-foreground"
                     : "bg-background border-border text-foreground hover:bg-muted"

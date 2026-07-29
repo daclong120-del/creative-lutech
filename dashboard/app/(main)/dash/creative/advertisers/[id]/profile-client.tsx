@@ -169,7 +169,7 @@ export default function AdvertiserProfileClient({ advertiser, advertiserCreative
                     cy={y}
                     r="4"
                     fill="rgb(59, 130, 246)"
-                    className="stroke-background stroke-2 transition-all group-hover/dot:r-6"
+                    className="stroke-background stroke-2 transition-[r] group-hover/dot:r-6"
                   />
                   {/* Tooltip Overlay */}
                   <g className="opacity-0 group-hover/dot:opacity-100 transition-opacity duration-200">
@@ -286,7 +286,7 @@ export default function AdvertiserProfileClient({ advertiser, advertiserCreative
         <button
           onClick={() => setActiveTab("creatives")}
           className={cn(
-            "pb-3 text-xs font-bold transition-all relative",
+            "pb-3 text-xs font-bold transition-colors relative",
             activeTab === "creatives" ? "text-primary" : "text-muted-foreground hover:text-foreground"
           )}
         >
@@ -296,7 +296,7 @@ export default function AdvertiserProfileClient({ advertiser, advertiserCreative
         <button
           onClick={() => setActiveTab("trends")}
           className={cn(
-            "pb-3 text-xs font-bold transition-all relative",
+            "pb-3 text-xs font-bold transition-colors relative",
             activeTab === "trends" ? "text-primary" : "text-muted-foreground hover:text-foreground"
           )}
         >
@@ -342,7 +342,7 @@ export default function AdvertiserProfileClient({ advertiser, advertiserCreative
               .map((ad) => (
                 <div
                   key={ad.id}
-                  className="bg-card rounded-xl border border-border overflow-hidden hover:shadow-lg hover:border-zinc-300 dark:hover:border-zinc-700 transition-all flex flex-col relative"
+                  className="bg-card rounded-xl border border-border overflow-hidden hover:shadow-lg hover:border-zinc-300 dark:hover:border-zinc-700 transition-[border-color,box-shadow] flex flex-col relative"
                 >
                   <Link
                     href={`/dash/creative/${ad.id}`}

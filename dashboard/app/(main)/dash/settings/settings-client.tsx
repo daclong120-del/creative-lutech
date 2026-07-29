@@ -163,7 +163,7 @@ export default function SettingsClient({ initialSettings }: SettingsClientProps)
             </label>
 
             {/* Conditionally active fields */}
-            <div className={`space-y-4 transition-all duration-200 ${use2Captcha ? "opacity-100" : "opacity-40 pointer-events-none"}`}>
+            <div className={`space-y-4 transition-opacity duration-200 ${use2Captcha ? "opacity-100" : "opacity-40 pointer-events-none"}`}>
               {/* 2Captcha API Key */}
               <div className="space-y-1">
                 <span className="font-medium text-foreground">2Captcha API Key</span>

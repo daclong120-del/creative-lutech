@@ -102,7 +102,7 @@ export default function DropdownSelect({
       {isOpen && (
         <div
           className={cn(
-            "absolute mt-1 z-50 rounded-lg border border-border bg-card p-1 shadow-lg ring-1 ring-black/5 focus:outline-none animate-in fade-in slide-in-from-top-1 duration-100 max-h-60 overflow-y-auto min-w-[140px]",
+            "absolute mt-1 z-50 rounded-lg border border-border bg-card p-1 shadow-lg ring-1 ring-black/5 focus:outline-none animate-in fade-in slide-in-from-top-1 duration-100 max-h-60 overflow-y-auto min-w-[140px] origin-top-left",
             fullWidth ? "w-full left-0 right-0" : "left-0"
           )}
           role="listbox"

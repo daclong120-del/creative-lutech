@@ -226,7 +226,7 @@ export default function CreativeSearchClient({ initialData, initialFilters }: Cr
                   key={p}
                   onClick={() => togglePlatform(p)}
                   className={cn(
-                    "px-3 py-1.5 rounded-lg text-xs font-medium border transition-all flex items-center gap-1.5 capitalize",
+                    "px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors flex items-center gap-1.5 capitalize",
                     isSelected
                       ? "bg-primary border-primary text-primary-foreground shadow-sm"
                       : "bg-background border-border text-foreground hover:bg-muted"
@@ -273,7 +273,7 @@ export default function CreativeSearchClient({ initialData, initialFilters }: Cr
                     key={type}
                     onClick={() => toggleMediaType(type)}
                     className={cn(
-                      "px-3 py-1.5 rounded-lg text-xs font-medium border transition-all capitalize",
+                      "px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors capitalize",
                       isSelected
                         ? "bg-primary border-primary text-primary-foreground shadow-sm"
                         : "bg-background border-border text-foreground hover:bg-muted"
@@ -397,7 +397,7 @@ export default function CreativeSearchClient({ initialData, initialFilters }: Cr
               key={tab.value}
               onClick={() => handleFilterChange(() => setContentType(tab.value))}
               className={cn(
-                "px-3 py-1 rounded-md text-xs font-medium transition-all",
+                "px-3 py-1 rounded-md text-xs font-medium transition-colors",
                 contentType === tab.value
                   ? "bg-card text-foreground shadow-sm"
                   : "text-muted-foreground hover:text-foreground"
@@ -470,7 +470,7 @@ export default function CreativeSearchClient({ initialData, initialFilters }: Cr
           </p>
           <button
             onClick={handleResetFilters}
-            className="px-4 py-1.5 rounded-lg bg-primary text-primary-foreground font-semibold text-xs transition-all hover:opacity-90"
+            className="px-4 py-1.5 rounded-lg bg-primary text-primary-foreground font-semibold text-xs transition-colors hover:opacity-90"
           >
             Đặt lại tất cả bộ lọc
           </button>

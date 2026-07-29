@@ -65,7 +65,7 @@ export function MembersClient({ initialMembers, initialRoles, initialTokens }: M
         <button
           onClick={() => setActiveTab("members")}
           className={cn(
-            "px-4 py-2 border-b-2 -mb-[2px] transition-all cursor-pointer flex items-center gap-1.5",
+            "px-4 py-2 border-b-2 -mb-[2px] transition-colors cursor-pointer flex items-center gap-1.5",
             activeTab === "members"
               ? "border-primary text-foreground font-bold"
               : "border-transparent text-muted-foreground hover:text-foreground"
@@ -77,7 +77,7 @@ export function MembersClient({ initialMembers, initialRoles, initialTokens }: M
         <button
           onClick={() => setActiveTab("tokens")}
           className={cn(
-            "px-4 py-2 border-b-2 -mb-[2px] transition-all cursor-pointer flex items-center gap-1.5",
+            "px-4 py-2 border-b-2 -mb-[2px] transition-colors cursor-pointer flex items-center gap-1.5",
             activeTab === "tokens"
               ? "border-primary text-foreground font-bold"
               : "border-transparent text-muted-foreground hover:text-foreground"
@@ -89,7 +89,7 @@ export function MembersClient({ initialMembers, initialRoles, initialTokens }: M
         <button
           onClick={() => setActiveTab("roles")}
           className={cn(
-            "px-4 py-2 border-b-2 -mb-[2px] transition-all cursor-pointer flex items-center gap-1.5",
+            "px-4 py-2 border-b-2 -mb-[2px] transition-colors cursor-pointer flex items-center gap-1.5",
             activeTab === "roles"
               ? "border-primary text-foreground font-bold"
               : "border-transparent text-muted-foreground hover:text-foreground"

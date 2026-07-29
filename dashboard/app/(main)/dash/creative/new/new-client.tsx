@@ -106,7 +106,7 @@ export default function NewCreativesClient({ initialData, initialFilters }: NewC
         <button
           onClick={() => handlePlatformChange("all")}
           className={cn(
-            "px-3 py-1.5 rounded-lg text-xs font-medium border transition-all",
+            "px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors",
             selectedPlatform === "all"
               ? "bg-foreground border-foreground text-background"
               : "bg-background border-border text-foreground hover:bg-muted"
@@ -119,7 +119,7 @@ export default function NewCreativesClient({ initialData, initialFilters }: NewC
             key={p}
             onClick={() => handlePlatformChange(p)}
             className={cn(
-              "px-3 py-1.5 rounded-lg text-xs font-medium border transition-all capitalize",
+              "px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors capitalize",
               selectedPlatform === p
                 ? "bg-primary border-primary text-primary-foreground"
                 : "bg-background border-border text-foreground hover:bg-muted"
