@@ -93,6 +93,20 @@ export default function OverviewPage() {
   const [timeRange, setTimeRange] = useState<TimeRangeType>('14d');
   const [hoveredPoint, setHoveredPoint] = useState<BuildPoint | null>(null);
   const [selectedDayModal, setSelectedDayModal] = useState<BuildPoint | null>(null);
+  const [modalClosing, setModalClosing] = useState(false);
+
+  const handleOpenModal = (pt: BuildPoint) => {
+    setSelectedDayModal(pt);
+    setModalClosing(false);
+  };
+
+  const handleCloseModal = () => {
+    setModalClosing(true);
+    setTimeout(() => {
+      setSelectedDayModal(null);
+      setModalClosing(false);
+    }, 200);
+  };
 
   const activePoints = BUILD_DATASET[timeRange];
 
@@ -126,7 +140,7 @@ export default function OverviewPage() {
       </div>
 
       {/* ─── Pipeline Today Stage Counter Strip ─── */}
-      <div className="bg-card border border-border rounded-xl p-4 shadow-xs">
+      <div className="bg-card border border-border rounded-xl p-4 shadow-xs animate-in fade-in slide-in-from-bottom-2 stagger-item" style={{ '--stagger-index': 0 } as React.CSSProperties}>
         <div className="text-[10px] font-mono font-bold text-muted-foreground uppercase tracking-wider mb-2">
           PIPELINE HÔM NAY &bull; RELEASES ĐANG DI CHUYỂN QUA CÁC STAGE
         </div>
@@ -164,7 +178,7 @@ export default function OverviewPage() {
       </div>
 
       {/* ─── Hybrid Crisp Interactive CI Builds Chart ─── */}
-      <div className="bg-card border border-border rounded-xl p-5 space-y-4 shadow-xs">
+      <div className="bg-card border border-border rounded-xl p-5 space-y-4 shadow-xs animate-in fade-in slide-in-from-bottom-2 stagger-item" style={{ '--stagger-index': 1 } as React.CSSProperties}>
         {/* Header Strip with Dynamic Timeframe Selector */}
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
           <div>
@@ -193,7 +207,7 @@ export default function OverviewPage() {
                 <button
                   key={rangeKey}
                   onClick={() => setTimeRange(rangeKey)}
-                  className={`px-3 py-1 rounded-md text-xs font-semibold transition-all ${
+                  className={`px-3 py-1 rounded-md text-xs font-semibold transition-all duration-200 active-press ${
                     isActive
                       ? 'bg-background text-foreground shadow-xs border border-border font-bold'
                       : 'text-muted-foreground hover:text-foreground hover:bg-background/40'
@@ -297,7 +311,7 @@ export default function OverviewPage() {
                       className="cursor-pointer group"
                       onMouseEnter={() => setHoveredPoint(pt)}
                       onMouseLeave={() => setHoveredPoint(null)}
-                      onClick={() => setSelectedDayModal(pt)}
+                      onClick={() => handleOpenModal(pt)}
                     >
                       {/* Vertical Grid Line */}
                       <line x1={colX} y1="0" x2={colX} y2="220" stroke="currentColor" strokeDasharray="2 4" className="text-border/30" strokeWidth="1" />
@@ -311,7 +325,7 @@ export default function OverviewPage() {
                           height={failedH}
                           rx="0"
                           fill="url(#buildFailedGrad)"
-                          className={`transition-all ${isHovered ? 'brightness-125' : ''}`}
+                          className={`transition-[fill,filter,height,y] duration-300 ease-out ${isHovered ? 'brightness-125' : ''}`}
                         />
                       )}
 
@@ -324,24 +338,23 @@ export default function OverviewPage() {
                           height={successH}
                           rx="0"
                           fill="url(#buildSuccessGrad)"
-                          className={`transition-all ${isHovered ? 'brightness-125' : ''}`}
+                          className={`transition-[fill,filter,height,y] duration-300 ease-out ${isHovered ? 'brightness-125' : ''}`}
                         />
                       )}
 
-                      {/* Hover Outline Border */}
-                      {isHovered && (
-                        <rect
-                          x={barX - 2}
-                          y={barY - 2}
-                          width={colW + 4}
-                          height={totalH + 4}
-                          rx="0"
-                          fill="none"
-                          stroke="currentColor"
-                          className="text-primary"
-                          strokeWidth="2"
-                        />
-                      )}
+                      {/* Hover Outline Border with smooth transition */}
+                      <rect
+                        x={barX - 2}
+                        y={barY - 2}
+                        width={colW + 4}
+                        height={totalH + 4}
+                        rx="0"
+                        fill="none"
+                        stroke="currentColor"
+                        className="text-primary transition-opacity duration-150 ease-out"
+                        strokeWidth="2"
+                        style={{ opacity: isHovered ? 1 : 0 }}
+                      />
                     </g>
                   );
                 })}
@@ -350,7 +363,7 @@ export default function OverviewPage() {
                 <line x1="0" y1="220" x2="1000" y2="220" stroke="currentColor" className="text-border" strokeWidth="1.5" />
               </svg>
 
-              {/* Total Build Numbers HTML Overlay above Bars */}
+              {/* Total Build Numbers HTML Overlay above Bars with smooth sliding transition */}
               <div className="absolute inset-0 pointer-events-none">
                 {activePoints.map((pt, idx) => {
                   const total = pt.success + pt.failed;
@@ -361,7 +374,7 @@ export default function OverviewPage() {
                   return (
                     <div
                       key={pt.day}
-                      className={`absolute -translate-x-1/2 font-sans text-xs font-black transition-all ${
+                      className={`absolute -translate-x-1/2 font-sans text-xs font-black transition-[left,bottom,transform,color] duration-300 var(--ease-out) ${
                         isHovered ? 'text-primary scale-125 z-10' : 'text-foreground'
                       }`}
                       style={{
@@ -382,7 +395,7 @@ export default function OverviewPage() {
                   return (
                     <span
                       key={pt.day}
-                      className={`flex-1 text-center font-medium transition-colors ${
+                      className={`flex-1 text-center font-medium transition-colors duration-150 ${
                         isHovered ? 'text-primary font-bold' : 'text-muted-foreground'
                       }`}
                     >
@@ -403,8 +416,14 @@ export default function OverviewPage() {
 
       {/* ─── Day Build Detail Modal Popup ─── */}
       {selectedDayModal && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-background border border-border rounded-2xl p-6 max-w-lg w-full space-y-4 shadow-2xl">
+        <div 
+          className={`fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200 ${modalClosing ? 'animate-out fade-out' : ''}`}
+          onClick={handleCloseModal}
+        >
+          <div 
+            className={`bg-background border border-border rounded-2xl p-6 max-w-lg w-full space-y-4 shadow-2xl animate-in fade-in zoom-in-95 duration-200 ease-out ${modalClosing ? 'animate-out fade-out zoom-out-95' : ''}`}
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex items-center justify-between border-b border-border pb-3">
               <div>
                 <h3 className="text-sm font-bold text-foreground">Chi tiết CI Builds &mdash; Ngày {selectedDayModal.day}</h3>
@@ -413,8 +432,8 @@ export default function OverviewPage() {
                 </span>
               </div>
               <button
-                onClick={() => setSelectedDayModal(null)}
-                className="flex h-7 w-7 items-center justify-center rounded-full border border-border bg-card text-muted-foreground hover:bg-muted font-semibold text-base"
+                onClick={handleCloseModal}
+                className="flex h-7 w-7 items-center justify-center rounded-full border border-border bg-card text-muted-foreground hover:bg-muted font-semibold text-base active-press cursor-pointer"
               >
                 &times;
               </button>
@@ -422,35 +441,49 @@ export default function OverviewPage() {
 
             {/* Mock Build Runs list */}
             <div className="space-y-2 max-h-72 overflow-y-auto text-xs font-mono">
-              {Array.from({ length: selectedDayModal.success }).map((_, i) => (
-                <div key={`s-${i}`} className="p-2.5 rounded-lg bg-emerald-500/5 border border-emerald-500/20 flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <span className="font-bold text-foreground block">#BUILD-{1840 + i} &bull; QR Scanner Plus</span>
-                    <span className="text-[10px] text-muted-foreground font-sans">commit main: 8f3a91c &bull; CI runner #4</span>
+              {Array.from({ length: selectedDayModal.success }).map((_, i) => {
+                const staggerIndex = i;
+                return (
+                  <div 
+                    key={`s-${i}`} 
+                    className="p-2.5 rounded-lg bg-emerald-500/5 border border-emerald-500/20 flex items-center justify-between animate-in fade-in slide-in-from-bottom-1 stagger-item"
+                    style={{ '--stagger-index': staggerIndex } as React.CSSProperties}
+                  >
+                    <div className="space-y-0.5">
+                      <span className="font-bold text-foreground block">#BUILD-{1840 + i} &bull; QR Scanner Plus</span>
+                      <span className="text-[10px] text-muted-foreground font-sans">commit main: 8f3a91c &bull; CI runner #4</span>
+                    </div>
+                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
+                      SUCCESS ({selectedDayModal.duration})
+                    </span>
                   </div>
-                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
-                    SUCCESS ({selectedDayModal.duration})
-                  </span>
-                </div>
-              ))}
+                );
+              })}
 
-              {Array.from({ length: selectedDayModal.failed }).map((_, i) => (
-                <div key={`f-${i}`} className="p-2.5 rounded-lg bg-rose-500/5 border border-rose-500/20 flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <span className="font-bold text-foreground block">#BUILD-{1890 + i} &bull; Short Drama</span>
-                    <span className="text-[10px] text-rose-600 dark:text-rose-400 font-sans">Exit Code 1: NullPointerException in AdMob init</span>
+              {Array.from({ length: selectedDayModal.failed }).map((_, i) => {
+                const staggerIndex = selectedDayModal.success + i;
+                return (
+                  <div 
+                    key={`f-${i}`} 
+                    className="p-2.5 rounded-lg bg-rose-500/5 border border-rose-500/20 flex items-center justify-between animate-in fade-in slide-in-from-bottom-1 stagger-item"
+                    style={{ '--stagger-index': staggerIndex } as React.CSSProperties}
+                  >
+                    <div className="space-y-0.5">
+                      <span className="font-bold text-foreground block">#BUILD-{1890 + i} &bull; Short Drama</span>
+                      <span className="text-[10px] text-rose-600 dark:text-rose-400 font-sans">Exit Code 1: NullPointerException in AdMob init</span>
+                    </div>
+                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-500/10 text-rose-600 border border-rose-500/20">
+                      FAILED
+                    </span>
                   </div>
-                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-500/10 text-rose-600 border border-rose-500/20">
-                    FAILED
-                  </span>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             <div className="flex justify-end pt-3 border-t border-border">
               <button
-                onClick={() => setSelectedDayModal(null)}
-                className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-primary text-primary-foreground hover:bg-primary/90"
+                onClick={handleCloseModal}
+                className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 active-press cursor-pointer"
               >
                 Đóng
               </button>
@@ -460,7 +493,7 @@ export default function OverviewPage() {
       )}
 
       {/* ─── Bottom Operational Grid (Review Queue, Cần xử lý, Rollout đang chạy) ─── */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-2 stagger-item" style={{ '--stagger-index': 2 } as React.CSSProperties}>
         {/* 1. Review queue */}
         <div className="bg-card border border-border rounded-xl p-4 space-y-3 shadow-xs">
           <div>
@@ -517,7 +550,7 @@ export default function OverviewPage() {
                   <span className="font-bold text-xs text-emerald-600">{r.rolloutPercentage}%</span>
                 </div>
                 <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
-                  <div className="h-full bg-emerald-500" style={{ width: `${r.rolloutPercentage}%` }} />
+                  <div className="h-full bg-emerald-500 transition-[width] duration-300 var(--ease-out)" style={{ width: `${r.rolloutPercentage}%` }} />
                 </div>
               </div>
             ))}

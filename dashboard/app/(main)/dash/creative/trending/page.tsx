@@ -153,7 +153,7 @@ function TrendingPageContent() {
               key={item.value}
               onClick={() => setPeriod(item.value)}
               className={cn(
-                "px-3 py-1 rounded-md text-xs font-semibold transition-all",
+                "px-3 py-1 rounded-md text-xs font-semibold transition-colors",
                 period === item.value
                   ? "bg-card text-foreground shadow-sm"
                   : "text-muted-foreground hover:text-foreground"
@@ -169,7 +169,7 @@ function TrendingPageContent() {
           <button
             onClick={() => setSelectedPlatform("all")}
             className={cn(
-              "px-3 py-1 rounded-full text-xs font-medium border transition-all",
+              "px-3 py-1 rounded-full text-xs font-medium border transition-colors",
               selectedPlatform === "all"
                 ? "bg-foreground border-foreground text-background"
                 : "bg-background border-border text-foreground hover:bg-muted"
@@ -182,7 +182,7 @@ function TrendingPageContent() {
               key={p}
               onClick={() => setSelectedPlatform(p)}
               className={cn(
-                "px-3 py-1 rounded-full text-xs font-medium border transition-all capitalize",
+                "px-3 py-1 rounded-full text-xs font-medium border transition-colors capitalize",
                 selectedPlatform === p
                   ? "bg-primary border-primary text-primary-foreground"
                   : "bg-background border-border text-foreground hover:bg-muted"
@@ -210,7 +210,7 @@ function TrendingPageContent() {
               return (
                 <div
                   key={ad.id}
-                  className="group bg-card rounded-xl border border-border overflow-hidden hover:shadow-lg hover:border-zinc-300 dark:hover:border-zinc-700 transition-all duration-300 flex flex-col relative"
+                  className="group bg-card rounded-xl border border-border overflow-hidden hover:shadow-lg hover:border-zinc-300 dark:hover:border-zinc-700 transition-[border-color,box-shadow] duration-250 ease-out flex flex-col relative"
                 >
                   {/* Rank Badge overlay */}
                   <div className={cn(
@@ -229,7 +229,7 @@ function TrendingPageContent() {
                     }}
                     className="block relative aspect-[16/9] bg-zinc-950/90 dark:bg-black overflow-hidden border-b border-border"
                   >
-                    <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center select-none text-zinc-400 dark:text-zinc-600 transition-transform duration-500 group-hover:scale-105">
+                    <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center select-none text-zinc-400 dark:text-zinc-600 transition-transform duration-250 ease-out group-hover:scale-[1.03]">
                       <svg className="size-8 mb-1.5 stroke-[1.2] opacity-60" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                         <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm-2 14.5v-9l6 4.5z" />
                       </svg>

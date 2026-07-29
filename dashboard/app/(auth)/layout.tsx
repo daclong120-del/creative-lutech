@@ -125,7 +125,7 @@ export default function AuthLayout({
           {/* Action Button */}
           <Link
             href={topRightLink}
-            className="px-4 py-1.5 rounded-lg border border-neutral-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-neutral-700 dark:text-zinc-300 hover:bg-neutral-50 dark:hover:bg-zinc-800 text-xs font-semibold transition-all shadow-sm"
+            className="px-4 py-1.5 rounded-lg border border-neutral-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-neutral-700 dark:text-zinc-300 hover:bg-neutral-50 dark:hover:bg-zinc-800 text-xs font-semibold transition-colors shadow-sm"
           >
             {topRightText}
           </Link>
@@ -134,7 +134,7 @@ export default function AuthLayout({
 
       {/* Main content wrapper */}
       <main className="flex-1 flex flex-col items-center justify-center py-8 px-4">
-        <div className="w-full max-w-[490px] bg-white dark:bg-zinc-900 border border-neutral-200/80 dark:border-zinc-800/80 rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.03)] p-6 sm:p-10 transition-all">
+        <div className="w-full max-w-[490px] bg-white dark:bg-zinc-900 border border-neutral-200/80 dark:border-zinc-800/80 rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.03)] p-6 sm:p-10 transition-colors">
           {children}
         </div>
 

@@ -208,6 +208,7 @@ export default function HomePage() {
           icon={<DocIcon />}
           color="blue"
           trend={metrics.postsTrend}
+          className="animate-in fade-in slide-in-from-bottom-2 stagger-item" style={{ '--stagger-index': 0 } as React.CSSProperties}
         />
         <MetricCard
           label="Tác giả / KOL"
@@ -215,6 +216,7 @@ export default function HomePage() {
           icon={<UsersIcon />}
           color="violet"
           trend={metrics.authorsTrend}
+          className="animate-in fade-in slide-in-from-bottom-2 stagger-item" style={{ '--stagger-index': 1 } as React.CSSProperties}
         />
         <MetricCard
           label="Task đang chạy"
@@ -222,6 +224,7 @@ export default function HomePage() {
           icon={<PlayIcon />}
           color="emerald"
           subtitle={`${metrics.pendingTasks} đang chờ`}
+          className="animate-in fade-in slide-in-from-bottom-2 stagger-item" style={{ '--stagger-index': 2 } as React.CSSProperties}
         />
         <MetricCard
           label="Tài khoản hoạt động"
@@ -229,11 +232,12 @@ export default function HomePage() {
           icon={<KeyIcon />}
           color="orange"
           subtitle={`${metrics.totalAccounts > 0 ? Math.round((metrics.activeAccounts / metrics.totalAccounts) * 100) : 0}% tỷ lệ sống`}
+          className="animate-in fade-in slide-in-from-bottom-2 stagger-item" style={{ '--stagger-index': 3 } as React.CSSProperties}
         />
       </div>
 
       {/* Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 animate-in fade-in slide-in-from-bottom-4 stagger-item duration-300" style={{ '--stagger-index': 4 } as React.CSSProperties}>
         {/* Line Chart — spans 2 cols */}
         <div className="lg:col-span-2 rounded-xl border border-border bg-card p-4">
           <h3 className="text-xs font-semibold text-card-foreground mb-3">Bài viết cào mới theo ngày</h3>
@@ -247,7 +251,7 @@ export default function HomePage() {
       </div>
 
       {/* Platform Health Cards */}
-      <div>
+      <div className="animate-in fade-in slide-in-from-bottom-4 stagger-item duration-300" style={{ '--stagger-index': 5 } as React.CSSProperties}>
         <h3 className="text-xs font-semibold text-foreground mb-3">Sức khỏe Pool Cookie</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {platformHealthData.map((ph) => (
@@ -257,7 +261,7 @@ export default function HomePage() {
       </div>
 
       {/* Recent Tasks Feed */}
-      <div className="rounded-xl border border-border bg-card overflow-hidden">
+      <div className="rounded-xl border border-border bg-card overflow-hidden animate-in fade-in slide-in-from-bottom-4 stagger-item duration-300" style={{ '--stagger-index': 6 } as React.CSSProperties}>
         <div className="flex items-center justify-between px-4 py-3 border-b border-border">
           <h3 className="text-xs font-semibold text-card-foreground">Hoạt động gần đây</h3>
           <Link href="/dash/tasks" className="text-[11px] text-primary hover:underline font-medium">

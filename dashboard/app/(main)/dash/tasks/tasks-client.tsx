@@ -485,10 +485,11 @@ export default function TasksClient({ initialTasks, initialError }: TasksClientP
             )}
           </p>
         </div>
-        <button onClick={() => setShowModal(true)} className="h-8 px-3 text-xs font-medium rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors flex items-center gap-1.5 shrink-0 cursor-pointer">
+        <button onClick={() => setShowModal(true)} className="h-8 px-3 text-xs font-medium rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors flex items-center gap-1.5 shrink-0 cursor-pointer active-press">
           <svg className="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
           Tạo nhiệm vụ mới
         </button>
+
       </div>
 
       {/* Database Error Banner */}
@@ -632,7 +633,7 @@ export default function TasksClient({ initialTasks, initialError }: TasksClientP
                       <button 
                         onClick={() => setSelectedTask(task.id === selectedTask ? null : task.id)} 
                         className={cn(
-                          "h-6 gap-1 rounded-[10px] px-2 text-[11px] inline-flex items-center justify-center font-semibold transition-all cursor-pointer border shrink-0",
+                          "h-6 gap-1 rounded-[10px] px-2 text-[11px] inline-flex items-center justify-center font-semibold transition-colors cursor-pointer border shrink-0",
                           task.id === selectedTask 
                             ? "bg-muted text-foreground border-border" 
                             : "bg-background border-border hover:bg-muted text-muted-foreground hover:text-foreground"
@@ -654,7 +655,7 @@ export default function TasksClient({ initialTasks, initialError }: TasksClientP
                       {(task.status === "pending" || task.status === "running") && (
                         <button 
                           onClick={() => handleCancelTask(task.id)} 
-                          className="h-6 gap-1 rounded-[10px] px-2 text-[11px] inline-flex items-center justify-center font-semibold bg-destructive/10 text-destructive hover:bg-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 transition-all cursor-pointer shrink-0"
+                          className="h-6 gap-1 rounded-[10px] px-2 text-[11px] inline-flex items-center justify-center font-semibold bg-destructive/10 text-destructive hover:bg-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 transition-colors cursor-pointer shrink-0"
                         >
                           <XCircle size={11} />
                           Huỷ
@@ -664,7 +665,7 @@ export default function TasksClient({ initialTasks, initialError }: TasksClientP
                       {(task.status === "failed" || task.status === "cancelled") && (
                         <button 
                           onClick={() => handleRetryTask(task.id)} 
-                          className="h-6 gap-1 rounded-[10px] px-2 text-[11px] inline-flex items-center justify-center font-semibold bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 dark:bg-emerald-500/20 dark:text-emerald-400 dark:hover:bg-emerald-500/30 transition-all cursor-pointer shrink-0"
+                          className="h-6 gap-1 rounded-[10px] px-2 text-[11px] inline-flex items-center justify-center font-semibold bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 dark:bg-emerald-500/20 dark:text-emerald-400 dark:hover:bg-emerald-500/30 transition-colors cursor-pointer shrink-0"
                         >
                           <RotateCcw size={11} />
                           Chạy lại

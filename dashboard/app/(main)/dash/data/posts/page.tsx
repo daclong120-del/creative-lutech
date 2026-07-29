@@ -358,7 +358,7 @@ function PostsPageContent() {
               <div
                 key={post.id}
                 className={cn(
-                  "group/card p-4 rounded-xl border transition-all cursor-pointer flex gap-4 bg-card relative",
+                  "group/card p-4 rounded-xl border transition-[border-color,box-shadow] cursor-pointer flex gap-4 bg-card relative",
                   selectedPost?.id === post.id ? "border-primary ring-1 ring-primary" : "border-border hover:border-zinc-300 dark:hover:border-zinc-700",
                   selectedIds.has(post.id) && "bg-primary/[0.03] border-primary/30"
                 )}

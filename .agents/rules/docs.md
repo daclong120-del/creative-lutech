@@ -2,4 +2,4 @@
 trigger: always_on
 ---
 
-phải đọc qua thư mục docs ở mỗi session
+phải đọc qua thư mục .agents/do ở mỗi session

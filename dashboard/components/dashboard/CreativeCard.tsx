@@ -83,7 +83,7 @@ export default function CreativeCard({ creative, advertiserName, className, onCl
   return (
     <div
       className={cn(
-        "group bg-card rounded-xl border border-border overflow-hidden hover:shadow-lg hover:border-zinc-300 dark:hover:border-zinc-700 transition-all duration-300 flex flex-col h-full",
+        "group bg-card rounded-xl border border-border overflow-hidden hover:shadow-lg hover:border-zinc-300 dark:hover:border-zinc-700 transition-[border-color,box-shadow] duration-250 ease-out flex flex-col h-full",
         className
       )}
     >
@@ -103,7 +103,7 @@ export default function CreativeCard({ creative, advertiserName, className, onCl
               alt={creative.title || "Creative Thumbnail"}
               referrerPolicy="no-referrer"
               onError={() => setMediaError(true)}
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-250 ease-out group-hover:scale-[1.03]"
             />
           </>
         ) : canPreviewVideo ? (
@@ -115,11 +115,11 @@ export default function CreativeCard({ creative, advertiserName, className, onCl
             playsInline
             preload="metadata"
             onError={() => setMediaError(true)}
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-250 ease-out group-hover:scale-[1.03]"
           />
         ) : (
           /* Mock Cover Placeholder */
-          <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center select-none bg-gradient-to-br from-zinc-900 to-zinc-950 text-zinc-400 dark:text-zinc-500 transition-transform duration-500 group-hover:scale-105">
+          <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center select-none bg-gradient-to-br from-zinc-900 to-zinc-950 text-zinc-400 dark:text-zinc-500 transition-transform duration-250 ease-out group-hover:scale-[1.03]">
             <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]" />
             <svg className="size-8 mb-2 stroke-[1.2] opacity-75" viewBox="0 0 24 24" fill="none" stroke="currentColor">
               {creative.media_type === "video" ? (

@@ -235,7 +235,7 @@ export default function CalendarClient({ initialCreatives, initialAdvertisers }:
                 key={index}
                 onClick={() => dayAds.length > 0 && setSelectedDay(d)}
                 className={cn(
-                  "min-h-[100px] p-2 flex flex-col justify-between transition-all hover:bg-muted/30 cursor-pointer",
+                  "min-h-[100px] p-2 flex flex-col justify-between transition-colors hover:bg-muted/30 cursor-pointer",
                   !d.isCurrentMonth ? "opacity-35 hover:opacity-50" : "",
                   dayAds.length > 0 ? "bg-card" : "bg-muted/5 hover:bg-muted/10"
                 )}
@@ -293,7 +293,7 @@ export default function CalendarClient({ initialCreatives, initialAdvertisers }:
           />
 
           {/* Drawer Panel */}
-          <div className="fixed inset-y-0 right-0 z-50 w-[420px] bg-card border-l border-border shadow-2xl flex flex-col transition-all duration-300">
+          <div className="fixed inset-y-0 right-0 z-50 w-[420px] bg-card border-l border-border shadow-2xl flex flex-col transition-transform duration-300 ease-out">
             {/* Drawer Header */}
             <div className="p-4 border-b border-border flex items-center justify-between">
               <div>
@@ -304,7 +304,7 @@ export default function CalendarClient({ initialCreatives, initialAdvertisers }:
               </div>
               <button
                 onClick={() => setSelectedDay(null)}
-                className="size-6 flex items-center justify-center rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground text-sm font-bold transition-all"
+                className="size-6 flex items-center justify-center rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground text-sm font-bold transition-colors"
               >
                 ✕
               </button>
@@ -317,7 +317,7 @@ export default function CalendarClient({ initialCreatives, initialAdvertisers }:
                 return (
                   <div
                     key={ad.id}
-                    className="p-3 bg-muted/20 border border-border/60 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-xl flex gap-3 cursor-pointer group transition-all"
+                    className="p-3 bg-muted/20 border border-border/60 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-xl flex gap-3 cursor-pointer group transition-colors"
                     onClick={() => window.location.href = `/dash/creative/${ad.id}`}
                   >
                     {/* Tiny thumbnail */}

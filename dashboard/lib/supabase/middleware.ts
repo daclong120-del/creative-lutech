@@ -37,9 +37,22 @@ export async function updateSession(request: NextRequest) {
   );
 
   let user = null;
+
+  // Bypass authentication in development using mock user cookie
+  if (process.env.NODE_ENV === "development") {
+    const devUser = request.cookies.get("sinomedia_dev_user")?.value;
+    if (devUser) {
+      user = {
+        id: devUser.includes("admin") ? "dev-admin-id" : "dev-user-id",
+        email: devUser,
+        role: "authenticated",
+      } as any;
+    }
+  }
+
   const hasAuthCookie = request.cookies.getAll().some(c => c.name.startsWith("sb-") && c.name.includes("auth-token"));
 
-  if (hasAuthCookie) {
+  if (!user && hasAuthCookie) {
     try {
       // Thiết lập timeout 2 giây để tránh treo request khi Supabase local offline
       const timeoutPromise = new Promise<null>((_, reject) =>
@@ -57,4 +70,5 @@ export async function updateSession(request: NextRequest) {
   }
 
   return { supabaseResponse, user, supabase };
+
 }

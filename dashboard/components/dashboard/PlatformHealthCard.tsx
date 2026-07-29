@@ -25,7 +25,7 @@ export default function PlatformHealthCard({ platform, active, banned, total, cl
     <div
       onClick={onClick}
       className={cn(
-        "rounded-xl border border-border bg-card p-4 transition-all hover:shadow-sm",
+        "rounded-xl border border-border bg-card p-4 transition-[border-color,box-shadow] hover:shadow-sm",
         onClick && "cursor-pointer hover:border-primary/30",
         className
       )}
@@ -44,7 +44,7 @@ export default function PlatformHealthCard({ platform, active, banned, total, cl
       {/* Progress bar */}
       <div className="h-1.5 rounded-full bg-muted overflow-hidden mb-2">
         <div
-          className={cn("h-full rounded-full transition-all duration-500", statusConfig.barBg)}
+          className={cn("h-full rounded-full transition-[width] duration-500 ease-out", statusConfig.barBg)}
           style={{ width: `${Math.round(ratio * 100)}%` }}
         />
       </div>
