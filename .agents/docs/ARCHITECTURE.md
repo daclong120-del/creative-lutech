@@ -111,8 +111,16 @@ graph TD
         TokenGuard["Token Guard<br/>SHA-256 + scopes"]
     end
 
-    subgraph L3["Layer 3 - Supabase Control Plane"]
-        Supabase[("Supabase Cloud<br/>Auth + Postgres + Realtime<br/>crawler_tasks / crawler_logs / crawled_*")]
+    subgraph L3A["Layer 3A - Supabase Auth"]
+        SupabaseAuth["Supabase Auth<br/>users / sessions"]
+    end
+
+    subgraph L3B["Layer 3B - Supabase Database / RPC"]
+        SupabaseDB[("Postgres + PostgREST / RPC<br/>api_tokens / crawler_tasks / crawler_logs<br/>crawler_accounts / crawled_*")]
+    end
+
+    subgraph L3C["Layer 3C - Supabase Realtime"]
+        SupabaseRealtime["Supabase Realtime<br/>crawler_tasks + crawler_logs"]
     end
 
     subgraph L4["Layer 4 - VPS Execution / Physical Storage"]
@@ -137,11 +145,14 @@ graph TD
     Middleware -->|/dash/*| Dashboard
     Host -->|/api/worker/rest/v1/*| WorkerAPI
     WorkerAPI --> TokenGuard
-    TokenGuard -->|service_role PostgREST / RPC proxy| Supabase
+    TokenGuard -->|verify token + service_role proxy| SupabaseDB
 
     Dashboard --> AppBackend
-    AppBackend -->|read/write + create tasks| Supabase
-    Supabase -.->|Realtime updates| Dashboard
+    Middleware -->|refresh session / get user| SupabaseAuth
+    Dashboard -->|login / session| SupabaseAuth
+    AppBackend -->|read/write + create tasks| SupabaseDB
+    SupabaseDB -.->|publication changes| SupabaseRealtime
+    SupabaseRealtime -.->|live task/log updates| Dashboard
 
     VPSPath --> Docker
     Docker --> Worker
@@ -159,9 +170,9 @@ graph TD
     classDef exec fill:#14261a,stroke:#4ad98a,color:#fff
     classDef app fill:#1d1a2e,stroke:#b48cff,color:#fff
     class Missing missing
-    class Supabase,OutputDisk,DockerLogs storage
+    class SupabaseDB,OutputDisk,DockerLogs storage
     class Worker,Docker,VPSPath exec
-    class Dashboard,AppBackend,Middleware,WorkerAPI,TokenGuard app
+    class Dashboard,AppBackend,Middleware,WorkerAPI,TokenGuard,SupabaseAuth,SupabaseRealtime app
 ```
 
 Ghi chu ha tang:
