@@ -2,7 +2,15 @@
 
 Cap nhat: 2026-07-29
 
-Tai lieu nay duoc lap theo `.agents/skills/achitecture-plan.md`. Noi dung chi dua tren source code, migrations, manifest va GitNexus index hien tai. Neu khong tim thay bang chung trong code, muc do duoc ghi la `Not Found`.
+Tai lieu nay la architecture document chinh thuc cho SinoMedia, duoc cap nhat theo `.agents/skills/achitecture-plan.md` va lay so do system architecture chuan trong muc 4 lam source of truth. Moi mo ta ben duoi phai bam theo source code, migrations, manifest, GitNexus context hien tai va so do chuan da xac nhan. Neu khong tim thay bang chung trong code, muc do duoc ghi ro la `> Not Found`.
+
+Nguyen tac doc tai lieu:
+
+- `Dashboard` la control plane: UI, auth, server actions, services, repositories va API route handlers.
+- `Worker Gateway API` la duong vao noi bo cho crawler worker; worker khong duoc mo ta nhu dang goi truc tiep Supabase trong kien truc chuan.
+- `Supabase` duoc tach thanh Auth, Database/RPC va Realtime vi source co bang chung rieng cho tung vai tro.
+- `VPS Execution / Physical Storage` la execution tier cua crawler worker; output hien tai la disk volume tren VPS/container, khong phai MinIO/S3.
+- Cac thanh phan ops nhu Nginx, Redis, MinIO, BullMQ, OpenTelemetry, Prometheus, Loki va backups phai duoc ghi `> Not Found` neu khong co bang chung trong source.
 
 ## Table Of Contents
 
@@ -41,11 +49,11 @@ SinoMedia la he thong dieu khien crawler mang xa hoi va van hanh du lieu creativ
 | Area | Hien trang trong code |
 |---|---|
 | Business domain | Quan ly crawler, account/proxy, task queue, du lieu bai viet/tac gia/binh luan, creative analytics, mot khu Release Ops UI dang dung fixture. |
-| Architecture style | Monorepo voi cac runtime tach rieng: dashboard web, crawler worker, automation runner, desktop packaging. Khong phai microservice day du, nhung co su tach runtime giua control plane va execution tier. |
+| Architecture style | Layered monorepo voi runtime tach rieng: dashboard/control plane, worker execution tier, automation runner, desktop packaging. Khong phai microservice day du; ranh gioi runtime quan trong nhat la Dashboard/Worker Gateway va crawler worker tren VPS. |
 | Frontend | `dashboard/` dung Next.js App Router, React 19, Server Components, Client Components va Server Actions. |
-| Backend/API | Backend nam trong Next.js Server Actions va Route Handlers; crawler worker goi gateway `/api/worker/rest/v1/[...path]` thay vi goi Supabase truc tiep. |
-| Database | Supabase/Postgres qua migrations trong `supabase/migrations`. Co RLS, RPC, realtime publications. |
-| Worker | `crawler-pipeline/` Node/TypeScript ESM, CLI va queue loop, crawl cac platform Douyin, Bilibili, Kuaishou, Tieba, Weibo, XHS, Zhihu. |
+| Backend/API | Backend nam trong Next.js Server Actions, Services, Repositories va Route Handlers. Worker chi di vao backend qua gateway `/api/worker/rest/v1/[...path]`, sau do gateway dung service role proxy sang Supabase. |
+| Database | Supabase/Postgres qua migrations trong `supabase/migrations`. Co RLS, RPC, realtime publications va cac bang queue/log/account/content. |
+| Worker | `crawler-pipeline/` Node/TypeScript ESM, CLI va queue loop. Runtime chuan la Docker Compose tren VPS voi output volume `./output:/app/output`; crawler cac platform Douyin, Bilibili, Kuaishou, Tieba, Weibo, XHS, Zhihu. |
 | Desktop | `desktop-app/` dong goi dashboard standalone, worker va Node runtime vao runtime package Windows. |
 | Mobile | > Not Found |
 
@@ -64,7 +72,7 @@ SinoMedia la he thong dieu khien crawler mang xa hoi va van hanh du lieu creativ
 | Docker | `crawler-pipeline/Dockerfile` dung `node:18-bookworm-slim`; `docker-compose.yml` chay service `crawler`. |
 | CI/CD | GitHub Actions build va push crawler image len GHCR khi `main` thay doi trong `crawler-pipeline/**`. |
 | Cloud deploy | Vercel co dau vet `.vercel/` va `.vercelignore`; dashboard production deploy config cu the ngoai source: > Not Found |
-| Queue | Queue duoc model bang bang `crawler_tasks` + RPC `claim_next_crawler_task`; message broker Redis/RabbitMQ/Kafka: > Not Found |
+| Queue | Queue duoc model bang bang `crawler_tasks` + RPC `claim_next_crawler_task`; message broker Redis/RabbitMQ/Kafka/BullMQ: > Not Found |
 | Cache | `crawler-pipeline/src/cache/memory_cache.ts` ton tai; Redis/Memcached: > Not Found |
 | Monitoring | Playwright reports, crawler logs DB; APM/Sentry/OpenTelemetry: > Not Found |
 
@@ -94,7 +102,7 @@ SinoMedia la he thong dieu khien crawler mang xa hoi va van hanh du lieu creativ
 
 ## 4. System Architecture
 
-Luong di cua he thong tu Client den ha tang luu tru vat ly tren VPS, chia theo tung tang layer va theo bang chung hien co trong source:
+Day la so do system architecture chuan cua project. Cac section khac trong tai lieu phai nhat quan voi so do nay: request tu operator di vao dashboard host/middleware; dashboard lam viec voi Supabase Auth/DB/Realtime; worker tren VPS chi noi vao he thong qua Worker Gateway API va Token Guard; output hien tai nam tren physical VPS disk.
 
 ```mermaid
 graph TD
@@ -174,6 +182,19 @@ graph TD
     class Worker,Docker,VPSPath exec
     class Dashboard,AppBackend,Middleware,WorkerAPI,TokenGuard,SupabaseAuth,SupabaseRealtime app
 ```
+
+### Layer Contracts
+
+| Layer | Contract kien truc | Bang chung / trang thai |
+|---|---|---|
+| L1 - Client / Hosting | Operator truy cap dashboard qua browser/HTTPS. Middleware cua Next.js la diem bao ve route `/dash/*` va auth pages. | `dashboard/proxy.ts` matcher `/dash/:path*`, `/login`, `/sign-up`, `/forgot-password`; dau vet Vercel co trong repo. Firewall rieng: > Not Found |
+| L2 - App / API | Dashboard Next.js 16 gom SSR/App Router, Server Actions, Services, Repositories va Route Handlers. Worker Gateway la API noi bo cho crawler worker. | `dashboard/package.json`, `dashboard/app`, `dashboard/lib/actions`, `dashboard/lib/services`, `dashboard/lib/repositories`, `dashboard/app/api/worker/rest/v1/[...path]/route.ts` |
+| L3A - Supabase Auth | Quan ly user/session cua dashboard. Middleware refresh session va doc user. | `@supabase/ssr`, `dashboard/lib/supabase/middleware.ts`, auth actions/services. |
+| L3B - Supabase Database / RPC | Postgres/PostgREST/RPC la source of truth cho tokens, queue, logs, accounts va crawled data. | `supabase/migrations/*.sql`, `claim_next_crawler_task`, `create_crawler_tasks`. |
+| L3C - Supabase Realtime | Day live changes cua task/log/metrics ve dashboard. | migration enable realtime va `dashboard/lib/realtime/subscriptions.ts`. |
+| L4 - VPS Execution / Physical Storage | Crawler worker chay trong Docker Compose tren `/opt/crawler-pipeline`; file output luu tren disk qua volume. | `crawler-pipeline/docker-compose.yml`, `crawler-pipeline/deployment/*`, `docker-help.md`. |
+| L5 - External / Optional | Worker goi social platforms va co the dung 2Captcha neu cau hinh. | `crawler-pipeline/src/crawl/*`, `crawler-pipeline/src/challenge/providers/two_captcha.ts`. |
+| L6 - Missing Ops Layer | Cac thanh phan ops chua co bang chung trong source khong duoc xem la da ton tai. | Nginx / Redis / MinIO / BullMQ / OpenTelemetry / Prometheus / Loki / Backups: > Not Found |
 
 Ghi chu ha tang:
 
@@ -380,6 +401,24 @@ erDiagram
 | Pagination/filtering | Some services/repositories use range/order/filter; no unified API-wide pagination contract found. |
 | Error format | Server Actions mostly return `{ success, error }`; Route Handlers return JSON or text `Response`. Unified error envelope: > Not Found |
 
+### Worker Gateway Allowed Surface
+
+Gateway `/api/worker/rest/v1/[...path]` is intentionally narrow. `handleProxy()` maps each method/path to at least one crawler scope, rejects unsupported endpoints, blocks wildcard worker tokens, limits dangerous query patterns, validates select/order/body fields, then forwards to `${SUPABASE_URL}/rest/v1/*` with service role credentials.
+
+| Method / path | Required scope | Purpose |
+|---|---|---|
+| `POST rpc/claim_next_crawler_task` | `crawler:claim` | Claim next pending task through RPC. |
+| `GET crawler_tasks` | `crawler:read_task` | Read task state/metadata. |
+| `PATCH crawler_tasks` | `crawler:update_task` | Update task status/error/metadata. |
+| `POST crawler_logs` | `crawler:write_logs` | Push worker logs to DB. |
+| `GET crawler_accounts` | `crawler:read_accounts` | Checkout active account or read account status with forced-safe select. |
+| `PATCH crawler_accounts` | `crawler:update_accounts` | Update account usage/failure/status. |
+| `POST crawler_accounts` | `crawler:write_accounts` | Create account, encrypting `cookie_data` before DB write. |
+| `GET/POST/PATCH crawled_posts` | `crawler:read_data` / `crawler:write_data` / `crawler:update_data` | Read/write/update crawled post data. |
+| `GET/POST/PATCH crawled_authors` | `crawler:read_data` / `crawler:write_data` / `crawler:update_data` | Read/write/update crawled author data. |
+| `POST crawled_comments` | `crawler:write_data` | Write crawled comments. |
+| `POST post_metric_snapshots`, `POST author_metric_snapshots` | `crawler:write_data` | Write metric snapshots. |
+
 ## 11. Business Flow
 
 ### Login
@@ -406,14 +445,18 @@ sequenceDiagram
     participant TaskAction
     participant CrawlerService
     participant TaskRepo
+    participant Gateway as Worker Gateway
+    participant Guard as Token Guard
     participant Supabase
     participant Worker
     Admin->>TaskAction: createTask/createTasksBulk
     TaskAction->>CrawlerService: validated mutation
     CrawlerService->>TaskRepo: insert or RPC bulk insert
     TaskRepo->>Supabase: crawler_tasks
-    Worker->>Supabase: claim via gateway RPC
-    Worker->>Supabase: write progress/logs/results via gateway
+    Worker->>Gateway: claim/write via /api/worker/rest/v1/*
+    Gateway->>Guard: verify SHA-256 token + scope
+    Guard-->>Gateway: allow/deny
+    Gateway->>Supabase: service_role PostgREST/RPC proxy
     Supabase-->>Admin: realtime updates
 ```
 
@@ -634,23 +677,34 @@ flowchart LR
 flowchart TD
     GitHub["GitHub Repository"] --> Actions["GitHub Actions"]
     Actions --> GHCR["GHCR crawler image"]
-    Dev["Developer/Operator"] --> Vercel["Vercel/Next Dashboard evidence: .vercel present"]
-    Vercel --> Supabase[(Supabase)]
-    VPS["VPS/Docker host"] --> WorkerContainer["crawler-worker container"]
+    Operator["Operator / Browser"] --> Host["Dashboard Host<br/>Vercel evidence"]
+    Host --> Middleware["Next.js Middleware"]
+    Middleware --> Dashboard["Next.js Dashboard"]
+    Dashboard --> SupabaseAuth["Supabase Auth"]
+    Dashboard --> SupabaseDB[(Supabase Database / RPC)]
+    SupabaseDB -.-> SupabaseRealtime["Supabase Realtime"]
+    SupabaseRealtime -.-> Dashboard
+    VPSPath["/opt/crawler-pipeline"] --> Compose["Docker Compose"]
+    Compose --> WorkerContainer["crawler-worker container"]
+    Compose --> DockerLogs["Docker json-file logs<br/>50MB x 3"]
+    Compose --> OutputDisk["/opt/crawler-pipeline/output"]
     WorkerContainer --> Gateway["Dashboard Worker Gateway"]
-    Gateway --> Supabase
+    Gateway --> TokenGuard["Token Guard"]
+    TokenGuard --> SupabaseDB
     DesktopPackage["desktop-app package"] --> LocalDashboard["Local dashboard standalone"]
     DesktopPackage --> LocalWorker["Local crawler worker"]
+    MissingOps["Nginx / Redis / MinIO / BullMQ<br/>OTel / Prometheus / Loki / Backups<br/>Not Found"] -.-> VPSPath
 ```
 
 ### Evidence Files Read
 
 | Category | Files / tools |
 |---|---|
-| Architecture plan | `.agents/skills/achitecture-plan.md` |
-| GitNexus | Refreshed index, `gitnexus://repo/SinoMedia/context`, clusters, processes, `route_map` |
+| Architecture plan | `.agents/skills/achitecture-plan.md`; user-provided canonical Mermaid system architecture in this update. |
+| GitNexus | `context({ name: "verifyApiToken", repo: "SinoMedia" })` confirmed `handleProxy -> verifyApiToken -> extractTokenFromRequest`; GitNexus query warned FTS indexes are missing/degraded. |
 | Dashboard | `dashboard/package.json`, `dashboard/app/**`, `dashboard/lib/actions/**`, `dashboard/lib/services/**`, `dashboard/lib/repositories/**`, `dashboard/lib/supabase/**`, `dashboard/lib/guards/token.guard.ts`, `dashboard/proxy.ts`, `dashboard/next.config.ts` |
-| Worker | `crawler-pipeline/package.json`, `Dockerfile`, `docker-compose.yml`, `src/index.ts`, `src/queue_worker.ts`, `src/config.ts`, `src/store/**`, `src/crawl/crawler_factory.ts`, `src/challenge/**`, `src/downloader/**` |
+| Worker gateway | `dashboard/app/api/worker/rest/v1/[...path]/route.ts`, `dashboard/lib/guards/token.guard.ts`. |
+| Worker | `crawler-pipeline/package.json`, `Dockerfile`, `docker-compose.yml`, `src/index.ts`, `src/queue_worker.ts`, `src/config.ts`, `src/store/supabase_client.ts`, `src/store/**`, `src/crawl/crawler_factory.ts`, `src/challenge/**`, `src/downloader/**` |
 | Database | `supabase/config.toml`, `supabase/migrations/*.sql`, `supabase/seed.sql` |
 | Testing | `automation-test/package.json`, `playwright.config.ts`, `runner/server.js`, `tests/**/module.json`, `tests/**/*.spec.ts`, `automation-test/README.md` |
 | Deployment | `.github/workflows/deploy-crawler.yml`, `desktop-app/README.md` |
@@ -658,8 +712,11 @@ flowchart TD
 ### Explicit Not Found Inventory
 
 - Mobile app.
-- Redis/RabbitMQ/Kafka queue.
+- Redis/RabbitMQ/Kafka/BullMQ queue.
 - Nginx, PM2, Kubernetes deployment.
+- MinIO/S3-compatible physical object storage layer for crawler output.
+- OpenTelemetry, Prometheus, Loki, Sentry/APM.
+- Backup/restore automation.
 - App-level rate limiter.
 - Centralized APM/monitoring.
 - Strict global error envelope.
