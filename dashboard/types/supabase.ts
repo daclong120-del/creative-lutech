@@ -1,4 +1,4 @@
-export type Json =
+﻿export type Json =
   | string
   | number
   | boolean
@@ -7,6 +7,11 @@ export type Json =
   | Json[]
 
 export type Database = {
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "14.5"
+  }
   graphql_public: {
     Tables: {
       [_ in never]: never
@@ -1307,6 +1312,456 @@ export type Database = {
         }
         Relationships: []
       }
+      release_ops_apps: {
+        Row: {
+          app_name: string
+          created_at: string
+          id: string
+          metadata: Json
+          package_name: string
+          play_account_id: string | null
+          policy_readiness: string
+          target_sdk: number | null
+          updated_at: string
+        }
+        Insert: {
+          app_name: string
+          created_at?: string
+          id?: string
+          metadata?: Json
+          package_name: string
+          play_account_id?: string | null
+          policy_readiness?: string
+          target_sdk?: number | null
+          updated_at?: string
+        }
+        Update: {
+          app_name?: string
+          created_at?: string
+          id?: string
+          metadata?: Json
+          package_name?: string
+          play_account_id?: string | null
+          policy_readiness?: string
+          target_sdk?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "release_ops_apps_play_account_id_fkey"
+            columns: ["play_account_id"]
+            isOneToOne: false
+            referencedRelation: "release_ops_play_accounts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      release_ops_artifacts: {
+        Row: {
+          checksum_sha256: string
+          created_at: string
+          file_name: string
+          file_size: number
+          id: string
+          provenance: Json
+          release_id: string
+          signing_fingerprint: string | null
+          storage_path: string
+        }
+        Insert: {
+          checksum_sha256: string
+          created_at?: string
+          file_name: string
+          file_size: number
+          id?: string
+          provenance?: Json
+          release_id: string
+          signing_fingerprint?: string | null
+          storage_path: string
+        }
+        Update: {
+          checksum_sha256?: string
+          created_at?: string
+          file_name?: string
+          file_size?: number
+          id?: string
+          provenance?: Json
+          release_id?: string
+          signing_fingerprint?: string | null
+          storage_path?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "release_ops_artifacts_release_id_fkey"
+            columns: ["release_id"]
+            isOneToOne: false
+            referencedRelation: "release_ops_releases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      release_ops_aso_metrics: {
+        Row: {
+          app_id: string
+          conversion_rate: number | null
+          created_at: string
+          dimension: string
+          dimension_value: string
+          id: string
+          installs: number
+          metadata: Json
+          report_date: string
+          store_listing_visitors: number
+          updated_at: string
+        }
+        Insert: {
+          app_id: string
+          conversion_rate?: number | null
+          created_at?: string
+          dimension: string
+          dimension_value: string
+          id?: string
+          installs?: number
+          metadata?: Json
+          report_date: string
+          store_listing_visitors?: number
+          updated_at?: string
+        }
+        Update: {
+          app_id?: string
+          conversion_rate?: number | null
+          created_at?: string
+          dimension?: string
+          dimension_value?: string
+          id?: string
+          installs?: number
+          metadata?: Json
+          report_date?: string
+          store_listing_visitors?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "release_ops_aso_metrics_app_id_fkey"
+            columns: ["app_id"]
+            isOneToOne: false
+            referencedRelation: "release_ops_apps"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      release_ops_audits: {
+        Row: {
+          action: string
+          created_at: string
+          details: Json
+          entity_id: string
+          entity_type: string
+          id: string
+          ip_address: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          details?: Json
+          entity_id: string
+          entity_type: string
+          id?: string
+          ip_address?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          details?: Json
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          ip_address?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      release_ops_batch_operations: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          operation_type: string
+          plan_payload: Json
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          operation_type: string
+          plan_payload?: Json
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          operation_type?: string
+          plan_payload?: Json
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      release_ops_job_events: {
+        Row: {
+          created_at: string
+          external_ref: string | null
+          id: string
+          job_id: string
+          level: string
+          message: string
+          metadata: Json
+          progress: number | null
+          stage: string
+        }
+        Insert: {
+          created_at?: string
+          external_ref?: string | null
+          id?: string
+          job_id: string
+          level?: string
+          message: string
+          metadata?: Json
+          progress?: number | null
+          stage: string
+        }
+        Update: {
+          created_at?: string
+          external_ref?: string | null
+          id?: string
+          job_id?: string
+          level?: string
+          message?: string
+          metadata?: Json
+          progress?: number | null
+          stage?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "release_ops_job_events_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "release_ops_jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      release_ops_jobs: {
+        Row: {
+          app_id: string | null
+          attempt_count: number
+          completed_at: string | null
+          created_at: string
+          created_by: string | null
+          error_message: string | null
+          heartbeat_at: string | null
+          id: string
+          idempotency_key: string | null
+          job_type: string
+          lease_until: string | null
+          max_attempts: number
+          payload: Json
+          priority: number
+          release_id: string | null
+          result: Json
+          status: string
+          updated_at: string
+          worker_id: string | null
+        }
+        Insert: {
+          app_id?: string | null
+          attempt_count?: number
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          error_message?: string | null
+          heartbeat_at?: string | null
+          id?: string
+          idempotency_key?: string | null
+          job_type: string
+          lease_until?: string | null
+          max_attempts?: number
+          payload?: Json
+          priority?: number
+          release_id?: string | null
+          result?: Json
+          status?: string
+          updated_at?: string
+          worker_id?: string | null
+        }
+        Update: {
+          app_id?: string | null
+          attempt_count?: number
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          error_message?: string | null
+          heartbeat_at?: string | null
+          id?: string
+          idempotency_key?: string | null
+          job_type?: string
+          lease_until?: string | null
+          max_attempts?: number
+          payload?: Json
+          priority?: number
+          release_id?: string | null
+          result?: Json
+          status?: string
+          updated_at?: string
+          worker_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "release_ops_jobs_app_id_fkey"
+            columns: ["app_id"]
+            isOneToOne: false
+            referencedRelation: "release_ops_apps"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "release_ops_jobs_release_id_fkey"
+            columns: ["release_id"]
+            isOneToOne: false
+            referencedRelation: "release_ops_releases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "release_ops_jobs_worker_id_fkey"
+            columns: ["worker_id"]
+            isOneToOne: false
+            referencedRelation: "release_ops_workers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      release_ops_play_accounts: {
+        Row: {
+          bucket_name: string
+          created_at: string
+          developer_id: string
+          id: string
+          service_account_key_file: string | null
+          updated_at: string
+        }
+        Insert: {
+          bucket_name: string
+          created_at?: string
+          developer_id: string
+          id?: string
+          service_account_key_file?: string | null
+          updated_at?: string
+        }
+        Update: {
+          bucket_name?: string
+          created_at?: string
+          developer_id?: string
+          id?: string
+          service_account_key_file?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      release_ops_releases: {
+        Row: {
+          app_id: string
+          batch_operation_id: string | null
+          created_at: string
+          id: string
+          release_notes: string | null
+          rollout_percentage: number
+          status: string
+          track: string
+          updated_at: string
+          version_code: number
+          version_name: string
+        }
+        Insert: {
+          app_id: string
+          batch_operation_id?: string | null
+          created_at?: string
+          id?: string
+          release_notes?: string | null
+          rollout_percentage?: number
+          status?: string
+          track: string
+          updated_at?: string
+          version_code: number
+          version_name: string
+        }
+        Update: {
+          app_id?: string
+          batch_operation_id?: string | null
+          created_at?: string
+          id?: string
+          release_notes?: string | null
+          rollout_percentage?: number
+          status?: string
+          track?: string
+          updated_at?: string
+          version_code?: number
+          version_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "release_ops_releases_app_id_fkey"
+            columns: ["app_id"]
+            isOneToOne: false
+            referencedRelation: "release_ops_apps"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "release_ops_releases_batch_operation_id_fkey"
+            columns: ["batch_operation_id"]
+            isOneToOne: false
+            referencedRelation: "release_ops_batch_operations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      release_ops_workers: {
+        Row: {
+          capacity: Json
+          created_at: string
+          id: string
+          last_heartbeat: string
+          status: string
+          updated_at: string
+          worker_name: string
+        }
+        Insert: {
+          capacity?: Json
+          created_at?: string
+          id?: string
+          last_heartbeat?: string
+          status?: string
+          updated_at?: string
+          worker_name: string
+        }
+        Update: {
+          capacity?: Json
+          created_at?: string
+          id?: string
+          last_heartbeat?: string
+          status?: string
+          updated_at?: string
+          worker_name?: string
+        }
+        Relationships: []
+      }
       system_settings: {
         Row: {
           alert_on_failure: boolean
@@ -2228,8 +2683,125 @@ export type Database = {
     }
     Functions: {
       claim_next_crawler_task: { Args: never; Returns: Json }
+      claim_next_job: {
+        Args: {
+          p_job_types: string[]
+          p_lease_duration: string
+          p_worker_id: string
+        }
+        Returns: {
+          app_id: string | null
+          attempt_count: number
+          completed_at: string | null
+          created_at: string
+          created_by: string | null
+          error_message: string | null
+          heartbeat_at: string | null
+          id: string
+          idempotency_key: string | null
+          job_type: string
+          lease_until: string | null
+          max_attempts: number
+          payload: Json
+          priority: number
+          release_id: string | null
+          result: Json
+          status: string
+          updated_at: string
+          worker_id: string | null
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "release_ops_jobs"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       create_crawler_tasks: { Args: { p_tasks: Json }; Returns: Json }
+      fail_job: {
+        Args: {
+          p_error_message?: string
+          p_fatal?: boolean
+          p_job_id: string
+          p_worker_id: string
+        }
+        Returns: {
+          app_id: string | null
+          attempt_count: number
+          completed_at: string | null
+          created_at: string
+          created_by: string | null
+          error_message: string | null
+          heartbeat_at: string | null
+          id: string
+          idempotency_key: string | null
+          job_type: string
+          lease_until: string | null
+          max_attempts: number
+          payload: Json
+          priority: number
+          release_id: string | null
+          result: Json
+          status: string
+          updated_at: string
+          worker_id: string | null
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "release_ops_jobs"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
+      heartbeat_job: {
+        Args: {
+          p_job_id: string
+          p_lease_duration: string
+          p_worker_id: string
+        }
+        Returns: boolean
+      }
+      heartbeat_worker: {
+        Args: {
+          p_capacity: Json
+          p_status: string
+          p_worker_id: string
+          p_worker_name: string
+        }
+        Returns: undefined
+      }
       is_admin: { Args: { user_id: string }; Returns: boolean }
+      succeed_job: {
+        Args: { p_job_id: string; p_result?: Json; p_worker_id: string }
+        Returns: {
+          app_id: string | null
+          attempt_count: number
+          completed_at: string | null
+          created_at: string
+          created_by: string | null
+          error_message: string | null
+          heartbeat_at: string | null
+          id: string
+          idempotency_key: string | null
+          job_type: string
+          lease_until: string | null
+          max_attempts: number
+          payload: Json
+          priority: number
+          release_id: string | null
+          result: Json
+          status: string
+          updated_at: string
+          worker_id: string | null
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "release_ops_jobs"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
+      sync_aso_metrics: { Args: { p_metrics: Json }; Returns: number }
     }
     Enums: {
       [_ in never]: never
@@ -2246,116 +2818,116 @@ type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
 
 export type Tables<
   DefaultSchemaTableNameOrOptions extends
-  | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
-  | { schema: keyof DatabaseWithoutInternals },
+    | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
+    | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-  ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-    DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
-  : never = never,
+    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
+    : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
   ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-    DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
       Row: infer R
     }
-  ? R
-  : never
+    ? R
+    : never
   : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
-    DefaultSchema["Views"])
-  ? (DefaultSchema["Tables"] &
-    DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
-      Row: infer R
-    }
-  ? R
-  : never
-  : never
+        DefaultSchema["Views"])
+    ? (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
+        Row: infer R
+      }
+      ? R
+      : never
+    : never
 
 export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
-  | keyof DefaultSchema["Tables"]
-  | { schema: keyof DatabaseWithoutInternals },
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-  ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-  : never = never,
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
   ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-    Insert: infer I
-  }
-  ? I
-  : never
+      Insert: infer I
+    }
+    ? I
+    : never
   : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
-  ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-    Insert: infer I
-  }
-  ? I
-  : never
-  : never
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Insert: infer I
+      }
+      ? I
+      : never
+    : never
 
 export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
-  | keyof DefaultSchema["Tables"]
-  | { schema: keyof DatabaseWithoutInternals },
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-  ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-  : never = never,
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
   ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-    Update: infer U
-  }
-  ? U
-  : never
+      Update: infer U
+    }
+    ? U
+    : never
   : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
-  ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-    Update: infer U
-  }
-  ? U
-  : never
-  : never
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Update: infer U
+      }
+      ? U
+      : never
+    : never
 
 export type Enums<
   DefaultSchemaEnumNameOrOptions extends
-  | keyof DefaultSchema["Enums"]
-  | { schema: keyof DatabaseWithoutInternals },
+    | keyof DefaultSchema["Enums"]
+    | { schema: keyof DatabaseWithoutInternals },
   EnumName extends DefaultSchemaEnumNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-  ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
-  : never = never,
+    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
+    : never = never,
 > = DefaultSchemaEnumNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
   ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
-  ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
-  : never
+    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
+    : never
 
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
-  | keyof DefaultSchema["CompositeTypes"]
-  | { schema: keyof DatabaseWithoutInternals },
+    | keyof DefaultSchema["CompositeTypes"]
+    | { schema: keyof DatabaseWithoutInternals },
   CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-  ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
-  : never = never,
+    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
 > = PublicCompositeTypeNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
   ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
   : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
-  ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
-  : never
+    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+    : never
 
 export const Constants = {
   graphql_public: {
@@ -2365,4 +2937,3 @@ export const Constants = {
     Enums: {},
   },
 } as const
-

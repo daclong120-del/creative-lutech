@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from 'react';
-import { MOCK_RELEASES } from '@/lib/fixtures/release-ops-fixtures';
-import { ReleaseStatus } from '@/types/release-ops';
+import React, { useState, useEffect } from 'react';
+import { getReleases, getOverviewStats } from '@/lib/actions/release-ops.actions';
+import { ReleaseStatus, AppReleaseItem } from '@/types/release-ops';
 import ReleaseOpsNavTabs from '@/components/dashboard/release-ops/ReleaseOpsNavTabs';
 
 function StatusBadge({ status }: { status: ReleaseStatus }) {
@@ -85,9 +85,31 @@ const BUILD_DATASET: Record<TimeRangeType, BuildPoint[]> = {
 };
 
 export default function OverviewPage() {
-  const rollouts = MOCK_RELEASES.filter(r => r.status === 'rolling_out');
-  const reviews = MOCK_RELEASES.filter(r => r.status === 'in_review');
-  const issues = MOCK_RELEASES.filter(r => r.status === 'rejected' || r.status === 'failed');
+  const [releases, setReleases] = useState<AppReleaseItem[]>([]);
+  const [stats, setStats] = useState({ totalApps: 0, totalAccounts: 0, activeRollouts: 0, pendingReviews: 0, failedOrBlocked: 0, lastPlaySyncAt: '' });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const [releasesData, statsData] = await Promise.all([
+          getReleases(),
+          getOverviewStats(),
+        ]);
+        setReleases(releasesData);
+        setStats(statsData);
+      } catch (err) {
+        console.error("Failed to load overview data:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadData();
+  }, []);
+
+  const rollouts = releases.filter(r => r.status === 'rolling_out');
+  const reviews = releases.filter(r => r.status === 'in_review');
+  const issues = releases.filter(r => r.status === 'rejected' || r.status === 'failed');
 
   // Time range selection state
   const [timeRange, setTimeRange] = useState<TimeRangeType>('14d');
@@ -127,9 +149,9 @@ export default function OverviewPage() {
         <div className="flex items-center gap-3">
           <h1 className="text-lg font-bold text-foreground">Creative Lutech Release Ops</h1>
           <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground">
-            <span className="px-2 py-0.5 rounded bg-muted border border-border">102 apps</span>
+            <span className="px-2 py-0.5 rounded bg-muted border border-border">{stats.totalApps} apps</span>
             <span>&bull;</span>
-            <span className="px-2 py-0.5 rounded bg-muted border border-border">4 dev accounts</span>
+            <span className="px-2 py-0.5 rounded bg-muted border border-border">{stats.totalAccounts} dev accounts</span>
           </div>
         </div>
 
@@ -146,8 +168,8 @@ export default function OverviewPage() {
         </div>
         <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
           <div className="p-3 rounded-lg bg-muted/50 border border-border space-y-1">
-            <span className="text-2xl font-black text-foreground block">4</span>
-            <span className="text-xs font-semibold text-muted-foreground block">DRAFT</span>
+             <span className="text-2xl font-black text-foreground block">{stats.failedOrBlocked}</span>
+             <span className="text-xs font-semibold text-muted-foreground block">ISSUES</span>
             <div className="flex items-center gap-1 pt-1">
               <span className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-rose-500/10 text-rose-600 border border-rose-500/20">build_failed 3</span>
               <span className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-rose-500/10 text-rose-600 border border-rose-500/20">rejected 2</span>
@@ -156,22 +178,22 @@ export default function OverviewPage() {
           </div>
 
           <div className="p-3 rounded-lg bg-blue-500/5 border border-blue-500/20 space-y-1">
-            <span className="text-2xl font-black text-blue-600 dark:text-blue-400 block">7</span>
+             <span className="text-2xl font-black text-blue-600 dark:text-blue-400 block">{releases.filter(r => r.status === 'building' || r.status === 'draft').length}</span>
             <span className="text-xs font-semibold text-blue-600 dark:text-blue-400 block">BUILDING</span>
           </div>
 
           <div className="p-3 rounded-lg bg-amber-500/5 border border-amber-500/20 space-y-1">
-            <span className="text-2xl font-black text-amber-600 dark:text-amber-400 block">12</span>
+             <span className="text-2xl font-black text-amber-600 dark:text-amber-400 block">{stats.pendingReviews}</span>
             <span className="text-xs font-semibold text-amber-600 dark:text-amber-400 block">IN_REVIEW</span>
           </div>
 
           <div className="p-3 rounded-lg bg-emerald-500/5 border border-emerald-500/20 space-y-1">
-            <span className="text-2xl font-black text-emerald-600 dark:text-emerald-400 block">9</span>
+             <span className="text-2xl font-black text-emerald-600 dark:text-emerald-400 block">{stats.activeRollouts}</span>
             <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 block">ROLLING_OUT</span>
           </div>
 
           <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 space-y-1">
-            <span className="text-2xl font-black text-emerald-700 dark:text-emerald-300 block">86</span>
+             <span className="text-2xl font-black text-emerald-700 dark:text-emerald-300 block">{releases.filter(r => r.status === 'live').length}</span>
             <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-300 block">LIVE</span>
           </div>
         </div>

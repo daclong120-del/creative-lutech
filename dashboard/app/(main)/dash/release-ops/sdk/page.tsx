@@ -1,11 +1,36 @@
 "use client";
 
-import React, { useState } from 'react';
-import { MOCK_TARGET_SDK, MOCK_TARGET_SDK_POLICY } from '@/lib/fixtures/release-ops-fixtures';
+import React, { useState, useEffect } from 'react';
+import { getTargetSDKStatus } from '@/lib/actions/release-ops.actions';
+import type { TargetSDKItem, TargetSDKPolicyConfig } from '@/types/release-ops';
+
+// Policy config tĩnh theo Google Play mandate — không cần load từ DB
+const SDK_POLICY: TargetSDKPolicyConfig = {
+  policySource: 'Google Play Developer Policy (Mandate August 2026)',
+  requiredApiLevel: 34,
+  deadlineDate: '2026-08-31',
+  gracePeriodDays: 30,
+  isMandatory: true,
+};
 
 export default function TargetSDKPage() {
   const [createdBatchMsg, setCreatedBatchMsg] = useState<string | null>(null);
+  const [sdkItems, setSdkItems] = useState<TargetSDKItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const data = await getTargetSDKStatus();
+        setSdkItems(data);
+      } catch (err) {
+        console.error('Failed to load SDK status:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadData();
+  }, []);
   const handleCreateBatchUpgrade = (appName: string) => {
     setCreatedBatchMsg(`Đã khởi tạo Batch Job nâng cấp Target SDK 34 cho ứng dụng "${appName}"`);
     setTimeout(() => setCreatedBatchMsg(null), 4000);
@@ -23,7 +48,7 @@ export default function TargetSDKPage() {
         </div>
 
         <span className="px-2.5 py-1 rounded text-xs font-bold bg-amber-500/10 text-amber-600 border border-amber-500/20">
-          Hạn chót Mandate: {MOCK_TARGET_SDK_POLICY.deadlineDate}
+          Hạn chót Mandate: {SDK_POLICY.deadlineDate}
         </span>
       </div>
 
@@ -45,19 +70,19 @@ export default function TargetSDKPage() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-3 text-xs">
           <div className="p-3 bg-muted/30 border border-border rounded-lg">
             <span className="text-[10px] text-muted-foreground block">Nguồn Chính sách</span>
-            <span className="font-semibold text-foreground">{MOCK_TARGET_SDK_POLICY.policySource}</span>
+            <span className="font-semibold text-foreground">{SDK_POLICY.policySource}</span>
           </div>
           <div className="p-3 bg-muted/30 border border-border rounded-lg">
             <span className="text-[10px] text-muted-foreground block">Yêu cầu Yêu cầu tối thiểu</span>
-            <span className="font-mono font-bold text-emerald-600 text-sm">Target SDK {MOCK_TARGET_SDK_POLICY.requiredApiLevel} (Android 14)</span>
+            <span className="font-mono font-bold text-emerald-600 text-sm">Target SDK {SDK_POLICY.requiredApiLevel} (Android 14)</span>
           </div>
           <div className="p-3 bg-muted/30 border border-border rounded-lg">
             <span className="text-[10px] text-muted-foreground block">Hạn chót Áp dụng (Deadline)</span>
-            <span className="font-mono font-bold text-rose-600 text-sm">{MOCK_TARGET_SDK_POLICY.deadlineDate}</span>
+            <span className="font-mono font-bold text-rose-600 text-sm">{SDK_POLICY.deadlineDate}</span>
           </div>
           <div className="p-3 bg-muted/30 border border-border rounded-lg">
             <span className="text-[10px] text-muted-foreground block">Thời gian gia hạn (Grace Period)</span>
-            <span className="font-semibold text-foreground">{MOCK_TARGET_SDK_POLICY.gracePeriodDays} ngày thêm</span>
+            <span className="font-semibold text-foreground">{SDK_POLICY.gracePeriodDays} ngày thêm</span>
           </div>
         </div>
       </div>
@@ -77,7 +102,7 @@ export default function TargetSDKPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
-              {MOCK_TARGET_SDK.map(sdk => (
+              {sdkItems.map(sdk => (
                 <tr key={sdk.packageName} className="hover:bg-muted/30 transition-colors">
                   <td className="py-3 px-4">
                     <span className="font-semibold text-foreground block">{sdk.appName}</span>

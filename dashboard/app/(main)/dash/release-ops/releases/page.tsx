@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from 'react';
-import { MOCK_RELEASES } from '@/lib/fixtures/release-ops-fixtures';
+import React, { useState, useEffect } from 'react';
+import { getReleases } from '@/lib/actions/release-ops.actions';
 import { AppReleaseItem, ReleaseStatus, TrackType } from '@/types/release-ops';
 import ReleaseOpsNavTabs from '@/components/dashboard/release-ops/ReleaseOpsNavTabs';
 
@@ -42,11 +42,26 @@ function TrackBadge({ track }: { track: TrackType }) {
 }
 
 export default function ReleasesPage() {
-  const [releases, setReleases] = useState<AppReleaseItem[]>(MOCK_RELEASES);
+  const [releases, setReleases] = useState<AppReleaseItem[]>([]);
   const [selectedRelease, setSelectedRelease] = useState<AppReleaseItem | null>(null);
   const [actionTarget, setActionTarget] = useState<{ release: AppReleaseItem; action: 'increase' | 'live' | 'halt' } | null>(null);
   const [businessReason, setBusinessReason] = useState('');
   const [ticketRef, setTicketRef] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const data = await getReleases();
+        setReleases(data);
+      } catch (err) {
+        console.error('Failed to load releases:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadData();
+  }, []);
 
   // ─── Filters ───
   const [searchQuery, setSearchQuery] = useState('');

@@ -1,14 +1,39 @@
 "use client";
 
-import React, { useState } from 'react';
-import { MOCK_APPS_REGISTRY, MOCK_UPLOAD_JOBS } from '@/lib/fixtures/release-ops-fixtures';
+import React, { useState, useEffect } from 'react';
+import { getApps, getUploadJobs } from '@/lib/actions/release-ops.actions';
+import type { AppRegistryItem, UploadJobItem } from '@/types/release-ops';
 
 export default function UploadPage() {
   const [activeTab, setActiveTab] = useState<'upload' | 'queue'>('upload');
-  const [selectedAppId, setSelectedAppId] = useState(MOCK_APPS_REGISTRY[0].id);
+  const [selectedAppId, setSelectedAppId] = useState('');
   const [selectedTrack, setSelectedTrack] = useState('production');
   const [commitMode, setCommitMode] = useState<'validate_only' | 'internal_draft' | 'production_commit'>('validate_only');
   const [selectedLocale, setSelectedLocale] = useState('en-US');
+  const [apps, setApps] = useState<AppRegistryItem[]>([]);
+  const [uploadJobs, setUploadJobs] = useState<UploadJobItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const [appsData, jobsData] = await Promise.all([
+          getApps(),
+          getUploadJobs(),
+        ]);
+        setApps(appsData);
+        setUploadJobs(jobsData);
+        if (appsData.length > 0) {
+          setSelectedAppId(appsData[0].id);
+        }
+      } catch (err) {
+        console.error('Failed to load upload data:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadData();
+  }, []);
 
   return (
     <div suppressHydrationWarning className="px-4 md:px-8 py-6 max-w-[1400px] mx-auto space-y-6">
@@ -32,7 +57,7 @@ export default function UploadPage() {
             onClick={() => setActiveTab('queue')}
             className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors ${activeTab === 'queue' ? 'bg-primary text-primary-foreground' : 'border border-border bg-card text-foreground hover:bg-muted'}`}
           >
-            Hàng chờ Xử lý ({MOCK_UPLOAD_JOBS.length})
+            Hàng chờ Xử lý ({uploadJobs.length})
           </button>
         </div>
       </div>
@@ -52,7 +77,7 @@ export default function UploadPage() {
                     onChange={(e) => setSelectedAppId(e.target.value)}
                     className="w-full p-2 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
                   >
-                    {MOCK_APPS_REGISTRY.map(app => (
+                    {apps.map(app => (
                       <option key={app.id} value={app.id}>
                         {app.appName} ({app.packageName})
                       </option>
@@ -154,7 +179,7 @@ export default function UploadPage() {
                 </div>
               </div>
               <textarea
-                value={MOCK_UPLOAD_JOBS[0].releaseNotesByLocale[selectedLocale] || ''}
+                value={uploadJobs[0]?.releaseNotesByLocale[selectedLocale] || ''}
                 onChange={() => {}}
                 placeholder="Nhập ghi chú phát hành..."
                 className="w-full h-20 p-2.5 text-xs bg-card border border-border rounded-lg text-foreground focus:outline-none focus:ring-1 focus:ring-primary font-sans"
@@ -168,7 +193,7 @@ export default function UploadPage() {
               <h3 className="text-sm font-bold text-foreground">Pre-check Matrix (Tự động)</h3>
 
               <div className="space-y-2">
-                {MOCK_UPLOAD_JOBS[0].preChecks.map((check, idx) => (
+                {(uploadJobs[0]?.preChecks ?? []).map((check, idx) => (
                   <div key={idx} className="p-3 bg-muted/30 border border-border rounded-lg flex items-start gap-2.5">
                     <span className={`size-2 rounded-full mt-1 shrink-0 ${check.passed ? 'bg-emerald-500' : 'bg-rose-500'}`} />
                     <div>
@@ -240,7 +265,7 @@ export default function UploadPage() {
         <div className="bg-card border border-border rounded-xl p-4">
           <h3 className="text-sm font-bold text-foreground mb-3">Hàng chờ Upload & Phê duyệt</h3>
           <div className="space-y-3">
-            {MOCK_UPLOAD_JOBS.map(job => (
+            {uploadJobs.map(job => (
               <div key={job.id} className="p-3 border border-border rounded-lg bg-card space-y-2">
                 <div className="flex items-center justify-between">
                   <div>

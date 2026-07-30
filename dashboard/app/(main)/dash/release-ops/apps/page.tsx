@@ -1,12 +1,28 @@
 "use client";
 
-import React, { useState } from 'react';
-import { MOCK_APPS_REGISTRY } from '@/lib/fixtures/release-ops-fixtures';
+import React, { useState, useEffect } from 'react';
+import { getApps } from '@/lib/actions/release-ops.actions';
 import { AppRegistryItem } from '@/types/release-ops';
 
 export default function AppsRegistryPage() {
   const [showWizard, setShowWizard] = useState(false);
   const [selectedAppSpec, setSelectedAppSpec] = useState<AppRegistryItem | null>(null);
+  const [apps, setApps] = useState<AppRegistryItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const data = await getApps();
+        setApps(data);
+      } catch (err) {
+        console.error("Failed to load apps:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadData();
+  }, []);
 
   return (
     <div suppressHydrationWarning className="px-4 md:px-8 py-6 max-w-[1400px] mx-auto space-y-6">
@@ -44,7 +60,7 @@ export default function AppsRegistryPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
-              {MOCK_APPS_REGISTRY.map(app => (
+              {apps.map(app => (
                 <tr key={app.id} className="hover:bg-muted/30 transition-colors">
                   <td className="py-3 px-4">
                     <span className="font-semibold text-foreground block">{app.appName}</span>

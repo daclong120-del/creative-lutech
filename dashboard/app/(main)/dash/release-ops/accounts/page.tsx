@@ -1,10 +1,27 @@
 "use client";
 
-import React, { useState } from 'react';
-import { MOCK_PLAY_ACCOUNTS } from '@/lib/fixtures/release-ops-fixtures';
+import React, { useState, useEffect } from 'react';
+import { getPlayAccounts } from '@/lib/actions/release-ops.actions';
+import type { PlayAccountItem } from '@/types/release-ops';
 
 export default function AccountsPage() {
   const [accountActionNotice, setAccountActionNotice] = useState<Record<string, string>>({});
+  const [accounts, setAccounts] = useState<PlayAccountItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const data = await getPlayAccounts();
+        setAccounts(data);
+      } catch (err) {
+        console.error('Failed to load accounts:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadData();
+  }, []);
 
   const handleAccountAction = (accountId: string, actionName: string) => {
     const msgMap: Record<string, string> = {
@@ -40,7 +57,7 @@ export default function AccountsPage() {
 
       {/* ─── Accounts Grid ─── */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {MOCK_PLAY_ACCOUNTS.map(acc => (
+        {accounts.map(acc => (
           <div key={acc.id} className="bg-card border border-border rounded-xl p-5 space-y-4 shadow-xs">
             <div className="flex items-center justify-between">
               <div>

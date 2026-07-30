@@ -1,13 +1,13 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import { MOCK_SUMMARY_STATS } from '@/lib/fixtures/release-ops-fixtures';
+import { getOverviewStats } from '@/lib/actions/release-ops.actions';
 
 const ROUTE_META: Record<string, { title: string; subtitle: string }> = {
   '/dash/release-ops/overview': {
     title: 'Tổng quan Release Operations',
-    subtitle: 'Tổng quan chỉ số vòng đời phát hành, pipeline status và cảnh báo khẩn cấp cho toàn bộ 102 ứng dụng.',
+    subtitle: 'Tổng quan chỉ số vòng đời phát hành, pipeline status và cảnh báo khẩn cấp cho toàn bộ ứng dụng.',
   },
   '/dash/release-ops/releases': {
     title: 'Danh sách Release & Staged Rollouts',
@@ -19,7 +19,7 @@ const ROUTE_META: Record<string, { title: string; subtitle: string }> = {
   },
   '/dash/release-ops/apps': {
     title: 'Danh mục Ứng dụng & Onboarding Checklist',
-    subtitle: 'Quản lý danh sách 102 ứng dụng trên Google Play và tiến độ Onboarding ứng dụng mới.',
+    subtitle: 'Quản lý danh sách ứng dụng trên Google Play và tiến độ Onboarding ứng dụng mới.',
   },
   '/dash/release-ops/aso': {
     title: 'Phân tích ASO & Chất lượng Store Listing',
@@ -35,7 +35,7 @@ const ROUTE_META: Record<string, { title: string; subtitle: string }> = {
   },
   '/dash/release-ops/accounts': {
     title: 'Quản lý Tài khoản Google Play Developer',
-    subtitle: 'Quản lý 4 tài khoản phát hành, trạng thái OAuth Service Account token và hạn mức Google Play Publishing API.',
+    subtitle: 'Quản lý tài khoản phát hành, trạng thái OAuth Service Account token và hạn mức Google Play Publishing API.',
   },
 };
 
@@ -45,6 +45,14 @@ export default function ReleaseOpsHeader() {
     title: 'Google Play Release Operations',
     subtitle: 'Quản lý vòng đời phát hành, kiểm duyệt AAB, và tuân thủ Google Play Console trên toàn bộ tài khoản Developer.',
   };
+
+  const [stats, setStats] = useState({ totalApps: 0, totalAccounts: 0, activeRollouts: 0, lastPlaySyncAt: '' });
+
+  useEffect(() => {
+    getOverviewStats()
+      .then((data) => setStats(data))
+      .catch(() => {});
+  }, []);
 
   return (
     <div className="bg-background border-b border-border px-6 py-4">
@@ -67,24 +75,26 @@ export default function ReleaseOpsHeader() {
           <div className="flex items-center gap-4 bg-muted/40 border border-border rounded-lg px-3 py-1.5">
             <div>
               <span className="text-muted-foreground">Ứng dụng: </span>
-              <span className="font-semibold text-foreground">{MOCK_SUMMARY_STATS.totalApps}</span>
+              <span className="font-semibold text-foreground">{stats.totalApps}</span>
             </div>
             <div className="w-px h-3 bg-border" />
             <div>
               <span className="text-muted-foreground">Tài khoản Dev: </span>
-              <span className="font-semibold text-foreground">{MOCK_SUMMARY_STATS.totalAccounts}</span>
+              <span className="font-semibold text-foreground">{stats.totalAccounts}</span>
             </div>
             <div className="w-px h-3 bg-border" />
             <div>
               <span className="text-muted-foreground">Đang Rollout: </span>
-              <span className="font-semibold text-blue-600 dark:text-blue-400">{MOCK_SUMMARY_STATS.activeRollouts}</span>
+              <span className="font-semibold text-blue-600 dark:text-blue-400">{stats.activeRollouts}</span>
             </div>
           </div>
 
-          <div className="hidden lg:flex items-center gap-1.5 text-muted-foreground">
-            <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>Đồng bộ: {MOCK_SUMMARY_STATS.lastPlaySyncAt}</span>
-          </div>
+          {stats.lastPlaySyncAt && (
+            <div className="hidden lg:flex items-center gap-1.5 text-muted-foreground">
+              <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Đồng bộ: {new Date(stats.lastPlaySyncAt).toLocaleString('vi-VN')}</span>
+            </div>
+          )}
         </div>
       </div>
     </div>
