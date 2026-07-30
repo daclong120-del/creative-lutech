@@ -10,6 +10,7 @@ import { ReleaseOpsPlayAccountRepository, type CreatePlayAccountInput } from "@/
 import { ReleaseOpsASORepository } from "@/lib/repositories/release-ops-aso.repo";
 import { ReleaseOpsWorkerRepository } from "@/lib/repositories/release-ops-worker.repo";
 import { ReleaseOpsAuditRepository } from "@/lib/repositories/release-ops-audit.repo";
+import { ReleaseOpsBatchRepository } from "@/lib/repositories/release-ops-batch.repo";
 import type { DbClient } from "@/lib/repositories/types";
 import type {
   AppRegistryItem,
@@ -41,6 +42,7 @@ async function getRepos() {
     aso: new ReleaseOpsASORepository(db),
     workers: new ReleaseOpsWorkerRepository(db),
     audits: new ReleaseOpsAuditRepository(db),
+    batch: new ReleaseOpsBatchRepository(db),
   };
 }
 
@@ -376,4 +378,80 @@ export async function getWorkers() {
 export async function createRelease(input: CreateReleaseInput) {
   const { releases } = await getRepos();
   return await releases.create(input);
+}
+
+/** Lấy batch operations */
+export async function getBatchOperations() {
+  const { batch, jobs } = await getRepos();
+  const operations = await batch.findAll();
+
+  // Enrich từng batch với job counts
+  const enriched = await Promise.all(
+    operations.map(async (op) => {
+      const allJobs = await jobs.findAll(500);
+      // Filter jobs liên quan batch này thông qua payload hoặc batch_operation_id trên releases
+      const batchJobs = allJobs.filter((j) => {
+        const payload = j.payload as Record<string, unknown> | null;
+        return payload?.batch_operation_id === op.id;
+      });
+
+      const succeeded = batchJobs.filter((j) => j.status === "completed").length;
+      const running = batchJobs.filter((j) => j.status === "running" || j.status === "leased").length;
+      const failed = batchJobs.filter((j) => j.status === "failed" || j.status === "dead").length;
+      const pending = batchJobs.filter((j) => j.status === "queued").length;
+
+      return {
+        id: op.id,
+        title: op.title,
+        operationType: op.operation_type,
+        status: op.status,
+        planPayload: op.plan_payload as Record<string, unknown>,
+        createdBy: op.created_by,
+        createdAt: op.created_at,
+        updatedAt: op.updated_at,
+        jobCounts: { succeeded, running, failed, pending, total: batchJobs.length },
+      };
+    }),
+  );
+
+  return enriched;
+}
+
+/** Lấy build history (aggregated jobs by day) cho CI chart */
+export async function getBuildHistory(days = 30) {
+  const { jobs } = await getRepos();
+  const allJobs = await jobs.findAll(1000);
+
+  // Filter cho build type jobs
+  const buildJobs = allJobs.filter(
+    (j) => j.job_type === "build" || j.job_type === "upload" || j.job_type === "publish",
+  );
+
+  // Aggregate theo ngày
+  const now = new Date();
+  const cutoff = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
+  const recentJobs = buildJobs.filter((j) => new Date(j.created_at) >= cutoff);
+
+  const byDay = new Map<string, { success: number; failed: number }>();
+  for (const job of recentJobs) {
+    const day = new Date(job.created_at).toLocaleDateString("vi-VN", { day: "numeric", month: "numeric" });
+    const entry = byDay.get(day) ?? { success: 0, failed: 0 };
+    if (job.status === "completed") {
+      entry.success++;
+    } else if (job.status === "failed" || job.status === "dead") {
+      entry.failed++;
+    }
+    byDay.set(day, entry);
+  }
+
+  const result = Array.from(byDay.entries())
+    .map(([day, counts]) => ({
+      day,
+      success: counts.success,
+      failed: counts.failed,
+      duration: "—", // Actual duration cần job_events hoặc field riêng
+    }))
+    .reverse(); // oldest first
+
+  return result;
 }

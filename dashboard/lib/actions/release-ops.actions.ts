@@ -26,6 +26,8 @@ import {
   getASOMetrics as getASOMetricsService,
   getWorkers as getWorkersService,
   createRelease as createReleaseService,
+  getBatchOperations as getBatchOperationsService,
+  getBuildHistory as getBuildHistoryService,
 } from "@/lib/services/release-ops.service";
 
 // ─── READ ACTIONS (requireAdmin only) ────────────────────────────
@@ -125,4 +127,14 @@ export async function createRelease(input: CreateReleaseInput) {
   }
   await requireAdmin();
   return await createReleaseService(input);
+}
+
+export async function getBatchOperations() {
+  await requireAdmin();
+  return await getBatchOperationsService();
+}
+
+export async function getBuildHistory(days?: number) {
+  await requireAdmin();
+  return await getBuildHistoryService(days);
 }

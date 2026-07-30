@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReleaseOpsNavTabs from '@/components/dashboard/release-ops/ReleaseOpsNavTabs';
+import { getASOMetrics, getOverviewStats } from '@/lib/actions/release-ops.actions';
 
 // Helper function to build a smooth cubic bezier spline curve through points
 function buildSmoothSplinePath(pts: { x: number; y: number }[]) {
@@ -23,26 +24,89 @@ function buildSmoothSplinePath(pts: { x: number; y: number }[]) {
   return d;
 }
 
+interface ASOMetricRow {
+  id: string;
+  app_id: string;
+  report_date: string;
+  country_code: string | null;
+  store_listing_visitors: number | null;
+  store_listing_acquisitions: number | null;
+  store_listing_conversion_rate: number | null;
+  peer_benchmark_cr: number | null;
+  app?: { id: string; app_name: string; package_name: string } | null;
+}
+
 export default function ASOAnalyticsPage() {
   const [activeWarningDetail, setActiveWarningDetail] = useState<{ appGeo: string; reason: string; suggestedAction: string } | null>(null);
+  const [metrics, setMetrics] = useState<ASOMetricRow[]>([]);
+  const [headerStats, setHeaderStats] = useState({ totalApps: 0, totalAccounts: 0 });
 
-  // Mock CR trend line data (6/6 to 3/7 matching exact curve in reference image)
-  const trendPoints = [
-    { date: '6/6', cr: 26.4 },
-    { date: '9/6', cr: 26.0 },
-    { date: '12/6', cr: 26.3 },
-    { date: '15/6', cr: 27.2 },
-    { date: '18/6', cr: 27.8 },
-    { date: '21/6', cr: 28.5 },
-    { date: '24/6', cr: 32.6 },
-    { date: '27/6', cr: 33.8 },
-    { date: '30/6', cr: 34.1 },
-    { date: '3/7', cr: 33.7 }
-  ];
+  useEffect(() => {
+    Promise.all([
+      getASOMetrics(),
+      getOverviewStats(),
+    ]).then(([asoData, statsData]) => {
+      setMetrics(asoData as unknown as ASOMetricRow[]);
+      setHeaderStats({ totalApps: statsData.totalApps, totalAccounts: statsData.totalAccounts });
+    }).catch(() => {});
+  }, []);
 
-  const minCr = 22;
-  const maxCr = 38;
-  const range = maxCr - minCr;
+  // Build CR trend from live data (group by report_date, avg CR)
+  const trendPoints = (() => {
+    if (metrics.length === 0) return [{ date: '—', cr: 0 }];
+    const byDate = new Map<string, number[]>();
+    for (const m of metrics) {
+      if (m.store_listing_conversion_rate != null) {
+        const d = new Date(m.report_date).toLocaleDateString('vi-VN', { day: 'numeric', month: 'numeric' });
+        const arr = byDate.get(d) ?? [];
+        arr.push(m.store_listing_conversion_rate);
+        byDate.set(d, arr);
+      }
+    }
+    return Array.from(byDate.entries())
+      .map(([date, crs]) => ({ date, cr: crs.reduce((a, b) => a + b, 0) / crs.length }))
+      .slice(-10);
+  })();
+
+  // CR per app table from live data
+  const crAppRows = (() => {
+    const byApp = new Map<string, { visitors: number; acquisitions: number; cr: number; peerCr: number }>();
+    for (const m of metrics) {
+      const name = m.app?.app_name ?? m.app_id;
+      const entry = byApp.get(name) ?? { visitors: 0, acquisitions: 0, cr: 0, peerCr: 0 };
+      entry.visitors += m.store_listing_visitors ?? 0;
+      entry.acquisitions += m.store_listing_acquisitions ?? 0;
+      if (m.store_listing_conversion_rate != null) entry.cr = m.store_listing_conversion_rate;
+      if (m.peer_benchmark_cr != null) entry.peerCr = m.peer_benchmark_cr;
+      byApp.set(name, entry);
+    }
+    return Array.from(byApp.entries())
+      .map(([app, d]) => {
+        const cr = d.cr;
+        const vsPeers = cr - d.peerCr;
+        const fmtVisitors = d.visitors >= 1000000 ? `${(d.visitors / 1000000).toFixed(1)}M` : d.visitors >= 1000 ? `${Math.round(d.visitors / 1000)}K` : String(d.visitors);
+        return { app, visitors: fmtVisitors, cr: `${cr.toFixed(1)}%`, vsPeers: `${vsPeers >= 0 ? '+' : ''}${vsPeers.toFixed(1)}%`, isPositive: vsPeers >= 0 };
+      })
+      .slice(0, 10);
+  })();
+
+  // GEO scan — low CR markets
+  const geoScanRows = (() => {
+    return metrics
+      .filter((m) => m.country_code && (m.store_listing_conversion_rate ?? 100) < 20 && (m.store_listing_visitors ?? 0) > 10000)
+      .map((m) => ({
+        appGeo: `${m.app?.app_name ?? m.app_id} - ${m.country_code}`,
+        visitors: `${Math.round((m.store_listing_visitors ?? 0) / 1000)}K`,
+        cr: `${(m.store_listing_conversion_rate ?? 0).toFixed(1)}%`,
+        note: 'CR dưới ngưỡng',
+        action: 'Tối ưu bản địa hóa store listing',
+      }))
+      .slice(0, 5);
+  })();
+
+  const minCr = Math.min(...trendPoints.map(p => p.cr), 0) - 2;
+  const maxCr = Math.max(...trendPoints.map(p => p.cr), 1) + 4;
+  const range = maxCr - minCr || 1;
   const svgW = 1000;
   const svgH = 220;
   const padLeft = 35;
@@ -53,34 +117,14 @@ export default function ASOAnalyticsPage() {
   const chartH = svgH - padTop - padBottom;
 
   const pts = trendPoints.map((pt, idx) => {
-    const x = padLeft + (idx / (trendPoints.length - 1)) * chartW;
+    const x = padLeft + (idx / Math.max(trendPoints.length - 1, 1)) * chartW;
     const y = padTop + chartH - ((pt.cr - minCr) / range) * chartH;
     return { x, y };
   });
 
   const smoothLineD = buildSmoothSplinePath(pts);
   const bottomY = padTop + chartH;
-  const smoothAreaD = `${smoothLineD} L ${pts[pts.length - 1].x},${bottomY} L ${pts[0].x},${bottomY} Z`;
-
-  // Event marker line date index (22/6 is between index 5 and 6)
-  const eventX = padLeft + (5.3 / (trendPoints.length - 1)) * chartW;
-
-  // Table data 1: CR theo app - 28 ngày
-  const crAppRows = [
-    { app: 'Home AI', visitors: '184K', cr: '33.8%', vsPeers: '+6.2%', isPositive: true },
-    { app: 'Short Drama', visitors: '1.2M', cr: '41.5%', vsPeers: '+11.4%', isPositive: true },
-    { app: 'Vibely', visitors: '96K', cr: '27.1%', vsPeers: '-3.0%', isPositive: false },
-    { app: 'Wallpaper 4K', visitors: '318K', cr: '22.4%', vsPeers: '-9.1%', isPositive: false },
-    { app: 'QR Scanner Plus', visitors: '78K', cr: '35.9%', vsPeers: '+2.0%', isPositive: true },
-  ];
-
-  // Table data 2: GEO scan - visitors cao, CR thấp
-  const geoScanRows = [
-    { appGeo: 'Home AI - BR', visitors: '41K', cr: '14.2%', note: 'Chưa có bản pt-BR', action: 'Tạo Custom Store Listing tiếng Bồ Đào Nha' },
-    { appGeo: 'Vibely - IN', visitors: '38K', cr: '11.7%', note: 'Screenshot chỉ EN', action: 'Đổi bộ screenshot bản địa hóa cho thị trường Ấn Độ' },
-    { appGeo: 'Wallpaper 4K - MX', visitors: '29K', cr: '13.5%', note: 'Bản dịch máy tra', action: 'Biên tập lại bản dịch tiếng Tây Ban Nha bởi translator' },
-    { appGeo: 'Short Drama - ID', visitors: '96K', cr: '19.0%', note: 'CR dưới median', action: 'Tối ưu lại 3 câu short description đầu tiên' },
-  ];
+  const smoothAreaD = pts.length > 1 ? `${smoothLineD} L ${pts[pts.length - 1].x},${bottomY} L ${pts[0].x},${bottomY} Z` : '';
 
   return (
     <div suppressHydrationWarning className="px-4 md:px-8 py-6 max-w-[1400px] mx-auto space-y-6">
@@ -89,9 +133,9 @@ export default function ASOAnalyticsPage() {
         <div className="flex items-center gap-3">
           <h1 className="text-lg font-bold text-foreground">Creative Lutech Release Ops</h1>
           <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground">
-            <span className="px-2 py-0.5 rounded bg-muted border border-border">102 apps</span>
+            <span className="px-2 py-0.5 rounded bg-muted border border-border">{headerStats.totalApps} apps</span>
             <span>&bull;</span>
-            <span className="px-2 py-0.5 rounded bg-muted border border-border">4 dev accounts</span>
+            <span className="px-2 py-0.5 rounded bg-muted border border-border">{headerStats.totalAccounts} dev accounts</span>
           </div>
         </div>
 
@@ -140,17 +184,11 @@ export default function ASOAnalyticsPage() {
             {/* Smooth Spline Curve Line */}
             <path d={smoothLineD} fill="none" stroke="#047857" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
 
-            {/* Event Marker Line (Vạch cam nét đứt & nhãn chữ cam thuần không khung) */}
-            <g>
-              <line x1={eventX} y1={padTop} x2={eventX} y2={bottomY} stroke="#d97706" strokeDasharray="3 3" strokeWidth="1.5" />
-              <text x={eventX + 6} y={padTop + 14} fill="#d97706" className="font-mono text-[10px] font-bold">
-                Đổi bộ screenshots
-              </text>
-            </g>
+
 
             {/* X-Axis Date Labels */}
             {trendPoints.map((pt, idx) => {
-              const x = padLeft + (idx / (trendPoints.length - 1)) * chartW;
+              const x = padLeft + (idx / Math.max(trendPoints.length - 1, 1)) * chartW;
               return (
                 <text key={pt.date} x={x} y={svgH - 6} textAnchor="middle" className="fill-muted-foreground font-mono text-[10px]">
                   {pt.date}

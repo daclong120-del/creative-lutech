@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { getReleases, getOverviewStats } from '@/lib/actions/release-ops.actions';
+import { getReleases, getOverviewStats, getBuildHistory } from '@/lib/actions/release-ops.actions';
 import { ReleaseStatus, AppReleaseItem } from '@/types/release-ops';
 import ReleaseOpsNavTabs from '@/components/dashboard/release-ops/ReleaseOpsNavTabs';
 
@@ -37,67 +37,30 @@ interface BuildPoint {
   duration: string;
 }
 
-const BUILD_DATASET: Record<TimeRangeType, BuildPoint[]> = {
-  '7d': [
-    { day: '28/6', success: 15, failed: 3, duration: '3m 40s' },
-    { day: '29/6', success: 18, failed: 4, duration: '4m 10s' },
-    { day: '30/6', success: 12, failed: 1, duration: '3m 15s' },
-    { day: '1/7', success: 16, failed: 2, duration: '3m 50s' },
-    { day: '2/7', success: 14, failed: 2, duration: '4m 05s' },
-    { day: '3/7', success: 5, failed: 1, duration: '2m 50s' },
-    { day: '4/7', success: 8, failed: 1, duration: '3m 20s' },
-  ],
-  '14d': [
-    { day: '21/6', success: 11, failed: 1, duration: '3m 30s' },
-    { day: '22/6', success: 14, failed: 3, duration: '4m 15s' },
-    { day: '23/6', success: 9, failed: 0, duration: '3m 05s' },
-    { day: '24/6', success: 16, failed: 4, duration: '4m 30s' },
-    { day: '25/6', success: 13, failed: 1, duration: '3m 40s' },
-    { day: '26/6', success: 4, failed: 0, duration: '2m 45s' },
-    { day: '27/6', success: 2, failed: 0, duration: '2m 10s' },
-    { day: '28/6', success: 15, failed: 3, duration: '3m 40s' },
-    { day: '29/6', success: 18, failed: 4, duration: '4m 10s' },
-    { day: '30/6', success: 12, failed: 1, duration: '3m 15s' },
-    { day: '1/7', success: 16, failed: 2, duration: '3m 50s' },
-    { day: '2/7', success: 14, failed: 2, duration: '4m 05s' },
-    { day: '3/7', success: 5, failed: 1, duration: '2m 50s' },
-    { day: '4/7', success: 8, failed: 1, duration: '3m 20s' },
-  ],
-  '30d': [
-    { day: '5/6', success: 10, failed: 2, duration: '3m 45s' },
-    { day: '8/6', success: 14, failed: 1, duration: '3m 50s' },
-    { day: '11/6', success: 12, failed: 3, duration: '4m 00s' },
-    { day: '14/6', success: 15, failed: 2, duration: '3m 30s' },
-    { day: '17/6', success: 11, failed: 1, duration: '3m 20s' },
-    { day: '20/6', success: 13, failed: 2, duration: '3m 40s' },
-    { day: '23/6', success: 9, failed: 0, duration: '3m 05s' },
-    { day: '26/6', success: 15, failed: 3, duration: '4m 10s' },
-    { day: '29/6', success: 18, failed: 4, duration: '4m 25s' },
-    { day: '2/7', success: 14, failed: 2, duration: '4m 05s' },
-    { day: '4/7', success: 8, failed: 1, duration: '3m 20s' },
-  ],
-  '90d': [
-    { day: 'Tháng 4', success: 142, failed: 18, duration: '3m 40s' },
-    { day: 'Tháng 5', success: 198, failed: 22, duration: '3m 35s' },
-    { day: 'Tháng 6', success: 245, failed: 31, duration: '3m 50s' },
-    { day: 'Tháng 7', success: 43, failed: 5, duration: '3m 25s' },
-  ],
+const TIME_RANGE_DAYS: Record<TimeRangeType, number> = {
+  '7d': 7,
+  '14d': 14,
+  '30d': 30,
+  '90d': 90,
 };
 
 export default function OverviewPage() {
   const [releases, setReleases] = useState<AppReleaseItem[]>([]);
   const [stats, setStats] = useState({ totalApps: 0, totalAccounts: 0, activeRollouts: 0, pendingReviews: 0, failedOrBlocked: 0, lastPlaySyncAt: '' });
   const [loading, setLoading] = useState(true);
+  const [buildData, setBuildData] = useState<BuildPoint[]>([]);
 
   useEffect(() => {
     async function loadData() {
       try {
-        const [releasesData, statsData] = await Promise.all([
+        const [releasesData, statsData, buildHistory] = await Promise.all([
           getReleases(),
           getOverviewStats(),
+          getBuildHistory(14),
         ]);
         setReleases(releasesData);
         setStats(statsData);
+        setBuildData(buildHistory);
       } catch (err) {
         console.error("Failed to load overview data:", err);
       } finally {
@@ -130,7 +93,14 @@ export default function OverviewPage() {
     }, 200);
   };
 
-  const activePoints = BUILD_DATASET[timeRange];
+  // Refetch build data khi timeRange thay đổi
+  useEffect(() => {
+    getBuildHistory(TIME_RANGE_DAYS[timeRange])
+      .then((data) => setBuildData(data))
+      .catch(() => {});
+  }, [timeRange]);
+
+  const activePoints = buildData;
 
   // Calculate summary metrics for current active timeframe
   const totalSuccess = activePoints.reduce((acc, p) => acc + p.success, 0);
@@ -260,7 +230,7 @@ export default function OverviewPage() {
           </div>
           <div>
             <span className="text-muted-foreground block font-medium">Thời gian trung bình:</span>
-            <span className="text-base font-black font-mono text-blue-600 dark:text-blue-400">3m 42s</span>
+            <span className="text-base font-black font-mono text-blue-600 dark:text-blue-400">—</span>
           </div>
         </div>
 
@@ -461,45 +431,31 @@ export default function OverviewPage() {
               </button>
             </div>
 
-            {/* Mock Build Runs list */}
+            {/* Build Runs summary */}
             <div className="space-y-2 max-h-72 overflow-y-auto text-xs font-mono">
-              {Array.from({ length: selectedDayModal.success }).map((_, i) => {
-                const staggerIndex = i;
-                return (
-                  <div 
-                    key={`s-${i}`} 
-                    className="p-2.5 rounded-lg bg-emerald-500/5 border border-emerald-500/20 flex items-center justify-between animate-in fade-in slide-in-from-bottom-1 stagger-item"
-                    style={{ '--stagger-index': staggerIndex } as React.CSSProperties}
-                  >
-                    <div className="space-y-0.5">
-                      <span className="font-bold text-foreground block">#BUILD-{1840 + i} &bull; QR Scanner Plus</span>
-                      <span className="text-[10px] text-muted-foreground font-sans">commit main: 8f3a91c &bull; CI runner #4</span>
-                    </div>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
-                      SUCCESS ({selectedDayModal.duration})
-                    </span>
+              {selectedDayModal.success > 0 && (
+                <div className="p-3 rounded-lg bg-emerald-500/5 border border-emerald-500/20 flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <span className="font-bold text-foreground block">✅ Builds Thành công</span>
+                    <span className="text-[10px] text-muted-foreground font-sans">Ngày {selectedDayModal.day}</span>
                   </div>
-                );
-              })}
+                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
+                    {selectedDayModal.success} jobs
+                  </span>
+                </div>
+              )}
 
-              {Array.from({ length: selectedDayModal.failed }).map((_, i) => {
-                const staggerIndex = selectedDayModal.success + i;
-                return (
-                  <div 
-                    key={`f-${i}`} 
-                    className="p-2.5 rounded-lg bg-rose-500/5 border border-rose-500/20 flex items-center justify-between animate-in fade-in slide-in-from-bottom-1 stagger-item"
-                    style={{ '--stagger-index': staggerIndex } as React.CSSProperties}
-                  >
-                    <div className="space-y-0.5">
-                      <span className="font-bold text-foreground block">#BUILD-{1890 + i} &bull; Short Drama</span>
-                      <span className="text-[10px] text-rose-600 dark:text-rose-400 font-sans">Exit Code 1: NullPointerException in AdMob init</span>
-                    </div>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-500/10 text-rose-600 border border-rose-500/20">
-                      FAILED
-                    </span>
+              {selectedDayModal.failed > 0 && (
+                <div className="p-3 rounded-lg bg-rose-500/5 border border-rose-500/20 flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <span className="font-bold text-foreground block">❌ Builds Thất bại</span>
+                    <span className="text-[10px] text-rose-600 dark:text-rose-400 font-sans">Cần kiểm tra log chi tiết</span>
                   </div>
-                );
-              })}
+                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-500/10 text-rose-600 border border-rose-500/20">
+                    {selectedDayModal.failed} jobs
+                  </span>
+                </div>
+              )}
             </div>
 
             <div className="flex justify-end pt-3 border-t border-border">
