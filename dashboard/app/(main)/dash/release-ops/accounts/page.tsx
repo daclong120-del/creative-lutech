@@ -66,7 +66,7 @@ export default function AccountsPage() {
 
         <button
           onClick={() => setIsAddAccountOpen(true)}
-          className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors cursor-pointer"
+          className="px-3.5 py-2 text-xs font-semibold rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-150 active:scale-[0.97] shadow-sm cursor-pointer"
         >
           + Thêm Tài khoản Developer
         </button>

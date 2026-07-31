@@ -35,19 +35,13 @@ Khi mọi thứ ở bản Review đã chuẩn xác và bạn muốn cập nhật
   ```powershell
   npx vercel --prod
   ```
-* **Cách 2 (Bằng Git Workflow - Khuyên dùng)**: 
-  Bạn chỉ cần Merge code vào nhánh `main`. Vercel sẽ tự động deploy bản Production cho bạn.
 
 ---
 
-### 🛡️ MẸO NÂNG CAO: Tách biệt Database giữa Review và Production
-Để việc bấm nút / tạo dữ liệu thử nghiệm ở bản Review không làm bẩn Database thật:
-1. Vào **Vercel Dashboard** $\rightarrow$ chọn Project **creative-lutech** $\rightarrow$ **Settings** $\rightarrow$ **Environment Variables**.
-2. Tại cột **Preview**: Điền thông tin Supabase Test / Staging (`NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`).
-3. Tại cột **Production**: Giữ nguyên thông tin Supabase Thật.
-
 Bản Preview vừa rồi đã hoàn tất xây dựng và deploy thành công:
 
-🔗 **Link Review mới nhất**: [https://creative-lutech-o2qvnb690-creative-lutech.vercel.app](https://creative-lutech-o2qvnb690-creative-lutech.vercel.app)
+🔗 **Link Review mới nhất**:
+
+=> tên miền chính cố định không bao giờ đổi: 👉 https://creative-lutech-o2qvnb690-creative-lutech.vercel.app
 
 Bạn có thể mở link trên để kiểm tra toàn bộ giao diện và tính năng mà không ảnh hưởng tới môi trường Production.
