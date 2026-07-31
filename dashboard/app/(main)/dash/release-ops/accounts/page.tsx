@@ -3,11 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import { getPlayAccounts } from '@/lib/actions/release-ops.actions';
 import type { PlayAccountItem } from '@/types/release-ops';
+import { AddAccountPanel } from './add-account-panel';
 
 export default function AccountsPage() {
   const [accountActionNotice, setAccountActionNotice] = useState<Record<string, string>>({});
   const [accounts, setAccounts] = useState<PlayAccountItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isAddAccountOpen, setIsAddAccountOpen] = useState(false);
 
   useEffect(() => {
     async function loadData() {
@@ -22,6 +24,18 @@ export default function AccountsPage() {
     }
     loadData();
   }, []);
+
+  const handleAddSuccess = async (newAcc?: PlayAccountItem) => {
+    if (newAcc) {
+      setAccounts(prev => [newAcc, ...prev]);
+    }
+    try {
+      const data = await getPlayAccounts();
+      if (data && data.length > 0) setAccounts(data);
+    } catch (err) {
+      console.error("Failed to refresh accounts:", err);
+    }
+  };
 
   const handleAccountAction = (accountId: string, actionName: string) => {
     const msgMap: Record<string, string> = {
@@ -50,10 +64,20 @@ export default function AccountsPage() {
           </p>
         </div>
 
-        <button className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
+        <button
+          onClick={() => setIsAddAccountOpen(true)}
+          className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors cursor-pointer"
+        >
           + Thêm Tài khoản Developer
         </button>
       </div>
+
+      {/* Add Account Modal / Panel */}
+      <AddAccountPanel
+        isOpen={isAddAccountOpen}
+        onClose={() => setIsAddAccountOpen(false)}
+        onSuccess={handleAddSuccess}
+      />
 
       {/* ─── Accounts Grid ─── */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

@@ -538,11 +538,11 @@ export default function CreativeDetailView({
 
   if (isModal) {
     return (
-      <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 md:p-6 animate-in fade-in duration-200">
+      <div className="fixed inset-0 bg-black/75 backdrop-blur-md z-50 flex items-center justify-center p-4 md:p-6 animate-in fade-in duration-200 ease-[cubic-bezier(0.23,1,0.32,1)]">
         {/* Click outside to close */}
         <div className="absolute inset-0" onClick={onClose} />
 
-        <div className="relative bg-background border border-border rounded-2xl w-full max-w-[1300px] h-[90vh] flex flex-col shadow-2xl overflow-hidden z-10 animate-in zoom-in-95 duration-200">
+        <div className="relative bg-background border border-border rounded-2xl w-full max-w-[1300px] h-[90vh] flex flex-col shadow-2xl overflow-hidden z-10 animate-in zoom-in-95 slide-in-from-bottom-4 duration-240 ease-[cubic-bezier(0.23,1,0.32,1)]">
           {/* Sticky Header */}
           <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-card/85 backdrop-blur-md sticky top-0 z-50 shrink-0">
             <div>
@@ -555,11 +555,11 @@ export default function CreativeDetailView({
             </div>
             <button
               onClick={onClose}
-              className="size-8 rounded-lg border border-border bg-card text-foreground hover:bg-muted transition-colors flex items-center justify-center active-press"
+              className="group size-8 rounded-lg border border-border bg-card text-foreground hover:bg-muted transition-all duration-150 flex items-center justify-center active-press"
               title="Đóng (Esc)"
             >
 
-              <svg className="size-4 stroke-[2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="size-4 stroke-[2] transition-transform duration-200 group-hover:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>

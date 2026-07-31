@@ -253,14 +253,22 @@ export default function LoginForm() {
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors cursor-pointer select-none"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-300 transition-transform duration-150 active:scale-90 cursor-pointer select-none"
               disabled={isLoading}
             >
-              {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+              {showPassword ? (
+                <div className="animate-in zoom-in-90 duration-150 ease-[cubic-bezier(0.34,1.56,0.64,1)]">
+                  <EyeOffIcon />
+                </div>
+              ) : (
+                <div className="animate-in zoom-in-90 duration-150 ease-[cubic-bezier(0.34,1.56,0.64,1)]">
+                  <EyeIcon />
+                </div>
+              )}
             </button>
           </div>
           {passwordError && (
-            <p className="text-xs font-medium text-destructive mt-1 animate-in fade-in slide-in-from-top-1 duration-150">
+            <p className="text-xs font-medium text-destructive mt-1 animate-in fade-in slide-in-from-top-1 duration-150 ease-[cubic-bezier(0.23,1,0.32,1)]">
               {passwordError}
             </p>
           )}

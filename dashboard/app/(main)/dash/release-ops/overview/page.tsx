@@ -137,13 +137,28 @@ export default function OverviewPage() {
           PIPELINE HÔM NAY &bull; RELEASES ĐANG DI CHUYỂN QUA CÁC STAGE
         </div>
         <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-          <div className="p-3 rounded-lg bg-muted/50 border border-border space-y-1">
+          <div className="p-3 rounded-lg bg-muted/50 border border-border space-y-1 min-w-0 overflow-hidden">
              <span className="text-2xl font-black text-foreground block">{stats.failedOrBlocked}</span>
              <span className="text-xs font-semibold text-muted-foreground block">ISSUES</span>
-            <div className="flex items-center gap-1 pt-1">
-              <span className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-rose-500/10 text-rose-600 border border-rose-500/20">build_failed 3</span>
-              <span className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-rose-500/10 text-rose-600 border border-rose-500/20">rejected 2</span>
-              <span className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-amber-500/10 text-amber-600 border border-amber-500/20">halted 1</span>
+            <div className="flex flex-wrap items-center gap-1 pt-1">
+              {releases.filter(r => r.status === 'failed').length > 0 && (
+                <span className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-rose-500/10 text-rose-600 border border-rose-500/20 whitespace-nowrap">
+                  failed {releases.filter(r => r.status === 'failed').length}
+                </span>
+              )}
+              {releases.filter(r => r.status === 'rejected' || r.status === 'policy_blocked').length > 0 && (
+                <span className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-rose-500/10 text-rose-600 border border-rose-500/20 whitespace-nowrap">
+                  rejected {releases.filter(r => r.status === 'rejected' || r.status === 'policy_blocked').length}
+                </span>
+              )}
+              {releases.filter(r => r.status === 'halted').length > 0 && (
+                <span className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-amber-500/10 text-amber-600 border border-amber-500/20 whitespace-nowrap">
+                  halted {releases.filter(r => r.status === 'halted').length}
+                </span>
+              )}
+              {stats.failedOrBlocked === 0 && (
+                <span className="text-[10px] text-muted-foreground font-mono">0 issues</span>
+              )}
             </div>
           </div>
 

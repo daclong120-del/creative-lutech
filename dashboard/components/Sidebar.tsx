@@ -396,25 +396,25 @@ export default function Sidebar({ isMobileOpen = false, onMobileClose }: Sidebar
                         <button
                           onClick={() => !isCollapsed && toggleGroup(item.id)}
                           className={cn(
-                            "group flex w-full items-center gap-3 rounded-lg px-3 py-2 text-xs font-semibold transition-colors text-left cursor-pointer",
+                            "group flex w-full items-center gap-3 rounded-lg px-3 py-2 text-xs font-semibold transition-colors text-left cursor-pointer active-press-subtle",
                             "text-slate-800 dark:text-zinc-100 hover:bg-muted hover:text-slate-950 dark:hover:text-white",
                             isCollapsed && "lg:justify-center lg:px-0"
                           )}
                           title={item.label}
                         >
-                          {IconComp && <IconComp className={cn("shrink-0 text-slate-700 group-hover:text-slate-950 dark:text-zinc-300 dark:group-hover:text-white")} />}
+                          {IconComp && <IconComp className={cn("shrink-0 text-slate-700 group-hover:text-slate-950 dark:text-zinc-300 dark:group-hover:text-white transition-transform duration-150 group-hover:translate-x-0.5")} />}
                           <span className={cn(
                             "flex-1 truncate transition-[opacity,width] duration-200 whitespace-nowrap overflow-hidden",
                             isCollapsed ? "lg:opacity-0 lg:w-0 lg:pointer-events-none" : "lg:opacity-100 lg:w-auto"
                           )}>{item.label}</span>
-                          {!isCollapsed && <ChevronIcon expanded={expanded} className="text-slate-500 group-hover:text-slate-800 dark:text-zinc-400 shrink-0" />}
+                          {!isCollapsed && <ChevronIcon expanded={expanded} className="text-slate-500 group-hover:text-slate-800 dark:text-zinc-400 shrink-0 transition-transform duration-220 ease-[cubic-bezier(0.34,1.56,0.64,1)]" />}
                         </button>
                       ) : (
                         <Link
                           href={item.href || "#"}
                           onClick={onMobileClose}
                           className={cn(
-                            "group flex items-center gap-3 rounded-lg px-3 py-2 text-xs font-semibold transition-colors",
+                            "group flex items-center gap-3 rounded-lg px-3 py-2 text-xs font-semibold transition-colors active-press-subtle",
                             active
                               ? "bg-blue-500/10 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300 font-bold shadow-2xs"
                               : "text-slate-800 dark:text-zinc-100 hover:bg-muted hover:text-slate-950 dark:hover:text-white",
@@ -422,7 +422,7 @@ export default function Sidebar({ isMobileOpen = false, onMobileClose }: Sidebar
                           )}
                           title={item.label}
                         >
-                          {IconComp && <IconComp className={cn("shrink-0 transition-colors", active ? "text-blue-600 dark:text-blue-400" : "text-slate-700 group-hover:text-slate-950 dark:text-zinc-300 dark:group-hover:text-white")} />}
+                          {IconComp && <IconComp className={cn("shrink-0 transition-all duration-150 group-hover:translate-x-0.5", active ? "text-blue-600 dark:text-blue-400" : "text-slate-700 group-hover:text-slate-950 dark:text-zinc-300 dark:group-hover:text-white")} />}
                           <span className={cn(
                             "truncate transition-[opacity,width] duration-200 whitespace-nowrap overflow-hidden",
                             isCollapsed ? "lg:opacity-0 lg:w-0 lg:pointer-events-none" : "lg:opacity-100 lg:w-auto"
@@ -433,7 +433,7 @@ export default function Sidebar({ isMobileOpen = false, onMobileClose }: Sidebar
                       {/* Children — animated expand/collapse via CSS grid */}
                       {hasChildren && !isCollapsed && item.children && (
                         <div
-                          className="grid transition-[grid-template-rows] duration-200 ease-out"
+                          className="grid transition-[grid-template-rows] duration-240 ease-[cubic-bezier(0.23,1,0.32,1)]"
                           style={{ gridTemplateRows: expanded ? '1fr' : '0fr' }}
                         >
                           <div className="overflow-hidden min-h-0">
@@ -446,10 +446,10 @@ export default function Sidebar({ isMobileOpen = false, onMobileClose }: Sidebar
                                     href={child.href}
                                     onClick={onMobileClose}
                                     className={cn(
-                                      "flex items-center py-1.5 px-3 rounded-lg text-xs transition-colors font-semibold",
+                                      "flex items-center py-1.5 px-3 rounded-lg text-xs transition-all duration-150 font-semibold active-press-subtle",
                                       childActive
                                         ? "bg-slate-200/80 dark:bg-zinc-800 text-slate-950 dark:text-white font-bold shadow-2xs"
-                                        : "text-slate-700 dark:text-zinc-300 hover:bg-muted/60 hover:text-slate-950 dark:hover:text-white"
+                                        : "text-slate-700 dark:text-zinc-300 hover:bg-muted/60 hover:text-slate-950 dark:hover:text-white hover:translate-x-0.5"
                                     )}
                                   >
                                     {child.label}
@@ -472,10 +472,10 @@ export default function Sidebar({ isMobileOpen = false, onMobileClose }: Sidebar
         <div className="border-t border-border p-2 hidden lg:block bg-sidebar">
           <button
             onClick={() => setSidebarCollapsed(!isCollapsed)}
-            className="flex h-8 w-full items-center justify-center rounded-lg text-zinc-500 dark:text-zinc-400 hover:bg-muted hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors duration-150"
+            className="flex h-8 w-full items-center justify-center rounded-lg text-zinc-500 dark:text-zinc-400 hover:bg-muted hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors duration-150 active-press-subtle"
             title={isCollapsed ? "Mở rộng sidebar" : "Thu gọn sidebar"}
           >
-            <svg className={cn("size-4 transition-transform duration-300", isCollapsed && "rotate-180")} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg className={cn("size-4 transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]", isCollapsed && "rotate-180")} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M15.75 19.5 8.25 12l7.5-7.5" />
             </svg>
           </button>

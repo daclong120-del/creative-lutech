@@ -222,14 +222,14 @@ export function ApiTokensPanel({ tokens, roles, showToast }: ApiTokensPanelProps
                   type="button"
                   disabled={loading}
                   onClick={() => setIsCreateTokenOpen(false)}
-                  className="h-9 px-4 rounded-lg border border-border hover:bg-muted text-xs font-semibold transition-colors cursor-pointer disabled:opacity-50"
+                  className="h-9 px-4 rounded-lg border border-border hover:bg-muted text-xs font-semibold transition-all duration-120 active-press cursor-pointer disabled:opacity-50"
                 >
                   Hủy
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="h-9 px-4 rounded-lg bg-primary text-primary-foreground hover:bg-primary/95 text-xs font-semibold shadow-sm transition-colors cursor-pointer disabled:opacity-50"
+                  className="h-9 px-4 rounded-lg bg-primary text-primary-foreground hover:bg-primary/95 text-xs font-semibold shadow-sm transition-all duration-120 active-press cursor-pointer disabled:opacity-50"
                 >
                   Tạo Token
                 </button>

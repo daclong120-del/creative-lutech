@@ -28,7 +28,7 @@ export default function MetricCard({ label, value, icon, color, trend, trendLabe
 
   return (
     <div className={cn(
-      "relative rounded-xl border border-border bg-card p-4 transition-shadow hover:shadow-sm",
+      "group relative rounded-xl border border-border bg-card p-4 transition-all duration-180 ease-[cubic-bezier(0.23,1,0.32,1)] hover:border-primary/30 hover:shadow-md active:scale-[0.99]",
       className
     )} style={style}>
       <div className="flex items-start justify-between gap-3">
@@ -39,7 +39,7 @@ export default function MetricCard({ label, value, icon, color, trend, trendLabe
           </p>
           {subtitle && <p className="text-[10px] text-muted-foreground mt-0.5">{subtitle}</p>}
         </div>
-        <div className={cn("flex items-center justify-center size-10 rounded-lg shrink-0", colors.icon)}>
+        <div className={cn("flex items-center justify-center size-10 rounded-lg shrink-0 transition-transform duration-180 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-[1.06]", colors.icon)}>
           {icon}
         </div>
       </div>

@@ -91,7 +91,7 @@ export default function ReleaseOpsHeader() {
 
           {stats.lastPlaySyncAt && (
             <div className="hidden lg:flex items-center gap-1.5 text-muted-foreground">
-              <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="size-2 rounded-full bg-emerald-500 animate-[sync-pulse_2.5s_ease-in-out_infinite]" />
               <span>Đồng bộ: {new Date(stats.lastPlaySyncAt).toLocaleString('vi-VN')}</span>
             </div>
           )}

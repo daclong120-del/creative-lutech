@@ -102,8 +102,8 @@ export default function UploadPage() {
             </div>
 
             {/* Drag & Drop Zone */}
-            <div className="border-2 border-dashed border-border hover:border-primary/50 bg-card rounded-xl p-8 text-center space-y-3 cursor-pointer transition-colors">
-              <div className="size-12 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto">
+            <div className="group border-2 border-dashed border-border hover:border-primary/60 hover:bg-primary/[0.02] bg-card rounded-xl p-8 text-center space-y-3 cursor-pointer transition-all duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-[1.008] hover:shadow-md active:scale-[0.995]">
+              <div className="size-12 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto transition-transform duration-200 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-110">
                 <svg className="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                   <polyline points="17 8 12 3 7 8" />
@@ -115,9 +115,9 @@ export default function UploadPage() {
                 <span className="text-xs text-muted-foreground">Hoặc nhấp để chọn tệp từ máy tính (Dung lượng tối đa 150MB)</span>
               </div>
               <div className="flex items-center justify-center gap-2 text-[11px] text-muted-foreground font-mono">
-                <span className="px-2 py-0.5 rounded bg-muted">Parse AAB Manifest</span>
-                <span className="px-2 py-0.5 rounded bg-muted">Target SDK 34</span>
-                <span className="px-2 py-0.5 rounded bg-muted">Keystore SHA256</span>
+                <span className="px-2 py-0.5 rounded bg-muted transition-colors group-hover:bg-muted/80">Parse AAB Manifest</span>
+                <span className="px-2 py-0.5 rounded bg-muted transition-colors group-hover:bg-muted/80">Target SDK 34</span>
+                <span className="px-2 py-0.5 rounded bg-muted transition-colors group-hover:bg-muted/80">Keystore SHA256</span>
               </div>
             </div>
 

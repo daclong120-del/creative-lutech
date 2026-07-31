@@ -1,0 +1,290 @@
+{
+  "$schema": "https://sinomedia.lutech.vn/schemas/animation-design-system.v2.json",
+  "name": "SinoMedia Master Motion & Animation System Tokens",
+  "version": "2.0.0",
+  "author": "Google DeepMind Advanced Coding Agent (Antigravity)",
+  "description": "Hệ thống Design Tokens & Motion Presets toàn diện dành cho SinoMedia Web App. Hỗ trợ tự động xuất sang Tailwind CSS v4 Utilities, CSS Variables, Framer Motion Variants, Web Animations API (WAAPI) và Tailwind @utility directives.",
+  "tokens": {
+    "easing": {
+      "out": "cubic-bezier(0.23, 1, 0.32, 1)",
+      "in": "cubic-bezier(0.6, -0.28, 0.735, 0.045)",
+      "inOut": "cubic-bezier(0.77, 0, 0.175, 1)",
+      "spring": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+      "springBouncy": "cubic-bezier(0.68, -0.55, 0.265, 1.55)",
+      "springSnappy": "cubic-bezier(0.2, 1.2, 0.3, 1)",
+      "drawer": "cubic-bezier(0.32, 0.72, 0, 1)",
+      "tab": "cubic-bezier(0.4, 0, 0.2, 1)",
+      "bounce": "cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+      "elastic": "cubic-bezier(0.36, 0.07, 0.19, 0.97)",
+      "accelerate": "cubic-bezier(0.4, 0, 1, 1)",
+      "decelerate": "cubic-bezier(0, 0, 0.2, 1)",
+      "linear": "linear"
+    },
+    "duration": {
+      "instant": "0ms",
+      "ultraFast": "80ms",
+      "fast": "120ms",
+      "normal": "180ms",
+      "moderate": "220ms",
+      "slow": "280ms",
+      "extended": "350ms",
+      "progress": "450ms",
+      "draw": "600ms",
+      "pulsePeriod": "2000ms",
+      "shimmerPeriod": "2500ms"
+    },
+    "delay": {
+      "none": "0ms",
+      "short": "40ms",
+      "staggerStep": "35ms",
+      "medium": "100ms",
+      "long": "200ms"
+    },
+    "scale": {
+      "pressDeep": 0.92,
+      "pressNormal": 0.96,
+      "pressSubtle": 0.98,
+      "popIn": 0.95,
+      "popInSubtle": 0.97,
+      "hoverZoom": 1.03,
+      "hoverZoomSubtle": 1.015,
+      "iconScale": 1.08,
+      "badgePop": 1.15
+    },
+    "springPhysics": {
+      "press": { "stiffness": 500, "damping": 30, "mass": 0.6 },
+      "popover": { "stiffness": 340, "damping": 24, "mass": 0.9 },
+      "modal": { "stiffness": 280, "damping": 26, "mass": 1.0 },
+      "badge": { "stiffness": 420, "damping": 18, "mass": 0.7 },
+      "toast": { "stiffness": 300, "damping": 20, "mass": 0.8 }
+    }
+  },
+  "stylePresets": {
+    "buttons": {
+      "primaryButton": {
+        "description": "Nút bấm hành động chính (Primary Call-to-Action)",
+        "transition": "transform 120ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 180ms cubic-bezier(0.23, 1, 0.32, 1), background-color 150ms linear",
+        "hover": "transform: translateY(-1px); box-shadow: 0 4px 14px rgba(0, 81, 195, 0.25);",
+        "active": "transform: scale(0.96) translateY(0px); box-shadow: 0 2px 6px rgba(0, 81, 195, 0.15);"
+      },
+      "secondaryButton": {
+        "description": "Nút viền / Nút phụ (Outline & Secondary Buttons)",
+        "transition": "transform 120ms cubic-bezier(0.23, 1, 0.32, 1), border-color 150ms linear, background-color 150ms linear",
+        "hover": "background-color: var(--color-muted); border-color: var(--color-muted-foreground-30);",
+        "active": "transform: scale(0.97);"
+      },
+      "destructiveButton": {
+        "description": "Nút xóa / Nút hành động nguy hiểm (Red Destructive Buttons)",
+        "transition": "transform 120ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 180ms cubic-bezier(0.23, 1, 0.32, 1)",
+        "hover": "transform: translateY(-1px); box-shadow: 0 4px 14px rgba(225, 29, 72, 0.25);",
+        "active": "transform: scale(0.95);"
+      },
+      "iconButton": {
+        "description": "Nút icon vuông/tròn nhỏ (Header icons, Close 'X' buttons)",
+        "transition": "transform 120ms cubic-bezier(0.34, 1.56, 0.64, 1), background-color 120ms linear",
+        "hover": "background-color: var(--color-muted);",
+        "active": "transform: scale(0.90);"
+      },
+      "loadingButtonState": {
+        "description": "Trạng thái nút khi đang submit / gọi Server Action",
+        "css": "opacity: 0.85; pointer-events: none;",
+        "spinner": "animation: spin 700ms linear infinite; transform-origin: center;"
+      }
+    },
+    "overlaysAndModals": {
+      "modalBackdrop": {
+        "description": "Nền mờ đen phủ phía dưới Modal Hộp thoại",
+        "css": "backdrop-filter: blur(6px); transition: opacity 220ms cubic-bezier(0.23, 1, 0.32, 1);",
+        "from": "opacity: 0;",
+        "to": "opacity: 1;"
+      },
+      "modalDialog": {
+        "description": "Khối hộp thoại Modal nổi giữa màn hình",
+        "css": "transition: transform 240ms cubic-bezier(0.23, 1, 0.32, 1), opacity 240ms cubic-bezier(0.23, 1, 0.32, 1);",
+        "from": "transform: translate3d(0, 14px, 0) scale(0.96); opacity: 0;",
+        "to": "transform: translate3d(0, 0, 0) scale(1); opacity: 1;",
+        "exit": "transform: translate3d(0, 8px, 0) scale(0.97); opacity: 0;"
+      },
+      "toastNotification": {
+        "description": "Thẻ thông báo Toast xuất hiện ở mép trên màn hình",
+        "css": "transition: transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 200ms cubic-bezier(0.23, 1, 0.32, 1);",
+        "from": "transform: translate3d(0, -12px, 0) scale(0.95); opacity: 0;",
+        "to": "transform: translate3d(0, 0, 0) scale(1); opacity: 1;",
+        "dismiss": "transform: translate3d(0, -10px, 0) scale(0.95); opacity: 0;"
+      },
+      "userProfilePopover": {
+        "description": "Menu tài khoản người dùng trượt mở từ góc trên bên phải Header",
+        "transformOrigin": "top right",
+        "css": "transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1), opacity 160ms cubic-bezier(0.23, 1, 0.32, 1);",
+        "from": "transform: scale(0.94); opacity: 0;",
+        "to": "transform: scale(1); opacity: 1;"
+      },
+      "dropdownMenu": {
+        "description": "Menu thả xuống (Custom Dropdown Options)",
+        "transformOrigin": "top left",
+        "css": "transition: transform 150ms cubic-bezier(0.23, 1, 0.32, 1), opacity 150ms cubic-bezier(0.23, 1, 0.32, 1);",
+        "from": "transform: scale(0.95); opacity: 0;",
+        "to": "transform: scale(1); opacity: 1;",
+        "itemHover": "transition: padding-left 120ms cubic-bezier(0.23, 1, 0.32, 1); padding-left: 14px;"
+      }
+    },
+    "drawersAndPanels": {
+      "rightSideDrawer": {
+        "description": "Side Panel xem Task Log / Audit Log trượt từ lề phải",
+        "css": "transition: transform 260ms cubic-bezier(0.32, 0.72, 0, 1);",
+        "from": "transform: translate3d(100%, 0, 0);",
+        "to": "transform: translate3d(0, 0, 0);"
+      },
+      "expandableAccordion": {
+        "description": "Khối danh mục con mở rộng chiều cao (Sidebar Submenu, Policy details)",
+        "css": "transition: grid-template-rows 240ms cubic-bezier(0.23, 1, 0.32, 1);",
+        "collapsed": "grid-template-rows: 0fr;",
+        "expanded": "grid-template-rows: 1fr;"
+      }
+    },
+    "navigationAndTabs": {
+      "slidingActivePill": {
+        "description": "Vệt nền active trượt vị trí giữa các Tab SubNav",
+        "css": "transition: transform 220ms cubic-bezier(0.4, 0, 0.2, 1), width 220ms cubic-bezier(0.4, 0, 0.2, 1), left 220ms cubic-bezier(0.4, 0, 0.2, 1);"
+      },
+      "sidebarGroupToggle": {
+        "description": "Icon Chevron xoay khi mở nhóm danh mục",
+        "css": "transition: transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1);",
+        "expanded": "transform: rotate(0deg);",
+        "collapsed": "transform: rotate(-90deg);"
+      },
+      "themeToggleSpin": {
+        "description": "Icon Mặt trời / Mặt trăng xoay khi chuyển Dark/Light Mode",
+        "css": "transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 200ms linear;",
+        "keyframes": [
+          { "transform": "rotate(0deg) scale(0.8)", "opacity": 0 },
+          { "transform": "rotate(180deg) scale(1)", "opacity": 1 }
+        ]
+      }
+    },
+    "cardsAndContainers": {
+      "creativeCard": {
+        "description": "Thẻ quảng cáo Creative Ad Card nâng nhẹ và phóng cover",
+        "css": "transition: transform 220ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 220ms cubic-bezier(0.23, 1, 0.32, 1), border-color 220ms cubic-bezier(0.23, 1, 0.32, 1);",
+        "hover": "transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);",
+        "active": "transform: scale(0.98);",
+        "imageCover": "transition: transform 250ms cubic-bezier(0.23, 1, 0.32, 1); will-change: transform;",
+        "imageHoverScale": "transform: scale(1.03);"
+      },
+      "metricCard": {
+        "description": "Thẻ thông số thống kê Metric Card",
+        "css": "transition: border-color 180ms linear, box-shadow 180ms cubic-bezier(0.23, 1, 0.32, 1);",
+        "hover": "border-color: rgba(0, 81, 195, 0.3); box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);",
+        "iconBoxHover": "transition: transform 180ms cubic-bezier(0.34, 1.56, 0.64, 1); transform: scale(1.06);"
+      },
+      "platformHealthDot": {
+        "description": "Đèn xanh báo trạng thái Crawler Health nhịp đập mượt",
+        "animation": "pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite"
+      }
+    },
+    "formControls": {
+      "fileDropzone": {
+        "description": "Vùng thả file AAB khi kéo tập tin vào màn hình",
+        "css": "transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 200ms cubic-bezier(0.23, 1, 0.32, 1), border-color 200ms linear;",
+        "dragOver": "transform: scale(1.01); box-shadow: 0 0 0 4px rgba(0, 81, 195, 0.15); border-color: var(--color-primary);",
+        "dropRelease": "transform: scale(0.99);"
+      },
+      "tagBadge": {
+        "description": "Thẻ Tag khi được gán / xóa khỏi danh sách",
+        "add": "animation: tagSpringPop 150ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;",
+        "remove": "animation: tagShrinkOut 120ms cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards;"
+      },
+      "inputFocusRing": {
+        "description": "Vòng viền phát sáng khi focus ô nhập liệu",
+        "css": "transition: border-color 150ms linear, box-shadow 150ms cubic-bezier(0.23, 1, 0.32, 1);",
+        "focus": "border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(0, 81, 195, 0.15);"
+      },
+      "checkboxSpring": {
+        "description": "Hiệu ứng nảy tích xanh Checkbox ma trận phân quyền",
+        "css": "transition: transform 140ms cubic-bezier(0.34, 1.56, 0.64, 1), background-color 120ms linear;",
+        "checkedAnimation": "scale(0.7) -> scale(1.1) -> scale(1)"
+      }
+    },
+    "progressAndIndicators": {
+      "rolloutProgressBar": {
+        "description": "Thanh % Staged Rollout mở rộng độ rộng mượt",
+        "css": "transition: width 450ms cubic-bezier(0.23, 1, 0.32, 1);"
+      },
+      "sdkComplianceRing": {
+        "description": "Vòng tiến độ Target SDK 34 tự vẽ khi cuộn tới",
+        "css": "transition: stroke-dashoffset 600ms cubic-bezier(0.23, 1, 0.32, 1);"
+      },
+      "realtimeSyncDot": {
+        "description": "Đèn báo đồng bộ Play Console nhịp đập mượt",
+        "animation": "sync-pulse 2.5s ease-in-out infinite"
+      }
+    },
+    "listAndGridEntrances": {
+      "staggeredEntrance": {
+        "description": "Hiệu ứng nối đuôi xuất hiện các thẻ / dòng dữ liệu",
+        "css": "animation: staggerFadeIn 200ms cubic-bezier(0.23, 1, 0.32, 1) both;",
+        "staggerDelayFormula": "calc(var(--stagger-index, 0) * 35ms)"
+      },
+      "skeletonFadeBridge": {
+        "description": "Cầu nối Skeleton biến mất mượt khi dữ liệu thật tải xong",
+        "skeletonExit": "transition: opacity 120ms linear; opacity: 0;",
+        "contentEnter": "transition: opacity 180ms cubic-bezier(0.23, 1, 0.32, 1); opacity: 1;"
+      }
+    }
+  },
+  "keyframes": {
+    "pulse-glow": {
+      "0%": { "box-shadow": "0 0 0 0 rgba(16, 185, 129, 0.4)" },
+      "70%": { "box-shadow": "0 0 0 8px rgba(16, 185, 129, 0)" },
+      "100%": { "box-shadow": "0 0 0 0 rgba(16, 185, 129, 0)" }
+    },
+    "sync-pulse": {
+      "0%, 100%": { "opacity": "1", "transform": "scale(1)" },
+      "50%": { "opacity": "0.4", "transform": "scale(0.92)" }
+    },
+    "shimmerGold": {
+      "0%": { "background-position": "-200% 0" },
+      "100%": { "background-position": "200% 0" }
+    },
+    "staggerFadeIn": {
+      "from": { "transform": "translate3d(0, 8px, 0)", "opacity": "0" },
+      "to": { "transform": "translate3d(0, 0, 0)", "opacity": "1" }
+    },
+    "tagSpringPop": {
+      "0%": { "transform": "scale(0.7)", "opacity": "0" },
+      "70%": { "transform": "scale(1.1)", "opacity": "1" },
+      "100%": { "transform": "scale(1)", "opacity": "1" }
+    },
+    "tagShrinkOut": {
+      "from": { "transform": "scale(1)", "opacity": "1" },
+      "to": { "transform": "scale(0.7)", "opacity": "0" }
+    },
+    "shakeError": {
+      "0%, 100%": { "transform": "translateX(0)" },
+      "20%, 60%": { "transform": "translateX(-4px)" },
+      "40%, 80%": { "transform": "translateX(4px)" }
+    }
+  },
+  "tailwindV4Directives": {
+    "@utility active-press": "transition: transform 120ms cubic-bezier(0.23, 1, 0.32, 1); &:active { transform: scale(0.96); }",
+    "@utility active-press-subtle": "transition: transform 120ms cubic-bezier(0.23, 1, 0.32, 1); &:active { transform: scale(0.98); }",
+    "@utility active-press-deep": "transition: transform 120ms cubic-bezier(0.23, 1, 0.32, 1); &:active { transform: scale(0.92); }",
+    "@utility hover-elevate": "transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 200ms cubic-bezier(0.23, 1, 0.32, 1); &:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.08); }",
+    "@utility modal-backdrop": "backdrop-filter: blur(6px); transition: opacity 200ms cubic-bezier(0.23, 1, 0.32, 1);",
+    "@utility modal-dialog-popin": "transition: transform 240ms cubic-bezier(0.23, 1, 0.32, 1), opacity 240ms cubic-bezier(0.23, 1, 0.32, 1);",
+    "@utility popover-origin-left": "transform-origin: top left; transition: transform 150ms cubic-bezier(0.23, 1, 0.32, 1), opacity 150ms cubic-bezier(0.23, 1, 0.32, 1);",
+    "@utility popover-origin-right": "transform-origin: top right; transition: transform 150ms cubic-bezier(0.23, 1, 0.32, 1), opacity 150ms cubic-bezier(0.23, 1, 0.32, 1);",
+    "@utility side-drawer-slide": "transition: transform 260ms cubic-bezier(0.32, 0.72, 0, 1);",
+    "@utility sliding-pill": "transition: transform 220ms cubic-bezier(0.4, 0, 0.2, 1), width 220ms cubic-bezier(0.4, 0, 0.2, 1);",
+    "@utility dropzone-dragover": "transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 200ms cubic-bezier(0.23, 1, 0.32, 1);",
+    "@utility progress-fill": "transition: width 450ms cubic-bezier(0.23, 1, 0.32, 1);",
+    "@utility stagger-item": "animation: staggerFadeIn 200ms cubic-bezier(0.23, 1, 0.32, 1) both; animation-delay: calc(var(--stagger-index, 0) * 35ms);",
+    "@utility ambient-pulse": "animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;"
+  },
+  "accessibilityPolicy": {
+    "prefersReducedMotion": {
+      "cssRule": "@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }",
+      "statement": "Đảm bảo 100% người dùng có triệu chứng chóng mặt vestibular hoặc sử dụng thiết bị hiệu năng thấp không bị ảnh hưởng bởi hiệu ứng chuyển động."
+    }
+  }
+}

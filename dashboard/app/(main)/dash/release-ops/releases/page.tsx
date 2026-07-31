@@ -281,7 +281,7 @@ export default function ReleasesPage() {
                           <span className="font-bold text-foreground">{r.rolloutPercentage}%</span>
                         </div>
                         <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
-                          <div className="h-full bg-emerald-500" style={{ width: `${r.rolloutPercentage}%` }} />
+                          <div className="h-full bg-emerald-500 transition-[width] duration-450 ease-[cubic-bezier(0.23,1,0.32,1)]" style={{ width: `${r.rolloutPercentage}%` }} />
                         </div>
                       </div>
                     </td>
