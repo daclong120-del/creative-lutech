@@ -447,6 +447,29 @@ The dashboard achieves depth using structural overlays and blurring rather than 
 - Dashboard charts resize dynamically utilizing container width listeners.
 - No media placeholders are allowed; fallback icons with standard styling will cover empty metric images.
 
+## Architectural & UI Design Lessons (Bài học Thiết kế & Trải nghiệm Nâng cao)
+
+### 1. Cấm dùng thẻ HTML Native Dropdown (`<select>`)
+- **Vấn đề**: Thẻ `<select>` nguyên bản của HTML hiển thị khung menu vuông thô của hệ điều hành Windows/Edge, xanh đè chữ, vỡ font và lệch tông hoàn toàn với giao diện glassmorphic cao cấp.
+- **Quy chuẩn**: Bắt buộc 100% các menu chọn/bộ lọc phải dùng component custom **`DropdownSelect`** (`@/components/dashboard/DropdownSelect`). Đảm bảo bo góc `rounded-lg`, hiệu ứng mờ thủy tinh (`backdrop-blur-xs shadow-lg`), tích hợp checkmark chọn item và hiệu ứng zoom-in (`animate-in zoom-in-95`).
+
+### 2. Chuẩn Cảm giác Phản hồi Vật lý Apple Motion (Tactile Active Scale)
+- **Quy chuẩn**: Mọi phần tử tương tác (Nút bấm, Tab switcher, Dropdown trigger, Radio option card, Xóa file) không bao giờ được đứng im khi người dùng nhấp chuột.
+- **Cấu hình**: Bắt buộc bổ sung `active:scale-[0.97]` hoặc `active:scale-95` kết hợp với biến thiên mượt `transition-all duration-150 ease-out`.
+
+### 3. Phòng chống Khựng/Đơ Giao diện khi Chuyển trang (Instant Next.js App Router Transitions)
+- **Vấn đề**: Next.js App Router mặc định sẽ đứng yên ở trang cũ (gây cảm giác đơ/khựng) cho đến khi trang mới fetch xong dữ liệu từ Server.
+- **Quy chuẩn**: Mỗi nhánh giao diện (Route Segment) như `dashboard/app/(main)/loading.tsx` hoặc `dash/release-ops/loading.tsx` bắt buộc phải có file **`loading.tsx`** để kích hoạt `Suspense Boundary`. Giúp URL đổi ngay lập tức (**0ms**) kèm thanh hiệu ứng Top Progress Bar và khung Skeleton phát sáng.
+
+### 4. Bọc Lỗi Server Action & Bảo mật CSRF
+- **Quy chuẩn**: Server Actions không bao giờ ném ngoại lệ unhandled trực tiếp (khiến Next.js trả lỗi mờ trong Production build). Luôn trả về object `{ success: boolean, error?: string }` và cấu hình CSRF chấp nhận cùng Origin Host trên Vercel Preview.
+
+### 5. Quản lý Môi trường Deploy & Tên miền Cố định
+- **Quy chuẩn**: Tách biệt rõ ràng 3 cấp tên miền trên Vercel CLI:
+  - **Production URL**: `creative-lutech.vercel.app` / `creative.lutech.vn` (`npx vercel --prod`).
+  - **Review Branch URL Cố định**: `creative-lutech-review.vercel.app` (`npx vercel` + `npx vercel alias set creative-lutech-review.vercel.app`).
+  - **Preview Snapshot URL**: Tên miền Hash tạm thời duy nhất của lần build cũ.
+
 ## Iteration Guide
 
 1. **Component Focus**: Address one component or module layout at a time to maintain high-density style alignment.

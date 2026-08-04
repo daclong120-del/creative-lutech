@@ -16,6 +16,7 @@ import {
   FileUp,
 } from 'lucide-react';
 import { getApps, getUploadJobs, createJob } from '@/lib/actions/release-ops.actions';
+import DropdownSelect from '@/components/dashboard/DropdownSelect';
 import type { AppRegistryItem, UploadJobItem } from '@/types/release-ops';
 
 export default function UploadPage() {
@@ -300,31 +301,30 @@ export default function UploadPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                 <div className="space-y-1.5">
                   <label className="font-semibold text-foreground block">1. Chọn Ứng dụng mục tiêu (Target App):</label>
-                  <select
+                  <DropdownSelect
+                    fullWidth
                     value={selectedAppId}
-                    onChange={(e) => setSelectedAppId(e.target.value)}
-                    className="w-full p-2.5 bg-background/80 border border-border/80 rounded-xl text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all text-xs font-medium cursor-pointer"
-                  >
-                    {apps.map(app => (
-                      <option key={app.id} value={app.id}>
-                        {app.appName} ({app.packageName})
-                      </option>
-                    ))}
-                  </select>
+                    onChange={setSelectedAppId}
+                    options={apps.map(app => ({
+                      value: app.id,
+                      label: `${app.appName} (${app.packageName})`,
+                    }))}
+                  />
                 </div>
 
                 <div className="space-y-1.5">
                   <label className="font-semibold text-foreground block">2. Chọn Google Play Track (Target Track):</label>
-                  <select
+                  <DropdownSelect
+                    fullWidth
                     value={selectedTrack}
-                    onChange={(e) => setSelectedTrack(e.target.value)}
-                    className="w-full p-2.5 bg-background/80 border border-border/80 rounded-xl text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all text-xs font-medium cursor-pointer"
-                  >
-                    <option value="production">Production Track (Live Store)</option>
-                    <option value="beta">Open Beta Track</option>
-                    <option value="alpha">Closed Alpha Track</option>
-                    <option value="internal">Internal Test Track</option>
-                  </select>
+                    onChange={setSelectedTrack}
+                    options={[
+                      { value: 'production', label: 'Production Track (Live Store)' },
+                      { value: 'beta', label: 'Open Beta Track' },
+                      { value: 'alpha', label: 'Closed Alpha Track' },
+                      { value: 'internal', label: 'Internal Test Track' },
+                    ]}
+                  />
                 </div>
               </div>
             </div>
