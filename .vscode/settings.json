@@ -1,3 +1,8 @@
 {
-    "workbench.view.alwaysShowHeaderActions": true
+    "workbench.view.alwaysShowHeaderActions": true,
+    "sshfs.configs": [
+        {
+            "name": "unnamed"
+        }
+    ]
 }
