@@ -101,7 +101,7 @@ export default function Pagination({
           type="button"
           onClick={() => onPageChange(Math.max(1, currentPage - 1))}
           disabled={currentPage === 1}
-          className="size-8 rounded-lg border border-border bg-card flex items-center justify-center text-foreground hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="size-8 rounded-lg border border-border bg-card flex items-center justify-center text-foreground hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-120 active:scale-90"
         >
           <svg className="size-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -124,9 +124,9 @@ export default function Pagination({
               key={`page-${page}`}
               onClick={() => onPageChange(page as number)}
               className={cn(
-                "size-8 rounded-lg text-xs font-semibold border transition-colors flex items-center justify-center",
+                "size-8 rounded-lg text-xs font-semibold border transition-all duration-120 flex items-center justify-center active:scale-90",
                 isCurrent
-                  ? "bg-primary border-primary text-primary-foreground shadow-sm shadow-primary/20 font-bold"
+                  ? "bg-primary border-primary text-primary-foreground shadow-sm shadow-primary/20 font-bold scale-105"
                   : "bg-card border-border text-foreground hover:bg-muted"
               )}
             >
@@ -140,7 +140,7 @@ export default function Pagination({
           type="button"
           onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
           disabled={currentPage === totalPages}
-          className="size-8 rounded-lg border border-border bg-card flex items-center justify-center text-foreground hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="size-8 rounded-lg border border-border bg-card flex items-center justify-center text-foreground hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-120 active:scale-90"
         >
           <svg className="size-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
@@ -155,7 +155,7 @@ export default function Pagination({
             value={jumpPage}
             onChange={(e) => setJumpPage(e.target.value.replace(/\D/g, ""))}
             placeholder=""
-            className="h-8 w-11 rounded-lg border border-border bg-background text-foreground text-center font-bold focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-xs"
+            className="h-8 w-11 rounded-lg border border-border bg-background text-foreground text-center font-bold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-xs transition-all duration-150"
           />
           <span>Trang</span>
         </form>

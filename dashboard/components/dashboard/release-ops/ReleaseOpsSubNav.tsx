@@ -29,9 +29,9 @@ export default function ReleaseOpsSubNav() {
               key={tab.id}
               href={tab.href}
               className={cn(
-                "px-3 py-1.5 rounded-md text-xs font-medium transition-colors whitespace-nowrap",
+                "px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-200 ease-[cubic-bezier(0.4,0,0.2,1)] whitespace-nowrap active-press-subtle",
                 isActive
-                  ? "bg-primary text-primary-foreground font-semibold shadow-xs"
+                  ? "bg-primary text-primary-foreground font-semibold shadow-xs scale-[1.02]"
                   : "text-muted-foreground hover:bg-muted hover:text-foreground"
               )}
             >

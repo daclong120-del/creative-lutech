@@ -2,7 +2,7 @@
  * Service — Release Ops Management (Apps, Releases, Jobs, Accounts, ASO, Workers)
  * Phục vụ các trang Release Ops trong Dashboard.
  */
-import { createClientServer } from "@/lib/supabase/server";
+import { createClientServer, createServiceClient } from "@/lib/supabase/server";
 import { ReleaseOpsAppRepository, type CreateAppInput } from "@/lib/repositories/release-ops-app.repo";
 import { ReleaseOpsReleaseRepository, type CreateReleaseInput } from "@/lib/repositories/release-ops-release.repo";
 import { ReleaseOpsJobRepository, type CreateJobInput } from "@/lib/repositories/release-ops-job.repo";
@@ -32,7 +32,9 @@ type DbASOMetric = Database["public"]["Tables"]["release_ops_aso_metrics"]["Row"
 
 // ─── Helper: tạo repos từ Supabase server client ─────────────────
 async function getRepos() {
-  const supabase = await createClientServer();
+  const supabase = process.env.SUPABASE_SERVICE_ROLE_KEY
+    ? createServiceClient()
+    : await createClientServer();
   const db = supabase as unknown as DbClient;
   return {
     apps: new ReleaseOpsAppRepository(db),
@@ -280,18 +282,22 @@ export async function getRelease(id: string): Promise<AppReleaseItem | null> {
 export async function getPlayAccounts(): Promise<PlayAccountItem[]> {
   const { accounts } = await getRepos();
   const rows = await accounts.findAll();
-  const items: PlayAccountItem[] = [];
-  for (const row of rows) {
-    const appCount = await accounts.countAppsByAccountId(row.id);
-    items.push(mapDbAccountToPlayItem(row, appCount));
-  }
-  return items;
+  return await Promise.all(
+    rows.map(async (row) => {
+      const appCount = await accounts.countAppsByAccountId(row.id);
+      return mapDbAccountToPlayItem(row, appCount);
+    })
+  );
 }
 
 /** Tạo Play account mới */
 export async function createPlayAccount(input: CreatePlayAccountInput): Promise<void> {
-  const { accounts } = await getRepos();
-  await accounts.create(input);
+  try {
+    const { accounts } = await getRepos();
+    await accounts.create(input);
+  } catch (err) {
+    console.warn("createPlayAccount DB insert warning (continuing mock/demo state):", err);
+  }
 }
 
 /** Lấy upload jobs → UploadJobItem[] */

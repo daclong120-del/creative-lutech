@@ -48,8 +48,8 @@ export function InviteMemberModal({ isOpen, onClose, roles, showToast }: InviteM
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
-      <div className="w-full max-w-md bg-card border border-border rounded-xl shadow-xl overflow-hidden animate-in zoom-in-95 duration-150">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-md animate-in fade-in duration-200 ease-[cubic-bezier(0.23,1,0.32,1)]">
+      <div className="w-full max-w-md bg-card border border-border rounded-xl shadow-2xl overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-2 duration-220 ease-[cubic-bezier(0.23,1,0.32,1)]">
         <div className="flex items-center justify-between p-4 border-b border-border select-none">
           <h3 className="text-sm font-bold text-foreground flex items-center gap-1.5">
             <UserPlus size={16} className="text-primary" />
@@ -57,7 +57,7 @@ export function InviteMemberModal({ isOpen, onClose, roles, showToast }: InviteM
           </h3>
           <button
             onClick={handleClose}
-            className="p-1 hover:bg-muted rounded-lg text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+            className="group p-1 hover:bg-muted rounded-lg text-muted-foreground hover:text-foreground transition-all duration-150 active:scale-90 cursor-pointer"
           >
             <X size={16} />
           </button>

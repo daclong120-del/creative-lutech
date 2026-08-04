@@ -41,17 +41,17 @@ export default function TagInput({ tags, onChange, placeholder }: TagInputProps)
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-1.5 p-1.5 w-full border border-border rounded-lg bg-background min-h-[38px] focus-within:border-primary transition-colors">
+    <div className="flex flex-wrap items-center gap-1.5 p-1.5 w-full border border-border rounded-lg bg-background min-h-[38px] focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all duration-150">
       {tags.map((tag, index) => (
         <span
           key={index}
-          className="inline-flex items-center gap-1 pl-2 pr-1 py-0.5 rounded-md text-xs bg-muted text-card-foreground border border-border"
+          className="inline-flex items-center gap-1 pl-2 pr-1 py-0.5 rounded-md text-xs bg-muted text-card-foreground border border-border animate-in zoom-in-90 duration-150 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
         >
           {tag}
           <button
             type="button"
             onClick={() => removeTag(index)}
-            className="hover:bg-muted-foreground/10 rounded-full p-0.5 transition-colors cursor-pointer"
+            className="hover:bg-muted-foreground/20 rounded-full p-0.5 transition-transform duration-100 active:scale-80 cursor-pointer"
           >
             <X size={10} />
           </button>

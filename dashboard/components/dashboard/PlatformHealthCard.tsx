@@ -25,17 +25,17 @@ export default function PlatformHealthCard({ platform, active, banned, total, cl
     <div
       onClick={onClick}
       className={cn(
-        "rounded-xl border border-border bg-card p-4 transition-[border-color,box-shadow] hover:shadow-sm",
-        onClick && "cursor-pointer hover:border-primary/30",
+        "group rounded-xl border border-border bg-card p-4 transition-all duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] hover:shadow-md hover:-translate-y-0.5",
+        onClick && "cursor-pointer hover:border-primary/30 active:scale-[0.98]",
         className
       )}
     >
       {/* Platform header */}
       <div className="flex items-center gap-2 mb-3">
-        <div className="size-2.5 rounded-full shrink-0" style={{ backgroundColor: config.color }} />
+        <div className="size-2.5 rounded-full shrink-0 ambient-pulse" style={{ backgroundColor: config.color }} />
         <span className="text-xs font-semibold text-card-foreground">{config.label}</span>
         {statusConfig.label && (
-          <span className={cn("ml-auto text-[10px] font-medium", statusConfig.color)}>
+          <span className={cn("ml-auto text-[10px] font-medium transition-transform duration-180 group-hover:scale-105", statusConfig.color)}>
             {statusConfig.label}
           </span>
         )}
@@ -44,7 +44,7 @@ export default function PlatformHealthCard({ platform, active, banned, total, cl
       {/* Progress bar */}
       <div className="h-1.5 rounded-full bg-muted overflow-hidden mb-2">
         <div
-          className={cn("h-full rounded-full transition-[width] duration-500 ease-out", statusConfig.barBg)}
+          className={cn("h-full rounded-full transition-all duration-450 ease-[cubic-bezier(0.23,1,0.32,1)]", statusConfig.barBg)}
           style={{ width: `${Math.round(ratio * 100)}%` }}
         />
       </div>

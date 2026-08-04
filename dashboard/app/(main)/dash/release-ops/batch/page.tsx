@@ -123,10 +123,10 @@ export default function BatchOpsPage() {
                   {/* Segmented Progress Bar */}
                   <div className="space-y-1.5">
                     <div className="h-2 w-full bg-muted rounded-full overflow-hidden flex">
-                      {successPct > 0 && <div className="h-full bg-emerald-700 dark:bg-emerald-500" style={{ width: `${successPct}%` }} />}
-                      {runningPct > 0 && <div className="h-full bg-blue-600 dark:bg-blue-400" style={{ width: `${runningPct}%` }} />}
-                      {failedPct > 0 && <div className="h-full bg-rose-600 dark:bg-rose-500" style={{ width: `${failedPct}%` }} />}
-                      {pendingPct > 0 && <div className="h-full bg-slate-300 dark:bg-zinc-700" style={{ width: `${pendingPct}%` }} />}
+                      {successPct > 0 && <div className="h-full bg-emerald-700 dark:bg-emerald-500 transition-[width] duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]" style={{ width: `${successPct}%` }} />}
+                      {runningPct > 0 && <div className="h-full bg-blue-600 dark:bg-blue-400 transition-[width] duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]" style={{ width: `${runningPct}%` }} />}
+                      {failedPct > 0 && <div className="h-full bg-rose-600 dark:bg-rose-500 transition-[width] duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]" style={{ width: `${failedPct}%` }} />}
+                      {pendingPct > 0 && <div className="h-full bg-slate-300 dark:bg-zinc-700 transition-[width] duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]" style={{ width: `${pendingPct}%` }} />}
                     </div>
 
                     <div className="flex items-center gap-3 text-[10px] font-mono font-semibold text-muted-foreground flex-wrap">

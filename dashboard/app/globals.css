@@ -42,10 +42,14 @@
   --radius-xl: calc(var(--radius) * 1.4);
   --radius-2xl: calc(var(--radius) * 1.8);
 
-  /* Custom easing curves from AUDIT.md */
+  /* Custom easing curves from animation-config.json (v2.0 Master Motion Tokens) */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in: cubic-bezier(0.6, -0.28, 0.735, 0.045);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-bouncy: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-tab: cubic-bezier(0.4, 0, 0.2, 1);
 
   /* Map entry/exit animations */
   --animate-in: enter 150ms var(--ease-out);
@@ -62,6 +66,33 @@
       opacity: var(--tw-exit-opacity, 1);
       transform: translate3d(var(--tw-exit-translate-x, 0), var(--tw-exit-translate-y, 0), 0) scale3d(var(--tw-exit-scale, 1), var(--tw-exit-scale, 1), var(--tw-exit-scale, 1));
     }
+  }
+
+  @keyframes pulse-glow {
+    0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+    70% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+  }
+
+  @keyframes sync-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.45; transform: scale(0.92); }
+  }
+
+  @keyframes staggerFadeIn {
+    from { transform: translate3d(0, 8px, 0); opacity: 0; }
+    to { transform: translate3d(0, 0, 0); opacity: 1; }
+  }
+
+  @keyframes tagSpringPop {
+    0% { transform: scale(0.7); opacity: 0; }
+    70% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  @keyframes tagShrinkOut {
+    from { transform: scale(1); opacity: 1; }
+    to { transform: scale(0.7); opacity: 0; }
   }
 }
 
@@ -205,15 +236,76 @@
 }
 
 @utility active-press {
-  transition: transform 100ms var(--ease-out);
+  transition: transform 120ms var(--ease-out);
   &:active {
-    transform: scale(0.97);
+    transform: scale(0.96);
   }
 }
 
+@utility active-press-subtle {
+  transition: transform 120ms var(--ease-out);
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+@utility active-press-deep {
+  transition: transform 120ms var(--ease-out);
+  &:active {
+    transform: scale(0.92);
+  }
+}
+
+@utility hover-elevate {
+  transition: transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out), border-color 200ms var(--ease-out);
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  }
+}
+
+@utility modal-backdrop {
+  backdrop-filter: blur(6px);
+  transition: opacity 200ms var(--ease-out);
+}
+
+@utility modal-dialog-popin {
+  transition: transform 240ms var(--ease-out), opacity 240ms var(--ease-out);
+}
+
+@utility popover-origin-left {
+  transform-origin: top left;
+  transition: transform 150ms var(--ease-out), opacity 150ms var(--ease-out);
+}
+
+@utility popover-origin-right {
+  transform-origin: top right;
+  transition: transform 150ms var(--ease-out), opacity 150ms var(--ease-out);
+}
+
+@utility side-drawer-slide {
+  transition: transform 260ms var(--ease-drawer);
+}
+
+@utility sliding-pill {
+  transition: transform 220ms var(--ease-tab), width 220ms var(--ease-tab), left 220ms var(--ease-tab);
+}
+
+@utility dropzone-dragover {
+  transition: transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out), border-color 200ms var(--ease-out);
+}
+
+@utility progress-fill {
+  transition: width 450ms var(--ease-out);
+}
+
 @utility stagger-item {
-  animation-delay: calc(var(--stagger-index, 0) * 50ms);
-  animation-fill-mode: both;
+  animation: staggerFadeIn 200ms var(--ease-out) both;
+  animation-delay: calc(var(--stagger-index, 0) * 35ms);
+}
+
+@utility ambient-pulse {
+  animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 @utility slide-in-from-bottom-4 {

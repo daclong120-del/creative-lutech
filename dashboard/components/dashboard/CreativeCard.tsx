@@ -83,7 +83,7 @@ export default function CreativeCard({ creative, advertiserName, className, onCl
   return (
     <div
       className={cn(
-        "group bg-card rounded-xl border border-border overflow-hidden hover:shadow-lg hover:border-zinc-300 dark:hover:border-zinc-700 transition-[border-color,box-shadow] duration-250 ease-out flex flex-col h-full",
+        "group bg-card rounded-xl border border-border overflow-hidden hover:shadow-lg hover:border-zinc-300 dark:hover:border-zinc-700 transition-all duration-220 ease-[cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-0.5 active:scale-[0.98] flex flex-col h-full",
         className
       )}
     >
@@ -103,7 +103,7 @@ export default function CreativeCard({ creative, advertiserName, className, onCl
               alt={creative.title || "Creative Thumbnail"}
               referrerPolicy="no-referrer"
               onError={() => setMediaError(true)}
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-250 ease-out group-hover:scale-[1.03]"
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-250 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.03] will-change-transform"
             />
           </>
         ) : canPreviewVideo ? (

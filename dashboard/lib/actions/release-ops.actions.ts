@@ -98,11 +98,17 @@ export async function createApp(input: CreateAppInput) {
 }
 
 export async function createPlayAccount(input: CreatePlayAccountInput) {
-  if (!(await verifyCSRF())) {
-    throw new Error("Xác thực bảo mật CSRF thất bại.");
+  try {
+    if (!(await verifyCSRF())) {
+      return { success: false, error: "Xác thực bảo mật CSRF thất bại." };
+    }
+    await requireAdmin();
+    await createPlayAccountService(input);
+    return { success: true };
+  } catch (err: unknown) {
+    console.error("createPlayAccount error:", err);
+    return { success: false, error: err instanceof Error ? err.message : "Đã có lỗi xảy ra khi tạo tài khoản Developer." };
   }
-  await requireAdmin();
-  await createPlayAccountService(input);
 }
 
 export async function createJob(input: CreateJobInput) {

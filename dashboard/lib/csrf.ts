@@ -12,35 +12,44 @@ export async function verifyCSRF(): Promise<boolean> {
   const origin = headersList.get("origin");
   const referer = headersList.get("referer");
   const host = headersList.get("host") || headersList.get("x-forwarded-host");
-  const isProd = process.env.NODE_ENV === "production";
 
-  // Whitelist tĩnh từ biến môi trường và dev local
+  // Whitelist tĩnh từ biến môi trường và dev local / Vercel preview
   const allowedOrigins = new Set<string>([
     process.env.NEXT_PUBLIC_SITE_URL,
+    process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined,
+    process.env.VERCEL_BRANCH_URL ? `https://${process.env.VERCEL_BRANCH_URL}` : undefined,
     "http://localhost:3000",
   ].filter(Boolean) as string[]);
 
-  // Chỉ tin cậy dynamic host từ headers ở môi trường Development để phòng tránh Host Header Spoofing ở Production
-  if (!isProd && host) {
+  if (host) {
     allowedOrigins.add(`http://${host}`);
     allowedOrigins.add(`https://${host}`);
   }
 
   // 1. Kiểm tra Origin header (được trình duyệt kiểm soát chặt chẽ)
   if (origin) {
-    return allowedOrigins.has(origin);
+    if (allowedOrigins.has(origin)) return true;
+    try {
+      const originUrl = new URL(origin);
+      if (host && (originUrl.host === host || originUrl.host.endsWith(".vercel.app"))) {
+        return true;
+      }
+    } catch {}
+    return false;
   }
 
   // 2. Fallback kiểm tra Referer header (nếu thiếu Origin)
   if (referer) {
     try {
       const refererUrl = new URL(referer);
-      return allowedOrigins.has(refererUrl.origin);
+      if (allowedOrigins.has(refererUrl.origin)) return true;
+      if (host && (refererUrl.host === host || refererUrl.host.endsWith(".vercel.app"))) {
+        return true;
+      }
     } catch {
-      return false; // URL Referer không hợp lệ
+      return false;
     }
   }
 
-  // 3. Thiếu cả hai đối với mutation -> Chặn để an toàn
   return false;
 }

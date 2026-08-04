@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { getReleases } from '@/lib/actions/release-ops.actions';
+import DropdownSelect from '@/components/dashboard/DropdownSelect';
 import { AppReleaseItem, ReleaseStatus, TrackType } from '@/types/release-ops';
 import ReleaseOpsNavTabs from '@/components/dashboard/release-ops/ReleaseOpsNavTabs';
 
@@ -138,74 +139,74 @@ export default function ReleasesPage() {
       <div className="bg-card border border-border rounded-xl p-3 flex flex-wrap items-center gap-3 text-xs">
         <div className="flex items-center gap-1.5">
           <span className="text-muted-foreground font-medium">Trạng thái:</span>
-          <select
+          <DropdownSelect
             value={selectedStatus}
-            onChange={(e) => setSelectedStatus(e.target.value)}
-            className="px-2 py-1 bg-background border border-border rounded-md text-foreground focus:outline-none"
-          >
-            <option value="all">Tất cả Status</option>
-            <option value="rolling_out">Rolling Out</option>
-            <option value="in_review">In Review</option>
-            <option value="live">Live</option>
-            <option value="halted">Halted</option>
-            <option value="policy_blocked">Policy Blocked</option>
-          </select>
+            onChange={setSelectedStatus}
+            options={[
+              { value: 'all', label: 'Tất cả Status' },
+              { value: 'rolling_out', label: 'Rolling Out' },
+              { value: 'in_review', label: 'In Review' },
+              { value: 'live', label: 'Live' },
+              { value: 'halted', label: 'Halted' },
+              { value: 'policy_blocked', label: 'Policy Blocked' },
+            ]}
+          />
         </div>
 
         <div className="flex items-center gap-1.5">
           <span className="text-muted-foreground font-medium">Track:</span>
-          <select
+          <DropdownSelect
             value={selectedTrack}
-            onChange={(e) => setSelectedTrack(e.target.value)}
-            className="px-2 py-1 bg-background border border-border rounded-md text-foreground focus:outline-none"
-          >
-            <option value="all">Tất cả Tracks</option>
-            <option value="production">Production</option>
-            <option value="beta">Open Beta</option>
-            <option value="alpha">Closed Alpha</option>
-            <option value="internal">Internal</option>
-          </select>
+            onChange={setSelectedTrack}
+            options={[
+              { value: 'all', label: 'Tất cả Tracks' },
+              { value: 'production', label: 'Production' },
+              { value: 'beta', label: 'Open Beta' },
+              { value: 'alpha', label: 'Closed Alpha' },
+              { value: 'internal', label: 'Internal' },
+            ]}
+          />
         </div>
 
         <div className="flex items-center gap-1.5">
           <span className="text-muted-foreground font-medium">Account:</span>
-          <select
+          <DropdownSelect
             value={selectedAccount}
-            onChange={(e) => setSelectedAccount(e.target.value)}
-            className="px-2 py-1 bg-background border border-border rounded-md text-foreground focus:outline-none"
-          >
-            <option value="all">Tất cả Account</option>
-            <option value="Creative Lutech Dev Alpha">Creative Lutech Dev Alpha</option>
-            <option value="Creative Lutech Global Studio">Creative Lutech Global Studio</option>
-            <option value="SinoMedia Ops HK">SinoMedia Ops HK</option>
-          </select>
+            onChange={setSelectedAccount}
+            options={[
+              { value: 'all', label: 'Tất cả Account' },
+              { value: 'Creative Lutech Dev Alpha', label: 'Creative Lutech Dev Alpha' },
+              { value: 'Creative Lutech Global Studio', label: 'Creative Lutech Global Studio' },
+              { value: 'SinoMedia Ops HK', label: 'SinoMedia Ops HK' },
+            ]}
+          />
         </div>
 
         <div className="flex items-center gap-1.5">
           <span className="text-muted-foreground font-medium">Health Signal:</span>
-          <select
+          <DropdownSelect
             value={selectedHealth}
-            onChange={(e) => setSelectedHealth(e.target.value)}
-            className="px-2 py-1 bg-background border border-border rounded-md text-foreground focus:outline-none"
-          >
-            <option value="all">Tất cả Health</option>
-            <option value="safe_to_increase">Safe to Increase</option>
-            <option value="halt_recommended">Halt Recommended</option>
-            <option value="hold">Hold</option>
-          </select>
+            onChange={setSelectedHealth}
+            options={[
+              { value: 'all', label: 'Tất cả Health' },
+              { value: 'safe_to_increase', label: 'Safe to Increase' },
+              { value: 'halt_recommended', label: 'Halt Recommended' },
+              { value: 'hold', label: 'Hold' },
+            ]}
+          />
         </div>
 
         <div className="flex items-center gap-1.5">
           <span className="text-muted-foreground font-medium">Gate Status:</span>
-          <select
+          <DropdownSelect
             value={selectedGate}
-            onChange={(e) => setSelectedGate(e.target.value)}
-            className="px-2 py-1 bg-background border border-border rounded-md text-foreground focus:outline-none"
-          >
-            <option value="all">Tất cả Gate</option>
-            <option value="passed">Gate Passed</option>
-            <option value="failed">Gate Failed</option>
-          </select>
+            onChange={setSelectedGate}
+            options={[
+              { value: 'all', label: 'Tất cả Gate' },
+              { value: 'passed', label: 'Gate Passed' },
+              { value: 'failed', label: 'Gate Failed' },
+            ]}
+          />
         </div>
 
         <span className="ml-auto font-mono text-muted-foreground font-semibold">
@@ -281,7 +282,7 @@ export default function ReleasesPage() {
                           <span className="font-bold text-foreground">{r.rolloutPercentage}%</span>
                         </div>
                         <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
-                          <div className="h-full bg-emerald-500" style={{ width: `${r.rolloutPercentage}%` }} />
+                          <div className="h-full bg-emerald-500 transition-[width] duration-450 ease-[cubic-bezier(0.23,1,0.32,1)]" style={{ width: `${r.rolloutPercentage}%` }} />
                         </div>
                       </div>
                     </td>

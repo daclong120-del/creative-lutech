@@ -32,7 +32,7 @@ export function RolesPanel({ roles, showToast }: RolesPanelProps) {
   // Local state for modified permissions mapped by roleName to avoid prop mutation
   const [localPermissions, setLocalPermissions] = useState<Record<string, PermissionFlags>>({});
 
-  const activeRole = roles[selectedRoleIndex] || roles[0];
+  const activeRole = Array.isArray(roles) && roles.length > 0 ? (roles[selectedRoleIndex] || roles[0]) : null;
   
   const currentPermissions = activeRole 
     ? (localPermissions[activeRole.roleName] || { ...activeRole.permissions })

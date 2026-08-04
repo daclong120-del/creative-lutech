@@ -56,9 +56,12 @@ export function MembersTable({ members, roles, showToast, onInviteClick }: Membe
     }
   };
 
-  const filteredMembers = members.filter(m => {
-    const matchesSearch = m.email.toLowerCase().includes(memberSearchQuery.toLowerCase()) || 
-                          m.role.toLowerCase().includes(memberSearchQuery.toLowerCase());
+  const filteredMembers = (members || []).filter(m => {
+    if (!m) return false;
+    const email = m.email || "";
+    const role = m.role || "";
+    const matchesSearch = email.toLowerCase().includes(memberSearchQuery.toLowerCase()) || 
+                          role.toLowerCase().includes(memberSearchQuery.toLowerCase());
     const matchesRole = roleFilter === "All roles" || m.roleId === roleFilter;
     return matchesSearch && matchesRole;
   });
