@@ -554,20 +554,22 @@ export default function TasksClient({ initialTasks, initialError }: TasksClientP
                       <div className="flex items-center gap-1 flex-wrap">
                         {task.metadata?.headless !== undefined && (
                           <span className={cn(
-                            "px-1 py-0.5 rounded text-[9px] font-medium border",
-                            task.metadata.headless ? "bg-zinc-900 border-zinc-700 text-zinc-400" : "bg-orange-950 border-orange-900/50 text-orange-400"
+                            "px-1.5 py-0.5 rounded text-[9px] font-medium border",
+                            task.metadata.headless
+                              ? "bg-zinc-500/10 border-zinc-500/20 text-zinc-600 dark:text-zinc-400"
+                              : "bg-orange-500/10 border-orange-500/20 text-orange-600 dark:text-orange-400"
                           )}>
                             {task.metadata.headless ? "headless" : "headful"}
                           </span>
                         )}
                         {task.metadata?.crawl_comments && (
-                          <span className="px-1 py-0.5 rounded text-[9px] font-medium bg-blue-950 border border-blue-900/50 text-blue-400">
+                          <span className="px-1.5 py-0.5 rounded text-[9px] font-medium bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400">
                             comments
                             {task.metadata?.crawl_sub_comments && "+sub"}
                           </span>
                         )}
                         {task.metadata?.language && task.metadata.language !== "auto" && (
-                          <span className="px-1 py-0.5 rounded text-[9px] font-medium bg-purple-950 border border-purple-900/50 text-purple-400">
+                          <span className="px-1.5 py-0.5 rounded text-[9px] font-medium bg-purple-500/10 border border-purple-500/20 text-purple-600 dark:text-purple-400">
                             lang: {task.metadata.language}
                           </span>
                         )}

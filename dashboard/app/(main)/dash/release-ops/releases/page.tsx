@@ -9,14 +9,14 @@ import ReleaseOpsNavTabs from '@/components/dashboard/release-ops/ReleaseOpsNavT
 function StatusBadge({ status }: { status: ReleaseStatus }) {
   const map: Record<ReleaseStatus, { label: string; style: string }> = {
     draft: { label: 'Bản nháp', style: 'bg-muted text-muted-foreground border-border' },
-    building: { label: 'Đang Build', style: 'bg-blue-500/10 text-blue-600 border-blue-500/20' },
-    in_review: { label: 'Chờ duyệt Play', style: 'bg-amber-500/10 text-amber-600 border-amber-500/20' },
-    rolling_out: { label: 'Staged Rollout', style: 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20' },
-    live: { label: 'Live Store', style: 'bg-emerald-500/20 text-emerald-700 border-emerald-500/30' },
-    rejected: { label: 'Từ chối', style: 'bg-rose-500/10 text-rose-600 border-rose-500/20' },
-    halted: { label: 'Tạm dừng', style: 'bg-orange-500/10 text-orange-600 border-orange-500/20' },
-    failed: { label: 'Lỗi Build', style: 'bg-rose-500/10 text-rose-600 border-rose-500/20' },
-    policy_blocked: { label: 'Khóa Chính sách', style: 'bg-red-600/15 text-red-700 font-bold border-red-600/30' },
+    building: { label: 'Đang Build', style: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20' },
+    in_review: { label: 'Chờ duyệt Play', style: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20' },
+    rolling_out: { label: 'Staged Rollout', style: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20' },
+    live: { label: 'Live Store', style: 'bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 border-emerald-500/30' },
+    rejected: { label: 'Từ chối', style: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20' },
+    halted: { label: 'Tạm dừng', style: 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/20' },
+    failed: { label: 'Lỗi Build', style: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20' },
+    policy_blocked: { label: 'Khóa Chính sách', style: 'bg-red-500/15 text-red-700 dark:text-red-400 font-bold border-red-500/30' },
   };
 
   const item = map[status] || { label: status, style: 'bg-muted text-muted-foreground border-border' };

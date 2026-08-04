@@ -100,7 +100,7 @@ export default function AuditLogsClient() {
                     </td>
                     <td className="px-4 py-2.5 text-card-foreground">
                       <span className="font-mono text-[10px] text-muted-foreground">{log.entity_type}</span>
-                      <span className="mx-1.5 text-zinc-300">/</span>
+                      <span className="mx-1.5 text-muted-foreground/40">/</span>
                       <span className="font-semibold">{log.entity_id}</span>
                     </td>
                     <td className="px-4 py-2.5 font-mono text-muted-foreground text-[10px]">{log.ip_address}</td>
