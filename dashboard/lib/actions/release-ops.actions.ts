@@ -26,8 +26,15 @@ import {
   getASOMetrics as getASOMetricsService,
   getWorkers as getWorkersService,
   createRelease as createReleaseService,
+  promoteRelease as promoteReleaseService,
+  haltRelease as haltReleaseService,
   getBatchOperations as getBatchOperationsService,
   getBuildHistory as getBuildHistoryService,
+  getStorePerformanceReportService,
+  getJobDetail as getJobDetailService,
+  getAuditLogs as getAuditLogsService,
+  getArtifacts as getArtifactsService,
+  type StorePerformanceParams,
 } from "@/lib/services/release-ops.service";
 
 // ─── READ ACTIONS (requireAdmin only) ────────────────────────────
@@ -87,6 +94,26 @@ export async function getWorkers() {
   return await getWorkersService();
 }
 
+export async function getStorePerformanceReport(params?: StorePerformanceParams) {
+  await requireAdmin();
+  return await getStorePerformanceReportService(params);
+}
+
+export async function getJobDetail(jobId: string) {
+  await requireAdmin();
+  return await getJobDetailService(jobId);
+}
+
+export async function getAuditLogs(limit?: number) {
+  await requireAdmin();
+  return await getAuditLogsService(limit);
+}
+
+export async function getArtifacts(limit?: number) {
+  await requireAdmin();
+  return await getArtifactsService(limit);
+}
+
 // ─── WRITE ACTIONS (verifyCSRF + requireAdmin) ───────────────────
 
 export async function createApp(input: CreateAppInput) {
@@ -133,6 +160,28 @@ export async function createRelease(input: CreateReleaseInput) {
   }
   await requireAdmin();
   return await createReleaseService(input);
+}
+
+export async function promoteRelease(
+  releaseId: string,
+  input: { targetRolloutPercentage: number; reason: string },
+) {
+  if (!(await verifyCSRF())) {
+    throw new Error("Xác thực bảo mật CSRF thất bại.");
+  }
+  await requireAdmin();
+  return await promoteReleaseService(releaseId, input);
+}
+
+export async function haltRelease(
+  releaseId: string,
+  input: { reason: string },
+) {
+  if (!(await verifyCSRF())) {
+    throw new Error("Xác thực bảo mật CSRF thất bại.");
+  }
+  await requireAdmin();
+  return await haltReleaseService(releaseId, input);
 }
 
 export async function getBatchOperations() {

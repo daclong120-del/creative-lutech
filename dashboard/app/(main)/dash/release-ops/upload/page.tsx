@@ -15,7 +15,7 @@ import {
   ArrowRight,
   FileUp,
 } from 'lucide-react';
-import { getApps, getUploadJobs, createJob } from '@/lib/actions/release-ops.actions';
+import { getApps, getUploadJobs, createJob, cancelJob } from '@/lib/actions/release-ops.actions';
 import DropdownSelect from '@/components/dashboard/DropdownSelect';
 import type { AppRegistryItem, UploadJobItem } from '@/types/release-ops';
 
@@ -623,6 +623,22 @@ export default function UploadPage() {
                       {job.track}
                     </span>
                     <span className="font-mono font-bold text-primary">{job.progress}%</span>
+                    {['queued', 'validating'].includes(job.status) && (
+                      <button
+                        onClick={async () => {
+                          try {
+                            await cancelJob(job.id);
+                            const data = await getUploadJobs();
+                            setUploadJobs(data);
+                          } catch (err) {
+                            console.error('Cancel job failed:', err);
+                          }
+                        }}
+                        className="px-2 py-0.5 text-[10px] font-semibold text-rose-600 border border-rose-500/20 bg-rose-500/10 rounded hover:bg-rose-500/20 transition-colors cursor-pointer"
+                      >
+                        Hủy Job
+                      </button>
+                    )}
                   </div>
                 </div>
                 <div className="w-full h-2 bg-muted/60 rounded-full overflow-hidden border border-border/40">

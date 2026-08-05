@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { getReleases } from '@/lib/actions/release-ops.actions';
+import { getReleases, promoteRelease, haltRelease, createRelease, getApps } from '@/lib/actions/release-ops.actions';
+import type { AppRegistryItem } from '@/types/release-ops';
 import DropdownSelect from '@/components/dashboard/DropdownSelect';
 import { AppReleaseItem, ReleaseStatus, TrackType } from '@/types/release-ops';
 import ReleaseOpsNavTabs from '@/components/dashboard/release-ops/ReleaseOpsNavTabs';
@@ -44,25 +45,75 @@ function TrackBadge({ track }: { track: TrackType }) {
 
 export default function ReleasesPage() {
   const [releases, setReleases] = useState<AppReleaseItem[]>([]);
+  const [apps, setApps] = useState<AppRegistryItem[]>([]);
   const [selectedRelease, setSelectedRelease] = useState<AppReleaseItem | null>(null);
   const [actionTarget, setActionTarget] = useState<{ release: AppReleaseItem; action: 'increase' | 'live' | 'halt' } | null>(null);
   const [businessReason, setBusinessReason] = useState('');
   const [ticketRef, setTicketRef] = useState('');
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function loadData() {
-      try {
-        const data = await getReleases();
-        setReleases(data);
-      } catch (err) {
-        console.error('Failed to load releases:', err);
-      } finally {
-        setLoading(false);
+  // Modal Create Release State
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [createAppId, setCreateAppId] = useState('');
+  const [versionName, setVersionName] = useState('');
+  const [versionCode, setVersionCode] = useState<number | ''>(100);
+  const [track, setTrack] = useState('internal');
+  const [releaseNotes, setReleaseNotes] = useState('');
+  const [isCreating, setIsCreating] = useState(false);
+  const [createError, setCreateError] = useState<string | null>(null);
+
+  const loadData = async () => {
+    try {
+      const [relData, appsData] = await Promise.all([
+        getReleases(),
+        getApps(),
+      ]);
+      setReleases(relData);
+      setApps(appsData);
+      if (appsData.length > 0 && !createAppId) {
+        setCreateAppId(appsData[0].id);
       }
+    } catch (err) {
+      console.error('Failed to load releases:', err);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  useEffect(() => {
     loadData();
   }, []);
+
+  const handleCreateReleaseSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!createAppId || !versionName.trim() || !versionCode) {
+      setCreateError('Vui lòng điền đầy đủ App, Version Name và Version Code.');
+      return;
+    }
+
+    setIsCreating(true);
+    setCreateError(null);
+
+    try {
+      await createRelease({
+        app_id: createAppId,
+        version_name: versionName.trim(),
+        version_code: Number(versionCode),
+        track,
+        release_notes: releaseNotes.trim() || null,
+      });
+      await loadData();
+      setVersionName('');
+      setVersionCode(100);
+      setReleaseNotes('');
+      setShowCreateModal(false);
+    } catch (err) {
+      console.error('Create release error:', err);
+      setCreateError(err instanceof Error ? err.message : 'Tạo bản phát hành thất bại.');
+    } finally {
+      setIsCreating(false);
+    }
+  };
 
   // ─── Filters ───
   const [searchQuery, setSearchQuery] = useState('');
@@ -83,35 +134,29 @@ export default function ReleasesPage() {
     return matchesSearch && matchesStatus && matchesTrack && matchesAccount && matchesHealth && matchesGate;
   });
 
-  const confirmAction = () => {
+  const confirmAction = async () => {
     if (!actionTarget) return;
     const { release, action } = actionTarget;
 
-    setReleases(prev => prev.map(r => {
-      if (r.id !== release.id) return r;
+    try {
       if (action === 'increase') {
-        const nextPct = Math.min(100, r.rolloutPercentage + 20);
-        return {
-          ...r,
-          rolloutPercentage: nextPct,
-          status: nextPct === 100 ? 'live' : 'rolling_out',
-          updatedAt: 'Vừa cập nhật (Audit OK)',
-        };
+        const nextPct = Math.min(100, release.rolloutPercentage + 20);
+        await promoteRelease(release.id, { targetRolloutPercentage: nextPct, reason: businessReason });
+      } else if (action === 'live') {
+        await promoteRelease(release.id, { targetRolloutPercentage: 100, reason: businessReason });
+      } else if (action === 'halt') {
+        await haltRelease(release.id, { reason: businessReason });
       }
-      if (action === 'live') {
-        return { ...r, rolloutPercentage: 100, status: 'live', updatedAt: 'Vừa cập nhật (Audit OK)' };
+      await loadData();
+    } catch (err) {
+      console.error('Action error:', err);
+    } finally {
+      setActionTarget(null);
+      setBusinessReason('');
+      setTicketRef('');
+      if (selectedRelease?.id === release.id) {
+        setSelectedRelease(null);
       }
-      if (action === 'halt') {
-        return { ...r, status: 'halted', updatedAt: 'Vừa cập nhật (Audit OK)' };
-      }
-      return r;
-    }));
-
-    setActionTarget(null);
-    setBusinessReason('');
-    setTicketRef('');
-    if (selectedRelease?.id === release.id) {
-      setSelectedRelease(null);
     }
   };
 
@@ -126,13 +171,21 @@ export default function ReleasesPage() {
           </p>
         </div>
 
-        <input
-          type="text"
-          placeholder="Tìm theo tên app, package..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="px-3 py-1.5 text-xs bg-card border border-border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary w-64"
-        />
+        <div className="flex items-center gap-2">
+          <input
+            type="text"
+            placeholder="Tìm theo tên app, package..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="px-3 py-1.5 text-xs bg-card border border-border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary w-64"
+          />
+          <button
+            onClick={() => setShowCreateModal(true)}
+            className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors whitespace-nowrap cursor-pointer"
+          >
+            + Tạo Release Mới
+          </button>
+        </div>
       </div>
 
       {/* ─── Multi-Filter Control Bar ─── */}
@@ -511,6 +564,113 @@ export default function ReleasesPage() {
                 Xác nhận & Ghi Audit Log
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─── Modal Form Tạo Release Mới ─── */}
+      {showCreateModal && (
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+          <div className="bg-background border border-border rounded-xl p-6 max-w-lg w-full space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-border pb-3">
+              <h3 className="text-sm font-bold text-foreground">Tạo Bản phát hành Mới (Create Release)</h3>
+              <button onClick={() => setShowCreateModal(false)} className="text-muted-foreground text-sm font-bold cursor-pointer">
+                &times;
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateReleaseSubmit} className="space-y-4 text-xs">
+              {createError && (
+                <div className="p-2.5 bg-rose-500/10 border border-rose-500/20 text-rose-600 rounded-lg">
+                  {createError}
+                </div>
+              )}
+
+              <div className="space-y-3">
+                <div>
+                  <label className="font-semibold text-foreground block mb-1">Ứng dụng (*)</label>
+                  <select
+                    value={createAppId}
+                    onChange={(e) => setCreateAppId(e.target.value)}
+                    className="w-full px-3 py-2 bg-background border border-border rounded-lg text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+                  >
+                    {apps.map((a) => (
+                      <option key={a.id} value={a.id}>
+                        {a.appName} ({a.packageName})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="font-semibold text-foreground block mb-1">Version Name (*)</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="v1.2.0"
+                      value={versionName}
+                      onChange={(e) => setVersionName(e.target.value)}
+                      className="w-full px-3 py-2 bg-background border border-border rounded-lg text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary font-mono"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="font-semibold text-foreground block mb-1">Version Code (*)</label>
+                    <input
+                      type="number"
+                      required
+                      placeholder="120"
+                      value={versionCode}
+                      onChange={(e) => setVersionCode(e.target.value ? Number(e.target.value) : "")}
+                      className="w-full px-3 py-2 bg-background border border-border rounded-lg text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary font-mono"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="font-semibold text-foreground block mb-1">Phân luồng Phát hành (Track)</label>
+                  <select
+                    value={track}
+                    onChange={(e) => setTrack(e.target.value)}
+                    className="w-full px-3 py-2 bg-background border border-border rounded-lg text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+                  >
+                    <option value="internal">Internal Test</option>
+                    <option value="alpha">Closed Alpha</option>
+                    <option value="beta">Open Beta</option>
+                    <option value="production">Production</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="font-semibold text-foreground block mb-1">Ghi chú Phát hành (Release Notes)</label>
+                  <textarea
+                    rows={3}
+                    placeholder="Nhập ghi chú những thay đổi mới..."
+                    value={releaseNotes}
+                    onChange={(e) => setReleaseNotes(e.target.value)}
+                    className="w-full px-3 py-2 bg-background border border-border rounded-lg text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-2 pt-3 border-t border-border">
+                <button
+                  type="button"
+                  onClick={() => setShowCreateModal(false)}
+                  className="px-3 py-1.5 text-xs font-medium rounded-lg border border-border hover:bg-muted cursor-pointer"
+                >
+                  Hủy
+                </button>
+                <button
+                  type="submit"
+                  disabled={isCreating}
+                  className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 cursor-pointer"
+                >
+                  {isCreating ? "Đang khởi tạo..." : "Xác nhận Tạo Release"}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
