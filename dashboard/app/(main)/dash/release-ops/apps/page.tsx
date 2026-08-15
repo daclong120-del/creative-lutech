@@ -1,28 +1,74 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { getApps } from '@/lib/actions/release-ops.actions';
-import { AppRegistryItem } from '@/types/release-ops';
+import { getApps, createApp, getPlayAccounts } from '@/lib/actions/release-ops.actions';
+import { AppRegistryItem, PlayAccountItem } from '@/types/release-ops';
 
 export default function AppsRegistryPage() {
   const [showWizard, setShowWizard] = useState(false);
   const [selectedAppSpec, setSelectedAppSpec] = useState<AppRegistryItem | null>(null);
   const [apps, setApps] = useState<AppRegistryItem[]>([]);
+  const [accounts, setAccounts] = useState<PlayAccountItem[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function loadData() {
-      try {
-        const data = await getApps();
-        setApps(data);
-      } catch (err) {
-        console.error("Failed to load apps:", err);
-      } finally {
-        setLoading(false);
+  // Form state for Onboard App Wizard
+  const [packageName, setPackageName] = useState('');
+  const [appName, setAppName] = useState('');
+  const [playAccountId, setPlayAccountId] = useState('');
+  const [targetSdk, setTargetSdk] = useState(34);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+
+  const loadData = async () => {
+    try {
+      const [appsData, accountsData] = await Promise.all([
+        getApps(),
+        getPlayAccounts(),
+      ]);
+      setApps(appsData);
+      setAccounts(accountsData);
+      if (accountsData.length > 0) {
+        setPlayAccountId(accountsData[0].id);
       }
+    } catch (err) {
+      console.error("Failed to load apps:", err);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  useEffect(() => {
     loadData();
   }, []);
+
+  const handleCreateApp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!packageName.trim() || !appName.trim()) {
+      setFormError('Vui lòng nhập đầy đủ Package Name và Tên App.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setFormError(null);
+
+    try {
+      await createApp({
+        package_name: packageName.trim(),
+        app_name: appName.trim(),
+        play_account_id: playAccountId || null,
+        target_sdk: Number(targetSdk),
+      });
+      await loadData();
+      setPackageName('');
+      setAppName('');
+      setShowWizard(false);
+    } catch (err) {
+      console.error('Create app failed:', err);
+      setFormError(err instanceof Error ? err.message : 'Tạo app mới thất bại.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div suppressHydrationWarning className="px-4 md:px-8 py-6 max-w-[1400px] mx-auto space-y-6">
@@ -173,70 +219,98 @@ export default function AppsRegistryPage() {
         </div>
       )}
 
-      {/* ─── Onboarding Checklist Modal ─── */}
+      {/* ─── Onboarding Checklist & Form Modal ─── */}
       {showWizard && (
         <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
           <div className="bg-background border border-border rounded-xl p-6 max-w-lg w-full space-y-4 shadow-2xl">
             <div className="flex items-center justify-between border-b border-border pb-3">
-              <h3 className="text-sm font-bold text-foreground">Onboard App Mới (Google Play Checklist)</h3>
+              <h3 className="text-sm font-bold text-foreground">Onboard App Mới (Google Play Console)</h3>
               <button onClick={() => setShowWizard(false)} className="text-muted-foreground text-sm font-bold">&times;</button>
             </div>
-            
-            <div className="space-y-3 text-xs">
-              <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg text-blue-700 dark:text-blue-400">
-                Quy trình Onboard bao gồm phân định rõ tác vụ <strong>Tự động (Automated)</strong> và tác vụ <strong>Thủ công (Manual)</strong>.
+
+            <form onSubmit={handleCreateApp} className="space-y-4 text-xs">
+              {formError && (
+                <div className="p-2.5 bg-rose-500/10 border border-rose-500/20 text-rose-600 rounded-lg">
+                  {formError}
+                </div>
+              )}
+
+              <div className="space-y-3">
+                <div>
+                  <label className="font-semibold text-foreground block mb-1">Package Name (*)</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="com.example.myapp"
+                    value={packageName}
+                    onChange={(e) => setPackageName(e.target.value)}
+                    className="w-full px-3 py-2 bg-background border border-border rounded-lg text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary font-mono"
+                  />
+                </div>
+
+                <div>
+                  <label className="font-semibold text-foreground block mb-1">Tên App (*)</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="My Application Name"
+                    value={appName}
+                    onChange={(e) => setAppName(e.target.value)}
+                    className="w-full px-3 py-2 bg-background border border-border rounded-lg text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+                  />
+                </div>
+
+                <div>
+                  <label className="font-semibold text-foreground block mb-1">Tài khoản Google Play Developer</label>
+                  <select
+                    value={playAccountId}
+                    onChange={(e) => setPlayAccountId(e.target.value)}
+                    className="w-full px-3 py-2 bg-background border border-border rounded-lg text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+                  >
+                    {accounts.length === 0 && <option value="">Chưa có account (Tự động gán mặc định)</option>}
+                    {accounts.map((acc) => (
+                      <option key={acc.id} value={acc.id}>
+                        {acc.name} ({acc.email})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="font-semibold text-foreground block mb-1">Target SDK</label>
+                  <input
+                    type="number"
+                    value={targetSdk}
+                    onChange={(e) => setTargetSdk(Number(e.target.value))}
+                    className="w-full px-3 py-2 bg-background border border-border rounded-lg text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary font-mono"
+                  />
+                </div>
               </div>
 
-              <div className="space-y-2">
-                <div className="flex items-start gap-2 p-2 bg-muted/30 border border-border rounded-lg justify-between">
-                  <div className="flex items-start gap-2">
-                    <input type="checkbox" defaultChecked className="mt-0.5" />
-                    <div>
-                      <span className="font-semibold text-foreground block">1. Khởi tạo App ID & Package Name</span>
-                      <span className="text-muted-foreground">Đã tạo bản ghi trong SinoMedia Registry</span>
-                    </div>
-                  </div>
-                  <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-blue-500/10 text-blue-600 border border-blue-500/20 shrink-0">
-                    TỰ ĐỘNG
-                  </span>
-                </div>
-
-                <div className="flex items-start gap-2 p-2 bg-muted/30 border border-border rounded-lg justify-between">
-                  <div className="flex items-start gap-2">
-                    <input type="checkbox" defaultChecked className="mt-0.5" />
-                    <div>
-                      <span className="font-semibold text-foreground block">2. Đăng ký OAuth Token Service Account</span>
-                      <span className="text-muted-foreground">Đã xác minh quyền Google Play API</span>
-                    </div>
-                  </div>
-                  <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-blue-500/10 text-blue-600 border border-blue-500/20 shrink-0">
-                    TỰ ĐỘNG
-                  </span>
-                </div>
-
-                <div className="flex items-start gap-2 p-2 bg-muted/30 border border-border rounded-lg justify-between">
-                  <div className="flex items-start gap-2">
-                    <input type="checkbox" className="mt-0.5" />
-                    <div>
-                      <span className="font-semibold text-foreground block">3. Khai báo Data Safety Form & Privacy Policy</span>
-                      <span className="text-muted-foreground">Điền thông tin thu thập dữ liệu người dùng trên Console</span>
-                    </div>
-                  </div>
-                  <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-amber-500/10 text-amber-600 border border-amber-500/20 shrink-0">
-                    THỦ CÔNG
-                  </span>
-                </div>
+              <div className="p-3 bg-muted/30 border border-border rounded-lg space-y-1.5">
+                <span className="font-semibold text-foreground block">Quy trình tự động hóa:</span>
+                <p className="text-muted-foreground text-[11px]">
+                  Tệp cấu hình OAuth Token, Data Safety snapshot & Checklists sẽ được khởi tạo tự động trong DB SinoMedia sau khi bấm đăng ký.
+                </p>
               </div>
-            </div>
 
-            <div className="flex justify-end gap-2 pt-3 border-t border-border">
-              <button
-                onClick={() => setShowWizard(false)}
-                className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-primary text-primary-foreground hover:bg-primary/90"
-              >
-                Đóng
-              </button>
-            </div>
+              <div className="flex justify-end gap-2 pt-3 border-t border-border">
+                <button
+                  type="button"
+                  onClick={() => setShowWizard(false)}
+                  className="px-3 py-1.5 text-xs font-medium rounded-lg border border-border hover:bg-muted"
+                >
+                  Hủy
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+                >
+                  {isSubmitting ? 'Đang tạo...' : 'Xác nhận Onboard App'}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

@@ -144,6 +144,8 @@ export default function ASOAnalyticsPage() {
         </div>
       </div>
 
+      <ReleaseOpsNavTabs />
+
       {/* ─── Main Chart: CR trend — Home AI · US · organic search ─── */}
       <div className="bg-card border border-border rounded-xl p-5 space-y-4 shadow-xs">
         <div className="flex items-center justify-between">
