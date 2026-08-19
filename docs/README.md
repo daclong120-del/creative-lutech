@@ -1,5 +1,3 @@
-# Tài liệu SinoMedia
-
 Nền tảng điều phối crawl dữ liệu 7 mạng xã hội Trung Quốc, cộng một phân hệ vận hành phát hành Android.
 
 **Ba tiến trình, một cơ sở dữ liệu:** dashboard Next.js 16 trên Vercel · crawler worker Node + Playwright trong Docker trên VPS · Supabase Postgres 17.
